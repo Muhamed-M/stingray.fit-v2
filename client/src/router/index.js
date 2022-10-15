@@ -1,19 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import store from '@/store';
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        component: HomeView,
+        component: import('../views/HomeView.vue'),
     },
     {
         path: '/admin',
         name: 'admin',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/AdminView.vue'),
+        component: () => import('../views/AdminView.vue'),
+        // if user is not authenticated redirect to auth page
+        beforeEnter: (to, from, next) => {
+            if (!store.state.admin || !store.state.admin.token) {
+                next('/admin/auth');
+            } else {
+                next();
+            }
+        },
+    },
+    {
+        path: '/admin/auth',
+        name: 'admin-auth',
+        component: () => import('../views/AuthView.vue'),
+        // if user is authenticated prevent from reaching auth page
+        beforeEnter: (to, from, next) => {
+            if (store.state.admin) {
+                next('/admin');
+            } else {
+                next();
+            }
+        },
     },
 ];
 

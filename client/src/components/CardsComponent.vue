@@ -1,8 +1,8 @@
 <template>
-    <section class="improve">
+    <section class="improve" id="cards">
         <div class="box">
             <img src="@/assets/images/dumbbell.svg" />
-            <h3>UNAPRIJEDI ZDRAVLJE</h3>
+            <h3>Unaprijedi zdravlje</h3>
             <p>
                 Mentor će ti pomoći da lakše otkriješ kakva ishrana i trening odgovaraju tvome
                 tijelu, da izgradiš zdrave navika i podigneš zdravlje i kondiciju na viši nivo.
@@ -35,8 +35,7 @@ export default {
 <style scoped>
 .improve {
     font-size: 1rem;
-    background-color: rgb(0, 152, 172);
-    padding-top: 3rem;
+    background-color: #0098ac;
     overflow: hidden;
     color: white;
 }

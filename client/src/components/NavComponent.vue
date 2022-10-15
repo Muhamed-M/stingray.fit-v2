@@ -15,7 +15,7 @@
                 scale="2.5"
             />
             <a class="nav-link" href="#about">o meni</a>
-            <a class="nav-link" href="#planovi">planovi</a>
+            <a class="nav-link" href="#planovi">planovi Treninga</a>
             <a class="nav-link" href="#transformacije">transformacije</a>
             <a class="nav-link" href="#testimonials">testimonials</a>
         </div>
@@ -62,7 +62,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 5rem;
+    padding: 1rem 5rem;
     z-index: 2;
     color: #fff;
 }
@@ -75,6 +75,7 @@ export default {
     animation-name: navbar;
     animation-duration: 1s;
     background-color: #2c3333;
+    padding: 0.5rem 5rem;
 }
 
 .nav {
@@ -101,7 +102,26 @@ export default {
 }
 
 .nav-link {
+    position: relative;
     color: #fff;
+    text-transform: capitalize;
+}
+
+.nav-link::after {
+    content: '';
+    background-color: #fff;
+    width: 0;
+    height: 2px;
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.5s;
+}
+
+.nav-link:hover::after {
+    width: 80%;
+    left: 50%;
 }
 
 .logo img {
@@ -127,7 +147,7 @@ export default {
     }
 
     .nav-link:not(:last-child) {
-        margin-right: 1.5rem;
+        margin-right: 3rem;
     }
 
     .hamburger-btn {

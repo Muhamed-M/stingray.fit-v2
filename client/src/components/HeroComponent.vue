@@ -5,12 +5,8 @@
             <a href="https://forms.gle/DXuSGAZ7bQrJwnUP9" target="_blank" id="contact-btn"
                 >prijavi se</a
             >
+            <a href="#cards" class="down-btn"><v-icon name="bi-caret-down-fill" scale="5" /></a>
         </section>
-        <div class="down">
-            <v-icon name="bi-caret-down-fill" scale="5" />
-            <v-icon name="bi-caret-down-fill" scale="5" />
-            <v-icon name="bi-caret-down-fill" scale="5" />
-        </div>
     </div>
 </template>
 
@@ -51,7 +47,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100px;
-    clip-path: polygon(100% 50%, 0 100%, 100% 100%);
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
 }
 
 .sign {
@@ -78,9 +74,10 @@ export default {
     color: #fff;
 }
 
-.down {
-    text-align: center;
-    color: rgb(0, 152, 172);
-    letter-spacing: 0.8em;
+.down-btn {
+    position: absolute;
+    bottom: 4vh;
+    cursor: pointer;
+    color: #fff;
 }
 </style>
