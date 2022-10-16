@@ -63,7 +63,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 5rem;
-    z-index: 2;
+    z-index: 10;
     color: #fff;
 }
 

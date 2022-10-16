@@ -40,7 +40,7 @@
 
 <script>
 export default {
-    name: 'AboutComponent',
+    name: 'AboutSection',
 };
 </script>
 
@@ -57,6 +57,7 @@ export default {
 
 .container-about img {
     max-width: 400px;
+    width: 90%;
     margin-top: 2rem;
 }
 

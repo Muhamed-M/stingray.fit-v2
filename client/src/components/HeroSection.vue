@@ -2,9 +2,12 @@
     <div>
         <section class="hero">
             <h1 class="sign">BUILDING ATHLETES NOT EGOS!</h1>
-            <a href="https://forms.gle/DXuSGAZ7bQrJwnUP9" target="_blank" id="contact-btn"
-                >prijavi se</a
-            >
+            <StingrayButton
+                text="Prijavi se"
+                bg-color="#fff"
+                text-color="#2c3333"
+                hover-bg-color="#eaeaea"
+            />
             <a href="#cards" class="down-btn"><v-icon name="bi-caret-down-fill" scale="5" /></a>
         </section>
     </div>
@@ -14,12 +17,14 @@
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
 import { BiCaretDownFill } from 'oh-vue-icons/icons';
 addIcons(BiCaretDownFill);
+import StingrayButton from '@/components/ButtonComponent';
 
 export default {
-    name: 'HeroComponent',
+    name: 'HeroSection',
 
     components: {
         'v-icon': OhVueIcon,
+        StingrayButton,
     },
 };
 </script>
@@ -55,23 +60,6 @@ export default {
     font-size: 4rem;
     text-align: center;
     letter-spacing: 4px;
-}
-
-#contact-btn {
-    display: inline-block;
-    font-size: 1.25rem;
-    font-family: 'Oswald', sans-serif;
-    background-color: #fff;
-    border: 3px solid #fff;
-    border-radius: 8px;
-    padding: 0.75em 1.5em;
-    margin-top: 0.5rem;
-    color: rgb(0, 152, 172);
-}
-
-#contact-btn:hover {
-    background-color: transparent;
-    color: #fff;
 }
 
 .down-btn {

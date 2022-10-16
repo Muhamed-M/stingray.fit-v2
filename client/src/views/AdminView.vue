@@ -11,14 +11,6 @@ export default {
     components: {
         AdminNav,
     },
-
-    methods: {
-        logout() {
-            this.$store.commit('setAdmin', null);
-            this.$router.push('/admin/auth');
-            localStorage.removeItem('admin');
-        },
-    },
 };
 </script>
 

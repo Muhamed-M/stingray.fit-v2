@@ -102,41 +102,11 @@ input {
     outline: none;
 }
 
-.input-field {
-    padding: 1.5em 1.25em;
-    border: 1px solid #5f6565;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.input-field:focus ~ span {
-    width: 100%;
-    left: 0;
-}
-
-.focus-el {
-    width: 0;
-    height: 2.8px;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    background-color: #5f6565;
-    transition: 300ms;
-}
-
 .form-submit {
     background-color: #0098ac;
     color: #fff;
     border: 2px solid #5f6565;
     padding: 1em 1.5em;
-}
-
-.input-icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 20px;
-    opacity: 0.7;
 }
 
 .error-message {

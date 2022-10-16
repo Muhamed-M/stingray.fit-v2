@@ -5,20 +5,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: import('../views/HomeView.vue'),
-    },
-    {
-        path: '/admin',
-        name: 'admin',
-        component: () => import('../views/AdminView.vue'),
-        // if user is not authenticated redirect to auth page
-        beforeEnter: (to, from, next) => {
-            if (!store.state.admin || !store.state.admin.token) {
-                next('/admin/auth');
-            } else {
-                next();
-            }
-        },
+        component: () => import('../views/HomeView.vue'),
     },
     {
         path: '/admin/auth',
@@ -28,6 +15,30 @@ const routes = [
         beforeEnter: (to, from, next) => {
             if (store.state.admin) {
                 next('/admin');
+            } else {
+                next();
+            }
+        },
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: () => import('../views/AdminView.vue'),
+        children: [
+            {
+                path: '',
+                name: 'page-settings',
+                component: () => import('../views/AdminPageSettingsView.vue'),
+            },
+            {
+                path: 'blogs',
+                component: () => import('../views/AdminBlogsView.vue'),
+            },
+        ],
+        // if user is not authenticated redirect to auth page
+        beforeEnter: (to, from, next) => {
+            if (!store.state.admin || !store.state.admin.token) {
+                next('/admin/auth');
             } else {
                 next();
             }

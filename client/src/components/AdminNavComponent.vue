@@ -4,15 +4,15 @@
             :class="!drawer ? 'sidenav d-flex f-dir-column' : 'sidenav active d-flex f-dir-column'"
         >
             <img src="@/assets/images/logo.png" alt="logo" class="logo" />
-            <div>
+            <router-link to="/admin" class="sidenav-link active">
                 <v-icon name="md-dashboard-round" fill="#fff" scale="2.2" />
                 <span v-if="drawer" class="sidenav-text">Page Settings</span>
-            </div>
-            <div>
+            </router-link>
+            <router-link to="/admin/blogs" class="sidenav-link">
                 <v-icon name="ri-pages-fill" fill="#fff" scale="2.2" />
                 <span v-if="drawer" class="sidenav-text">Blogs</span>
-            </div>
-            <div>
+            </router-link>
+            <div class="sidenav-link">
                 <v-icon name="co-settings" inverse="true" scale="2.2" />
                 <span v-if="drawer" class="sidenav-text">Settings</span>
             </div>
@@ -30,8 +30,15 @@
                 <div class="avatar d-flex justify-center align-center">
                     <!-- <img src="@/assets/images/logo.png" alt="avatar" /> -->
                     <v-icon name="bi-person-fill" scale="2.8" />
+                    <div class="dropdown">
+                        <h5>{{ admin.name }}</h5>
+                        <button @click="logout()" class="btn-signout">
+                            <v-icon name="co-account-logout" fill="#fff" /> Sign Out
+                        </button>
+                    </div>
                 </div>
             </header>
+            <router-view />
         </main>
     </div>
 </template>
@@ -47,6 +54,7 @@ import {
     CoAccountLogout,
     BiPersonFill,
 } from 'oh-vue-icons/icons';
+import { mapState } from 'vuex';
 addIcons(
     BiChevronRight,
     BiChevronLeft,
@@ -67,6 +75,18 @@ export default {
     data: () => ({
         drawer: false,
     }),
+
+    computed: {
+        ...mapState(['admin']),
+    },
+
+    methods: {
+        logout() {
+            this.$store.commit('setAdmin', null);
+            this.$router.push('/admin/auth');
+            localStorage.removeItem('admin');
+        },
+    },
 };
 </script>
 
@@ -77,7 +97,7 @@ export default {
 }
 
 .main.active {
-    margin-left: 250px;
+    margin-left: 255px;
 }
 
 .sidenav {
@@ -87,22 +107,30 @@ export default {
     height: 100vh;
     width: 80px;
     background-color: #2c3333;
-    padding: 1.2rem 0 0 1rem;
+    padding: 1.2rem 1rem 0 1rem;
     transition: width 300ms;
     overflow-x: hidden;
 }
 
 .sidenav.active {
-    width: 250px;
+    width: 255px;
 }
 
 .sidenav > *:not(:last-child) {
     margin-bottom: 1rem;
 }
 
-.sidenav div {
+.sidenav-link {
     color: #fff;
+    cursor: pointer;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+.sidenav-link.active {
+    background-color: #505050;
+    border-radius: 6px;
 }
 
 .sidenav-text {
@@ -134,9 +162,38 @@ export default {
 }
 
 .avatar {
+    cursor: pointer;
+    position: relative;
     width: 65px;
     height: 65px;
     border: 2px solid #000;
     border-radius: 50%;
+}
+
+.avatar:hover .dropdown {
+    display: block;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    left: -100%;
+    bottom: -130%;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 1rem;
+}
+
+.btn-signout {
+    border: none;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    outline: none;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    background-color: #2c3333;
+    color: #fff;
 }
 </style>
