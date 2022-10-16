@@ -10,11 +10,13 @@ export default createStore({
         isLoading: false,
         errorMessage: null,
         admin: admin ? admin : null,
+        workoutPlans: {},
     },
     getters: {},
     mutations: {
         setErrorMessage: (state, payload) => (state.errorMessage = payload),
         setAdmin: (state, payload) => (state.admin = payload),
+        setWorkoutPlans: (state, payload) => (state.workoutPlans = payload),
     },
     actions: {
         // Log in
@@ -35,6 +37,15 @@ export default createStore({
                 router.push('/admin');
             } catch (error) {
                 commit('setErrorMessage', error.response.data.message);
+            }
+        },
+        // Get workout plans related data
+        async getWorkoutPlansData() {
+            try {
+                const res = await axios.get('/api/admin/workout-plans');
+                this.commit('setWorkoutPlans', res.data[0]);
+            } catch (error) {
+                console.log(error);
             }
         },
     },

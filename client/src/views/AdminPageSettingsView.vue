@@ -6,9 +6,12 @@
                 <h2>Online Mentorstvo</h2>
                 <div>
                     <span>Current price: </span>
-                    <span>{{ 300 }}€ placeholder!</span>
+                    <span class="price">{{ workoutPlans.onlinePrice }}€</span>
                 </div>
-                <form class="d-flex justify-space-between align-center">
+                <form
+                    @submit.prevent="updatePrice()"
+                    class="d-flex justify-space-between align-center"
+                >
                     <div class="form-group">
                         <input
                             v-model="onlinePrice"
@@ -20,19 +23,19 @@
                         <span class="input-icon">€</span>
                         <span class="focus-el"></span>
                     </div>
-                    <input class="btn-change" type="button" value="Change" />
+                    <input class="btn-change" type="submit" value="Change" />
                 </form>
             </div>
             <div class="box-price">
                 <h2>Personalni Trening</h2>
                 <div>
                     <span>Current price: </span>
-                    <span>{{ 160 }}€ placeholder!</span>
+                    <span class="price">{{ workoutPlans.personalPrice }}€</span>
                 </div>
                 <form class="d-flex justify-space-between align-center">
                     <div class="form-group">
                         <input
-                            v-model="onlinePrice"
+                            v-model="personalPrice"
                             class="input-field"
                             type="text"
                             placeholder="Enter new price"
@@ -41,7 +44,7 @@
                         <span class="input-icon">€</span>
                         <span class="focus-el"></span>
                     </div>
-                    <input class="btn-change" type="button" value="Change" />
+                    <input class="btn-change" type="submit" value="Change" />
                 </form>
             </div>
         </div>
@@ -49,11 +52,38 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+import axios from 'axios';
+
 export default {
     data: () => ({
         onlinePrice: null,
         personalPrice: null,
     }),
+
+    computed: {
+        ...mapState(['workoutPlans']),
+    },
+
+    async created() {
+        await this.getWorkoutPlansData();
+    },
+
+    methods: {
+        ...mapActions(['getWorkoutPlansData']),
+        async updatePrice() {
+            console.log('asdas');
+            try {
+                const res = await axios.put(
+                    `/api/admin/workout-plans/update-price/${this.workoutPlans._id}`,
+                    { onlinePrice: this.onlinePrice }
+                );
+                console.log(res);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    },
 };
 </script>
 
@@ -74,6 +104,10 @@ export default {
     color: white;
 }
 
+.price {
+    font-size: 2rem;
+}
+
 .input-field {
     width: 100%;
     outline: none;
@@ -91,5 +125,6 @@ export default {
     background-color: #303838;
     color: #fff;
     padding: 1.5em 1.25em;
+    cursor: pointer;
 }
 </style>

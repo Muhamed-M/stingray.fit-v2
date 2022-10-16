@@ -119,5 +119,6 @@ a {
     top: 50%;
     transform: translateY(-50%);
     right: 20px;
-    opacity: 0.7;
+    opacity: 0.5;
+    color: #000;
 }

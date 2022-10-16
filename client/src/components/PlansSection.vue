@@ -3,7 +3,7 @@
         <h1 class="naslov">ODABERI SARADNJU</h1>
         <div class="container-price">
             <div class="box-price">
-                <h1>250€</h1>
+                <h1>{{ workoutPlans.onlinePrice }}€</h1>
                 <h6>online mentorstvo</h6>
                 <ul>
                     <li>&#10003; 3 mjeseca</li>
@@ -22,7 +22,7 @@
                 />
             </div>
             <div class="box-price">
-                <h1>160€</h1>
+                <h1>{{ workoutPlans.personalPrice }}€</h1>
                 <h6>personalni trening</h6>
                 <ul>
                     <li>&#10003; Testiranje</li>
@@ -52,6 +52,7 @@ import { OhVueIcon, addIcons } from 'oh-vue-icons';
 import { BiWhatsapp } from 'oh-vue-icons/icons';
 addIcons(BiWhatsapp);
 import StingrayButton from '@/components/ButtonComponent';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'PlansSection',
@@ -59,6 +60,18 @@ export default {
     components: {
         'v-icon': OhVueIcon,
         StingrayButton,
+    },
+
+    computed: {
+        ...mapState(['workoutPlans']),
+    },
+
+    async created() {
+        await this.getWorkoutPlansData();
+    },
+
+    methods: {
+        ...mapActions(['getWorkoutPlansData']),
     },
 };
 </script>

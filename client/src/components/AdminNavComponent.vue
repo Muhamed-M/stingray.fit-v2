@@ -13,7 +13,7 @@
                 <span v-if="drawer" class="sidenav-text">Blogs</span>
             </router-link>
             <div class="sidenav-link">
-                <v-icon name="co-settings" inverse="true" scale="2.2" />
+                <v-icon name="co-settings" :inverse="true" scale="2.2" />
                 <span v-if="drawer" class="sidenav-text">Settings</span>
             </div>
         </nav>

@@ -14,10 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 // app.use('/public', express.static('public'));
 
 // routes
-app.use('/api/admin/auth', require('./routes/admin'));
-
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+app.use('/api/admin', require('./routes/admin'));
 
 app.listen(port, console.log(`Server is running on port ${port}!`));
