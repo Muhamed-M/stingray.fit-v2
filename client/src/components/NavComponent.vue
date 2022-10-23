@@ -1,23 +1,25 @@
 <template>
-    <nav :class="isSticky ? 'nav-container sticky' : 'nav-container'">
-        <span class="logo"><img src="@/assets/images/logo.png" /></span>
-        <v-icon
-            @click="navToggle = true"
-            class="hamburger-btn"
-            name="co-hamburger-menu"
-            scale="2.5"
-        />
-        <div :class="navToggle ? 'nav active' : 'nav'">
+    <nav :class="isSticky ? 'nav-container sticky bg-gray-800' : 'nav-container'">
+        <div class="container px-5 py-4 mx-auto flex justify-between items-center">
+            <span class="w-14"><img src="@/assets/images/logo.png" /></span>
             <v-icon
-                @click="navToggle = false"
-                class="close-btn"
-                name="io-close-sharp"
+                @click="navToggle = true"
+                class="hamburger-btn"
+                name="co-hamburger-menu"
                 scale="2.5"
             />
-            <a class="nav-link" href="#about">o meni</a>
-            <a class="nav-link" href="#planovi">planovi Treninga</a>
-            <a class="nav-link" href="#transformacije">transformacije</a>
-            <a class="nav-link" href="#testimonials">testimonials</a>
+            <div :class="navToggle ? 'nav active' : 'nav'">
+                <v-icon
+                    @click="navToggle = false"
+                    class="close-btn"
+                    name="io-close-sharp"
+                    scale="2.5"
+                />
+                <a class="nav-link" href="#about">o meni</a>
+                <a class="nav-link" href="#planovi">planovi Treninga</a>
+                <a class="nav-link" href="#transformacije">transformacije</a>
+                <a class="nav-link" href="#testimonials">testimonials</a>
+            </div>
         </div>
     </nav>
 </template>
@@ -62,7 +64,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 5rem;
     z-index: 10;
     color: #fff;
 }
@@ -70,12 +71,6 @@ export default {
 .nav-container.sticky {
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    animation-name: navbar;
-    animation-duration: 1s;
-    background-color: #2c3333;
-    padding: 0.5rem 5rem;
 }
 
 .nav {
@@ -122,19 +117,6 @@ export default {
 .nav-link:hover::after {
     width: 80%;
     left: 50%;
-}
-
-.logo img {
-    max-width: 60px;
-}
-
-@keyframes navbar {
-    0% {
-        width: 80%;
-    }
-    100% {
-        width: 100%;
-    }
 }
 
 @media screen and (min-width: 768px) {

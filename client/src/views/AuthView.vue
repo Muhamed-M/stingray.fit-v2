@@ -1,47 +1,100 @@
 <template>
-    <div class="container">
-        <img class="bg-img" src="@/assets/images/logo.png" />
-        <form class="form-container" @submit.prevent="authHandler()">
-            <h1 class="form-heading">Authenticate</h1>
-            <div class="form-group">
-                <input
-                    v-model="email"
-                    class="input-field"
-                    type="email"
-                    placeholder="E-mail"
-                    required
+    <div class="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-md space-y-8 glassmorphism">
+            <div>
+                <img
+                    class="mx-auto h-12 w-auto"
+                    src="@/assets/images/logo.png"
+                    alt="Your Company"
                 />
-                <v-icon class="input-icon" name="md-email" fill="#2c3333" />
-                <span class="focus-el"></span>
+                <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+                    Authenticate
+                </h2>
             </div>
-            <div class="form-group">
-                <input
-                    v-model="password"
-                    class="input-field"
-                    type="password"
-                    placeholder="Password"
-                    required
-                />
-                <v-icon class="input-icon" name="ri-lock-password-fill" fill="#2c3333" />
-                <span class="focus-el"></span>
-            </div>
-            <input class="form-submit" type="submit" value="SIGN IN" />
-            <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        </form>
+            <form class="mt-8 space-y-6" @submit.prevent="authHandler()">
+                <input type="hidden" name="remember" value="true" />
+                <div class="-space-y-px rounded-md shadow-sm">
+                    <div>
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input
+                            id="email-address"
+                            v-model="email"
+                            type="email"
+                            autocomplete="email"
+                            required
+                            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
+                            placeholder="Email address"
+                        />
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input
+                            id="password"
+                            v-model="password"
+                            type="password"
+                            autocomplete="current-password"
+                            required
+                            class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
+                            placeholder="Password"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input
+                            id="remember-me"
+                            name="remember-me"
+                            type="checkbox"
+                            class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500"
+                        />
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-900"
+                            >Remember me</label
+                        >
+                    </div>
+
+                    <!-- <div class="text-sm">
+                        <a href="#" class="font-medium text-cyan-600 hover:text-cyan-500"
+                            >Forgot your password?</a
+                        >
+                    </div> -->
+                </div>
+
+                <div>
+                    <button
+                        type="submit"
+                        class="group relative flex w-full justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    >
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <!-- Heroicon name: mini/lock-closed -->
+                            <svg
+                                class="h-5 w-5 text-cyan-500 group-hover:text-cyan-400"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </span>
+                        Sign in
+                    </button>
+                </div>
+
+                <p class="text-red-500">{{ errorMessage }}</p>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { MdEmail, RiLockPasswordFill } from 'oh-vue-icons/icons';
-addIcons(MdEmail, RiLockPasswordFill);
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    components: {
-        'v-icon': OhVueIcon,
-    },
-
     data: () => ({
         email: '',
         password: '',
@@ -62,27 +115,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    position: relative;
-    min-height: 100vh;
-    display: grid;
-    place-content: center;
-}
-
-.bg-img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.form-heading {
-    text-align: center;
-}
-
-.form-container {
-    min-width: 600px;
-    width: 90%;
+.glassmorphism {
     padding: 2rem;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
@@ -90,23 +123,6 @@ export default {
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.form-group {
-    position: relative;
-    margin: 1rem 0;
-}
-
-input {
-    width: 100%;
-    outline: none;
-}
-
-.form-submit {
-    background-color: #0098ac;
-    color: #fff;
-    border: 2px solid #5f6565;
-    padding: 1em 1.5em;
 }
 
 .error-message {

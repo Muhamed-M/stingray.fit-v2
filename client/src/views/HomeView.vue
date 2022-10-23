@@ -6,6 +6,8 @@
         <AboutSection />
         <VideosSection />
         <PlansSection />
+        <TestimonialsSection />
+        <TransformationsSection />
         <FooterSection />
     </div>
 </template>
@@ -17,6 +19,8 @@ import CardsSection from '@/components/CardsSection';
 import AboutSection from '@/components/AboutSection';
 import VideosSection from '@/components/VideosSection';
 import PlansSection from '@/components/PlansSection';
+import TransformationsSection from '@/components/TransformationsSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import FooterSection from '@/components/FooterSection';
 
 export default {
@@ -28,6 +32,8 @@ export default {
         AboutSection,
         VideosSection,
         PlansSection,
+        TestimonialsSection,
+        TransformationsSection,
         FooterSection,
     },
 };

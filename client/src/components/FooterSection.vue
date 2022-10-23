@@ -1,24 +1,31 @@
 <template>
-    <footer class="footer d-flex justify-space-between">
-        <div class="contactinfo-container">
-            <h1 class="footerheading">Kontakt Info</h1>
-            <div class="contactinfo">
-                <span><i class="fas fa-map-marker-alt"></i> Sarajevo</span>
-                <span><i class="fas fa-phone"></i> +38761-872-308</span>
-                <span><i class="fas fa-envelope"></i> ilhanmuhamedagic@gmail.com</span>
-            </div>
-        </div>
-        <div class="social">
-            <a href="https://www.instagram.com/stingray.fit/" target="_blank"
-                ><v-icon name="bi-instagram" fill="#fff" scale="3"
-            /></a>
-            <a href="https://www.youtube.com/channel/UCigBlsVRyJfVHMI25AVmj4Q" target="_blank"
-                ><v-icon name="bi-youtube" fill="#fff" scale="3"
-            /></a>
-        </div>
-        <div class="copyright">
-            <span>&copy; Copyright 2021, sva prava zadržana!</span>
-            <address>Design & development: Muhamed Muhamedagić</address>
+    <footer class="body-font bg-cyan-600">
+        <div class="container px-5 py-4 mx-auto flex items-center sm:flex-row flex-col">
+            <a
+                class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900"
+            >
+                <img class="w-14" src="@/assets/images/logo.png" alt="logo" />
+                <span class="ml-3 text-xl">Stingray.fit</span>
+            </a>
+            <p
+                class="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4"
+            >
+                &copy; 2023 Firefly —
+                <a href="https://www.instagram.com/m.muham3d/" class="ml-1" target="_blank"
+                    >@m.muham3d</a
+                >
+            </p>
+            <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                <a
+                    class="ml-3"
+                    href="https://www.youtube.com/channel/UCigBlsVRyJfVHMI25AVmj4Q"
+                    target="_blank"
+                    ><v-icon name="bi-youtube" fill="#fff" scale="2"
+                /></a>
+                <a class="ml-3" href="https://www.instagram.com/stingray.fit/" target="_blank"
+                    ><v-icon name="bi-instagram" fill="#fff" scale="2"
+                /></a>
+            </span>
         </div>
     </footer>
 </template>

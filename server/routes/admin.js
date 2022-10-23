@@ -12,6 +12,6 @@ const {
 // routes
 router.post('/auth', authenticateAdmin);
 router.get('/workout-plans', getWorkoutPlans);
-router.put('/workout-plans/update-price/:id', updateWorkoutPlansPrice);
+router.patch('/workout-plans/update-price/:id', updateWorkoutPlansPrice);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 <template>
-    <section class="improve" id="cards">
+    <section class="improve bg-cyan-600" id="cards">
         <div class="box">
             <img src="@/assets/images/dumbbell.svg" />
             <h3>Unaprijedi zdravlje</h3>
@@ -35,7 +35,6 @@ export default {
 <style scoped>
 .improve {
     font-size: 1rem;
-    background-color: #0098ac;
     overflow: hidden;
     color: white;
 }
@@ -66,6 +65,7 @@ export default {
 
 .box img {
     width: 25%;
+    margin-inline: auto;
     margin-bottom: 1.75rem;
 }
 

@@ -60,8 +60,8 @@ const updateWorkoutPlansPrice = async (req, res) => {
         const { onlinePrice } = req.body;
 
         // update price
-        const workoutPlans = await WorkoutPlans.updateOne({ id: id }, { onlinePrice: onlinePrice });
-        res.status(200);
+        await WorkoutPlans.updateOne({ id: id }, { onlinePrice: onlinePrice });
+        res.status(200).json({ message: 'Price updated successfully!' });
     } catch (error) {
         console.log(error);
     }

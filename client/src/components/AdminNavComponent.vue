@@ -1,10 +1,14 @@
 <template>
     <div>
         <nav
-            :class="!drawer ? 'sidenav d-flex f-dir-column' : 'sidenav active d-flex f-dir-column'"
+            :class="
+                !drawer
+                    ? 'sidenav bg-gray-800 flex flex-col'
+                    : 'sidenav active bg-gray-800 flex flex-col'
+            "
         >
             <img src="@/assets/images/logo.png" alt="logo" class="logo" />
-            <router-link to="/admin" class="sidenav-link active">
+            <router-link to="/admin" class="sidenav-link bg-gray-700">
                 <v-icon name="md-dashboard-round" fill="#fff" scale="2.2" />
                 <span v-if="drawer" class="sidenav-text">Page Settings</span>
             </router-link>
@@ -18,7 +22,7 @@
             </div>
         </nav>
         <main :class="!drawer ? 'main' : 'main active'">
-            <header class="header d-flex justify-space-between align-center">
+            <header class="header flex justify-between align-center">
                 <button class="btn" @click="drawer = !drawer">
                     <v-icon
                         class="btn-drawer"
@@ -27,7 +31,7 @@
                         fill="#000"
                     />
                 </button>
-                <div class="avatar d-flex justify-center align-center">
+                <div class="avatar flex justify-center align-center">
                     <!-- <img src="@/assets/images/logo.png" alt="avatar" /> -->
                     <v-icon name="bi-person-fill" scale="2.8" />
                     <div class="dropdown">
@@ -106,7 +110,6 @@ export default {
     top: 0;
     height: 100vh;
     width: 80px;
-    background-color: #2c3333;
     padding: 1.2rem 1rem 0 1rem;
     transition: width 300ms;
     overflow-x: hidden;
@@ -126,11 +129,6 @@ export default {
     white-space: nowrap;
     display: flex;
     align-items: center;
-}
-
-.sidenav-link.active {
-    background-color: #505050;
-    border-radius: 6px;
 }
 
 .sidenav-text {

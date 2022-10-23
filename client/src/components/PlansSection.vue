@@ -1,9 +1,11 @@
 <template>
     <section class="price" id="planovi">
-        <h1 class="naslov">ODABERI SARADNJU</h1>
+        <h1 class="heading text-4xl font-medium title-font text-gray-900 mb-12 text-center">
+            Odaberi Saradnju
+        </h1>
         <div class="container-price">
             <div class="box-price">
-                <h1>{{ workoutPlans.onlinePrice }}€</h1>
+                <h1 class="text-6xl font-semibold">{{ workoutPlans.onlinePrice }}€</h1>
                 <h6>online mentorstvo</h6>
                 <ul>
                     <li>&#10003; 3 mjeseca</li>
@@ -21,8 +23,8 @@
                     hover-bg-color="#5c5b5b"
                 />
             </div>
-            <div class="box-price">
-                <h1>{{ workoutPlans.personalPrice }}€</h1>
+            <div class="box-price bg-cyan-600">
+                <h1 class="text-6xl font-semibold">{{ workoutPlans.personalPrice }}€</h1>
                 <h6>personalni trening</h6>
                 <ul>
                     <li>&#10003; Testiranje</li>
@@ -86,7 +88,6 @@ export default {
 }
 
 .box-price {
-    background-color: #fff;
     font-size: 2rem;
     position: relative;
     width: 470px;
@@ -117,7 +118,6 @@ export default {
 }
 
 .box-price:nth-child(2) {
-    background-color: #0098ac;
     top: 30px;
     color: #fff;
 }

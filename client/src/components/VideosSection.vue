@@ -1,5 +1,5 @@
 <template>
-    <section class="video-section">
+    <section class="video-section bg-gray-800">
         <!-- SLIDER BUTTON -->
         <v-icon
             @click="prev()"
@@ -132,7 +132,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #2c3333;
 }
 
 .video-section::before,
