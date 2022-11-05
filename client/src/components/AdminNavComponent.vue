@@ -7,37 +7,45 @@
                     : 'sidenav active bg-gray-800 flex flex-col'
             "
         >
-            <img src="@/assets/images/logo.png" alt="logo" class="logo" />
-            <router-link to="/admin" class="sidenav-link bg-gray-700">
-                <v-icon name="md-dashboard-round" fill="#fff" scale="2.2" />
+            <router-link to="/"
+                ><img src="@/assets/images/logo.png" alt="logo" class="logo"
+            /></router-link>
+            <router-link to="/admin" class="sidenav-link" exact-active-class="bg-gray-700">
+                <span class="material-symbols-outlined"> dashboard </span>
                 <span v-if="drawer" class="sidenav-text">Page Settings</span>
             </router-link>
-            <router-link to="/admin/blogs" class="sidenav-link">
-                <v-icon name="ri-pages-fill" fill="#fff" scale="2.2" />
+            <router-link to="/admin/blogs" class="sidenav-link" exact-active-class="bg-gray-700">
+                <span class="material-symbols-outlined"> article </span>
                 <span v-if="drawer" class="sidenav-text">Blogs</span>
             </router-link>
             <div class="sidenav-link">
-                <v-icon name="co-settings" :inverse="true" scale="2.2" />
+                <span class="material-symbols-outlined"> settings </span>
                 <span v-if="drawer" class="sidenav-text">Settings</span>
             </div>
         </nav>
         <main :class="!drawer ? 'main' : 'main active'">
             <header class="header flex justify-between align-center">
                 <button class="btn" @click="drawer = !drawer">
-                    <v-icon
-                        class="btn-drawer"
-                        :name="!drawer ? 'bi-chevron-right' : 'bi-chevron-left'"
-                        scale="2.5"
-                        fill="#000"
-                    />
+                    <i
+                        class="btn-drawer text-gray-800"
+                        :class="!drawer ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"
+                    ></i>
                 </button>
                 <div class="avatar flex justify-center align-center">
                     <!-- <img src="@/assets/images/logo.png" alt="avatar" /> -->
-                    <v-icon name="bi-person-fill" scale="2.8" />
+                    <span class="material-symbols-outlined" style="font-size: 3.7rem">
+                        person_filled
+                    </span>
                     <div class="dropdown">
                         <h5>{{ admin.name }}</h5>
-                        <button @click="logout()" class="btn-signout">
-                            <v-icon name="co-account-logout" fill="#fff" /> Sign Out
+                        <button
+                            @click="logout()"
+                            class="flex items-center text-white bg-gray-700 border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded mt-2"
+                        >
+                            <span class="material-symbols-outlined" style="font-size: 1.8rem">
+                                logout
+                            </span>
+                            Sign Out
                         </button>
                     </div>
                 </div>
@@ -48,40 +56,17 @@
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import {
-    BiChevronRight,
-    BiChevronLeft,
-    MdDashboardRound,
-    RiPagesFill,
-    CoSettings,
-    CoAccountLogout,
-    BiPersonFill,
-} from 'oh-vue-icons/icons';
 import { mapState } from 'vuex';
-addIcons(
-    BiChevronRight,
-    BiChevronLeft,
-    MdDashboardRound,
-    RiPagesFill,
-    CoSettings,
-    CoAccountLogout,
-    BiPersonFill
-);
 
 export default {
     name: 'AdminNav',
 
-    components: {
-        'v-icon': OhVueIcon,
-    },
-
     data: () => ({
-        drawer: false,
+        drawer: false
     }),
 
     computed: {
-        ...mapState(['admin']),
+        ...mapState(['admin'])
     },
 
     methods: {
@@ -89,8 +74,8 @@ export default {
             this.$store.commit('setAdmin', null);
             this.$router.push('/admin/auth');
             localStorage.removeItem('admin');
-        },
-    },
+        }
+    }
 };
 </script>
 
@@ -153,6 +138,7 @@ export default {
 
 .btn-drawer {
     transition: 200ms;
+    font-size: 2rem;
 }
 
 .btn-drawer:hover {
@@ -175,23 +161,15 @@ export default {
 .dropdown {
     display: none;
     position: absolute;
-    left: -100%;
-    bottom: -130%;
+    left: -140%;
+    bottom: -150%;
     background-color: #fff;
     border: 1px solid #000;
     padding: 1rem;
 }
 
-.btn-signout {
-    border: none;
-    padding: 0.5em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    outline: none;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    background-color: #2c3333;
-    color: #fff;
+.material-symbols-outlined {
+    font-size: 48px;
+    font-variation-settings: 'OPSZ' 48;
 }
 </style>

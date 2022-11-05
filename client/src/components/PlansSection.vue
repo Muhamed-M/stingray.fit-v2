@@ -5,7 +5,7 @@
         </h1>
         <div class="container-price">
             <div class="box-price">
-                <h1 class="text-6xl font-semibold">{{ workoutPlans.onlinePrice }}€</h1>
+                <h1 class="text-6xl font-semibold">{{ workoutPlans[0]?.price }}€</h1>
                 <h6>online mentorstvo</h6>
                 <ul>
                     <li>&#10003; 3 mjeseca</li>
@@ -24,7 +24,7 @@
                 />
             </div>
             <div class="box-price bg-cyan-600">
-                <h1 class="text-6xl font-semibold">{{ workoutPlans.personalPrice }}€</h1>
+                <h1 class="text-6xl font-semibold">{{ workoutPlans[1]?.price }}€</h1>
                 <h6>personalni trening</h6>
                 <ul>
                     <li>&#10003; Testiranje</li>

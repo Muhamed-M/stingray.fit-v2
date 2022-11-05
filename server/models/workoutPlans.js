@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const WorkoutPlans = mongoose.Schema({
-    onlinePrice: {
-        type: Number,
+    title: {
+        type: String,
     },
-    personalPrice: {
+    price: {
         type: Number,
     },
     updatedAt: {

@@ -43,8 +43,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input
-                            id="remember-me"
-                            name="remember-me"
+                            v-model="rememberMe"
                             type="checkbox"
                             class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500"
                         />
@@ -98,6 +97,7 @@ export default {
     data: () => ({
         email: '',
         password: '',
+        rememberMe: false,
     }),
 
     computed: {
@@ -108,7 +108,11 @@ export default {
         ...mapActions(['authenticate']),
 
         async authHandler() {
-            await this.authenticate({ email: this.email, password: this.password });
+            await this.authenticate({
+                email: this.email,
+                password: this.password,
+                rememberMe: this.rememberMe,
+            });
         },
     },
 };

@@ -10,25 +10,32 @@ export default createStore({
         isLoading: false,
         errorMessage: null,
         admin: admin ? admin : null,
-        workoutPlans: {},
+        workoutPlans: [],
+        testimonials: [],
+        transformations: []
     },
     getters: {},
     mutations: {
         setErrorMessage: (state, payload) => (state.errorMessage = payload),
         setAdmin: (state, payload) => (state.admin = payload),
         setWorkoutPlans: (state, payload) => (state.workoutPlans = payload),
+        setTestimonials: (state, payload) => (state.testimonials = payload),
+        setTransformations: (state, payload) => (state.transformations = payload)
     },
     actions: {
         // Log in
         async authenticate({ commit }, data) {
             try {
+                // destructure
+                const { email, password, rememberMe } = data;
+
                 const response = await axios.post('/api/admin/auth', {
-                    email: data.email,
-                    password: data.password,
+                    email,
+                    password
                 });
 
                 // set admin to local storage
-                if (response.data) {
+                if (response.data && rememberMe) {
                     localStorage.setItem('admin', JSON.stringify(response.data));
                 }
 
@@ -43,11 +50,29 @@ export default createStore({
         async getWorkoutPlansData() {
             try {
                 const res = await axios.get('/api/admin/workout-plans');
-                this.commit('setWorkoutPlans', res.data[0]);
+                this.commit('setWorkoutPlans', res.data);
             } catch (error) {
                 console.log(error);
             }
         },
+        // Get testimonials
+        async getTestimonials() {
+            try {
+                const res = await axios.get('/api/admin/testimonials');
+                this.commit('setTestimonials', res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        // Get transformations images paths
+        async getTransformations() {
+            try {
+                const res = await axios.get('/api/admin/transformations');
+                this.commit('setTransformations', res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
-    modules: {},
+    modules: {}
 });
