@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
+const path = require('path');
 const sharp = require('sharp');
 
 // models
@@ -125,10 +126,13 @@ const deleteTestimonial = async (req, res) => {
 // @route  /api/admin/transformations
 // @method post
 const uploadTransformation = async (req, res) => {
-    const imagePath = req.file.path ? req.file.path : null;
-    const thumbnailPath = './public/thumbnails/' + req.file.filename;
-    let transformation;
+    const { buffer, originalname } = req.file;
+    const filename = Date.now() + path.extname(originalname);
+    // store image and thumbnail paths
+    const imagePath = `./public/images/${filename}`;
+    const thumbnailPath = `./public/thumbnails/${filename}`;
 
+    let transformation;
     try {
         // Store file path to db
         transformation = await Tranformation.create({
@@ -136,14 +140,18 @@ const uploadTransformation = async (req, res) => {
             thumbnailPath
         });
 
-        // resize image for thumbnails
-        sharp(imagePath).resize(280, 200).toFile(thumbnailPath);
+        // optimize image
+        sharp(buffer).jpeg({ mozjpeg: true, quality: 30 }).toFile(imagePath);
+
+        // optimize image for thumbnails
+        sharp(buffer).resize(280, 200).jpeg({ mozjpeg: true, quality: 30 }).toFile(thumbnailPath);
         res.status(200).json({ message: 'Transformation uploaded successfully!' });
-    } catch (err) {
-        fs.unlink(transformation.imagePath, err => {
-            if (err) console.error(err);
+    } catch (error) {
+        fs.unlink(transformation.imagePath, error => {
+            if (error) console.error(error);
         });
-        res.json({ message: err });
+        res.json({ message: error });
+        console.log(error);
     }
 };
 

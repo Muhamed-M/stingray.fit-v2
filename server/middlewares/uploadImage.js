@@ -1,16 +1,18 @@
 // File upload modules
 const multer = require('multer');
-const path = require('path');
+// const path = require('path');
 
 // File upload middleware
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './public/images');
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
     }
-});
+}); */
+
+const storage = multer.memoryStorage();
 
 // Accepted files filter
 const imageMimeFilter = ['image/jpeg', 'image/png', 'image/gif'];

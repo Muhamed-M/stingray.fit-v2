@@ -28,6 +28,11 @@
                 </tr>
             </tbody>
         </table>
+        <div v-if="data.length === 0">
+            <h2 class="text-center py-4 px-6 bg-gray-50 border-b text-gray-600">
+                No Data Available!
+            </h2>
+        </div>
         <!-- footer -->
         <!-- <div class="relative bg-gray-100 flex justify-center items-center py-2">
             <div class="mx-3">

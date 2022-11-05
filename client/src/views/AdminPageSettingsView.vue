@@ -154,7 +154,7 @@
                 </data-table>
 
                 <!-- File input -->
-                <div class="ml-10">
+                <div class="ml-20">
                     <label for="formFile" class="form-label inline-block mb-2 text-gray-700"
                         >Upload image</label
                     >
@@ -165,7 +165,7 @@
                     />
                     <button
                         @click="uploadTransformation()"
-                        class="flex mx-auto text-white bg-cyan-600 border-0 py-2 px-8 focus:outline-none hover:bg-cyan-700 rounded text-lg"
+                        class="mt-3 text-white bg-cyan-600 border-0 py-2 px-8 focus:outline-none hover:bg-cyan-700 rounded text-lg"
                     >
                         Upload
                     </button>
