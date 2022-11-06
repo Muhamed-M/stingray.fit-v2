@@ -1,6 +1,6 @@
 <template>
     <section class="price" id="planovi">
-        <h1 class="heading text-4xl font-medium title-font text-gray-900 mb-12 text-center">
+        <h1 class="heading text-3xl font-medium title-font text-gray-900 mb-10 text-center">
             Odaberi Saradnju
         </h1>
         <div class="container-price">
@@ -18,9 +18,7 @@
                 </ul>
                 <StingrayButton
                     text="Više informacija"
-                    bg-color="#2c3333"
-                    text-color="#fff"
-                    hover-bg-color="#5c5b5b"
+                    class="bg-cyan-600 hover:bg-cyan-700 text-white"
                 />
             </div>
             <div class="box-price bg-cyan-600">
@@ -35,14 +33,12 @@
                 </ul>
                 <div class="box-icons">
                     <a href="https://api.whatsapp.com/send?phone=38761872308" target="_blank">
-                        <v-icon name="bi-whatsapp" fill="#fff" scale="3" />
+                        <i class="fa-brands fa-whatsapp text-white text-5xl"></i>
                     </a>
                 </div>
                 <StingrayButton
                     text="Više informacija"
-                    bg-color="#fff"
-                    text-color="#0098ac"
-                    hover-bg-color="#eaeaea"
+                    class="bg-white hover:bg-slate-200 text-gray-700"
                 />
             </div>
         </div>
@@ -50,9 +46,6 @@
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { BiWhatsapp } from 'oh-vue-icons/icons';
-addIcons(BiWhatsapp);
 import StingrayButton from '@/components/ButtonComponent';
 import { mapActions, mapState } from 'vuex';
 
@@ -60,12 +53,11 @@ export default {
     name: 'PlansSection',
 
     components: {
-        'v-icon': OhVueIcon,
-        StingrayButton,
+        StingrayButton
     },
 
     computed: {
-        ...mapState(['workoutPlans']),
+        ...mapState(['workoutPlans'])
     },
 
     async created() {
@@ -73,8 +65,8 @@ export default {
     },
 
     methods: {
-        ...mapActions(['getWorkoutPlansData']),
-    },
+        ...mapActions(['getWorkoutPlansData'])
+    }
 };
 </script>
 
@@ -90,7 +82,8 @@ export default {
 .box-price {
     font-size: 2rem;
     position: relative;
-    width: 470px;
+    max-width: 470px;
+    width: 90%;
     min-height: 600px;
     margin: 2.2rem;
     box-shadow: 8px 8px 25px -4px rgba(0, 0, 0, 0.61);

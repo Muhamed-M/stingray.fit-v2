@@ -2,30 +2,32 @@
     <div>
         <section class="hero">
             <h1 class="sign">BUILDING ATHLETES NOT EGOS!</h1>
-            <StingrayButton
-                text="Prijavi se"
-                bg-color="#fff"
-                text-color="#2c3333"
-                hover-bg-color="#eaeaea"
-            />
-            <a href="#cards" class="down-btn"><v-icon name="bi-caret-down-fill" scale="5" /></a>
+            <stingray-button class="px-0 bg-white hover:bg-slate-200 text-gray-700"
+                ><a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
+                    target="_blank"
+                    class="px-5 py-4"
+                    >Prijavi se</a
+                ></stingray-button
+            >
+            <a href="#cards" class="down-btn"
+                ><span class="material-symbols-outlined text-7xl font-semibold">
+                    keyboard_double_arrow_down
+                </span></a
+            >
         </section>
     </div>
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { BiCaretDownFill } from 'oh-vue-icons/icons';
-addIcons(BiCaretDownFill);
 import StingrayButton from '@/components/ButtonComponent';
 
 export default {
     name: 'HeroSection',
 
     components: {
-        'v-icon': OhVueIcon,
-        StingrayButton,
-    },
+        StingrayButton
+    }
 };
 </script>
 
@@ -64,7 +66,7 @@ export default {
 
 .down-btn {
     position: absolute;
-    bottom: 4vh;
+    bottom: 5vh;
     cursor: pointer;
     color: #fff;
 }

@@ -1,10 +1,10 @@
 <template>
-    <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto">
-            <h1 class="heading text-3xl font-medium title-font text-gray-900 mb-12 text-center">
+    <section class="text-gray-600 body-font" id="testimonials">
+        <div class="container px-5 py-6 mx-auto">
+            <h1 class="heading text-3xl font-medium title-font text-gray-900 mb-10 text-center">
                 Šta kažu klijenti
             </h1>
-            <div class="flex flex-wrap -m-4">
+            <div class="flex flex-wrap">
                 <testimonial-component
                     v-for="(testimonial, i) in testimonials"
                     :key="i"
@@ -25,11 +25,11 @@ export default {
     name: 'TestimonialsSection',
 
     components: {
-        TestimonialComponent,
+        TestimonialComponent
     },
 
     computed: {
-        ...mapState(['testimonials']),
+        ...mapState(['testimonials'])
     },
 
     async created() {
@@ -37,7 +37,7 @@ export default {
     },
 
     methods: {
-        ...mapActions(['getTestimonials']),
-    },
+        ...mapActions(['getTestimonials'])
+    }
 };
 </script>

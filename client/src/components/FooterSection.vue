@@ -20,27 +20,19 @@
                     class="ml-3"
                     href="https://www.youtube.com/channel/UCigBlsVRyJfVHMI25AVmj4Q"
                     target="_blank"
-                    ><v-icon name="bi-youtube" fill="#fff" scale="2"
-                /></a>
+                    ><i class="fa-brands fa-youtube text-white text-3xl"></i
+                ></a>
                 <a class="ml-3" href="https://www.instagram.com/stingray.fit/" target="_blank"
-                    ><v-icon name="bi-instagram" fill="#fff" scale="2"
-                /></a>
+                    ><i class="fa-brands fa-instagram text-white text-3xl"></i
+                ></a>
             </span>
         </div>
     </footer>
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { BiInstagram, BiYoutube } from 'oh-vue-icons/icons';
-addIcons(BiInstagram, BiYoutube);
-
 export default {
-    name: 'FooterSection',
-
-    components: {
-        'v-icon': OhVueIcon,
-    },
+    name: 'FooterSection'
 };
 </script>
 

@@ -1,8 +1,8 @@
 <template>
     <section class="text-gray-600 body-font" id="about">
-        <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+        <div class="container mx-auto flex px-5 py-12 lg:flex-row flex-col items-center">
             <div
-                class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center"
+                class="lg:flex-grow lg:w-1/2 lg:pr-24 mb-8 md:pr-16 flex flex-col md:items-start md:text-left items-center text-center"
             >
                 <h1 class="title-font sm:text-4xl text-3xl mb-6 font-medium text-gray-900">
                     Ko je Stingray
@@ -18,14 +18,32 @@
                 <p class="mb-8 leading-relaxed text-lg">
                     Ideja Stingray pristupa polazi od rada na vještinama iza kojih se krije pravo
                     samopouzdanje, a izgled dolazi kao nusprodukt. Kvalitet rada i usluge se
-                    unaprijeđuje svakodnevno.
+                    unaprijeđuje svakodnevno. Promjena navika, edukacija o treningu, ishrani i
+                    zdravom, balansiranom načinu života.
                 </p>
-                <p class="mb-8 leading-relaxed text-lg">
-                    Promjena navika, edukacija o treningu, ishrani i zdravom, balansiranom načinu
-                    života.
-                </p>
+
+                <!-- Social links -->
+                <div class="flex justify-center items-center gap-3">
+                    <a href="https://www.instagram.com/stingray.fit/" target="_blank"
+                        ><i class="fa-brands fa-instagram text-gray-700 text-4xl"></i
+                    ></a>
+                    <a
+                        href="https://www.youtube.com/channel/UCigBlsVRyJfVHMI25AVmj4Q"
+                        target="_blank"
+                        ><i class="fa-brands fa-youtube text-gray-700 text-4xl"></i
+                    ></a>
+                </div>
+
+                <stingray-button class="px-0 mt-5 bg-cyan-600 hover:bg-cyan-700 text-white"
+                    ><a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
+                        target="_blank"
+                        class="px-5 py-4"
+                        >Prijavi se</a
+                    ></stingray-button
+                >
             </div>
-            <div class="lg:max-w-md lg:w-full md:w-1/2 w-5/6">
+            <div class="lg:max-w-md lg:w-1/2 w-5/6">
                 <img
                     class="object-cover object-center rounded"
                     alt="Image"
@@ -75,8 +93,14 @@
 </template>
 
 <script>
+import StingrayButton from '@/components/ButtonComponent';
+
 export default {
     name: 'AboutSection',
+
+    components: {
+        StingrayButton
+    }
 };
 </script>
 

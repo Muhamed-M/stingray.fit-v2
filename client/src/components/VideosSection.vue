@@ -1,7 +1,42 @@
 <template>
-    <section class="video-section bg-gray-800">
+    <section class="video-section bg-gray-800 text-slate-200">
+        <div
+            class="container mx-auto flex justify-between px-5 py-24 lg:flex-row flex-col items-center"
+        >
+            <div class="lg:pr-24 mb-8 md:pr-16 lg:w-1/2 w-5/6">
+                <iframe
+                    width="100%"
+                    height="400px"
+                    src="https://www.youtube.com/embed/2atyL0ZsQIo"
+                    title="Calisthenics/movement motivation: be a warrior"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                ></iframe>
+            </div>
+
+            <div
+                class="lg:w-1/2 flex flex-col md:items-start md:text-left items-center text-center"
+            >
+                <h1 class="title-font sm:text-4xl text-3xl mb-6 font-medium text-slate-300">
+                    Stingray Filozofija
+                </h1>
+                <p class="mb-8 leading-relaxed text-lg">
+                    Naš program je namijenjen ljudima koji žele da unaprijede svoju kretnju, snagu,
+                    mobilnost ali i izgled. Također ljudima koji sa došli na plato u svome treningu
+                    i trebaju pomoć oko postizanja naprednijih ciljeva.
+                </p>
+                <p class="mb-8 leading-relaxed text-lg">
+                    U naš program treninga su uvrštene powerlifting vježbe snage, kretnje (animal
+                    flow) i mobilnosti. Sa ljudima radimo na nešto drugačiji način, da bi postigli
+                    optimalno zdravlje, izgled ali i vještine iza kojih se krije pravo
+                    samopouzdanje. Generalni cilj nije samo izgledati dobro, nego taj izgled
+                    zaraditi vještinom.
+                </p>
+            </div>
+        </div>
         <!-- SLIDER BUTTON -->
-        <v-icon
+        <!-- <v-icon
             @click="prev()"
             class="slider-btn"
             name="bi-arrow-left-circle-fill"
@@ -16,78 +51,32 @@
                 :style="{ transform: `translateX(${-slideValue}%)` }"
             >
                 <iframe
-                    id="last-clone"
                     width="720"
                     height="480px"
                     src="https://www.youtube.com/embed/2atyL0ZsQIo"
                     title="Calisthenics/movement motivation: be a warrior"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
-                <iframe
-                    width="720"
-                    height="480px"
-                    src="https://www.youtube.com/embed/fjOYpo_7jq4"
-                    title="Chest cabel press for sternal fibers"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
-                <iframe
-                    width="720"
-                    height="480px"
-                    src="https://www.youtube.com/embed/DVsiaZSldCs"
-                    title="Forrest training motivation (nature, calisthenics)"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
-                <iframe
-                    width="720"
-                    height="480px"
-                    src="https://www.youtube.com/embed/2atyL0ZsQIo"
-                    title="Calisthenics/movement motivation: be a warrior"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
-                <iframe
-                    id="first-clone"
-                    width="720"
-                    height="480px"
-                    src="https://www.youtube.com/embed/fjOYpo_7jq4"
-                    title="Chest cabel press for sternal fibers"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
                 ></iframe>
             </div>
-        </div>
+        </div> -->
         <!-- SLIDER BUTTON -->
-        <v-icon
+        <!-- <v-icon
             @click="next()"
             class="slider-btn"
             name="bi-arrow-right-circle-fill"
             scale="3"
             fill="#fff"
-        />
+        /> -->
     </section>
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { BiArrowRightCircleFill, BiArrowLeftCircleFill } from 'oh-vue-icons/icons';
-addIcons(BiArrowRightCircleFill, BiArrowLeftCircleFill);
-
 export default {
-    name: 'VideosSection',
+    name: 'VideosSection'
 
-    components: {
-        'v-icon': OhVueIcon,
-    },
-
-    data: () => ({
+    /* data: () => ({
         slideValue: 100,
     }),
 
@@ -120,7 +109,7 @@ export default {
                 }
             });
         },
-    },
+    }, */
 };
 </script>
 
@@ -128,7 +117,7 @@ export default {
 .video-section {
     position: relative;
     min-width: 100%;
-    height: 60vh;
+    min-height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -151,7 +140,7 @@ export default {
 }
 
 .video-section::after {
-    bottom: 0;
+    bottom: -1px;
     clip-path: polygon(100% 0, 0 100%, 100% 100%);
 }
 
