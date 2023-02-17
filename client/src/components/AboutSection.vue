@@ -22,6 +22,15 @@
                     zdravom, balansiranom načinu života.
                 </p>
 
+                <stingray-button class="px-0 mb-8 bg-cyan-600 hover:bg-cyan-700 text-white"
+                    ><a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
+                        target="_blank"
+                        class="px-9 py-4"
+                        >Prijavi se</a
+                    ></stingray-button
+                >
+
                 <!-- Social links -->
                 <div class="flex justify-center items-center gap-3">
                     <a href="https://www.instagram.com/stingray.fit/" target="_blank"
@@ -33,15 +42,6 @@
                         ><i class="fa-brands fa-youtube text-gray-700 text-4xl"></i
                     ></a>
                 </div>
-
-                <stingray-button class="px-0 mt-5 bg-cyan-600 hover:bg-cyan-700 text-white"
-                    ><a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
-                        target="_blank"
-                        class="px-5 py-4"
-                        >Prijavi se</a
-                    ></stingray-button
-                >
             </div>
             <div class="lg:max-w-md lg:w-1/2 w-5/6">
                 <img
