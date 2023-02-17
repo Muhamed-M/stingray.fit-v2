@@ -7,6 +7,17 @@ const app = express();
 const port = process.env.PORT || 5000;
 const db = process.env.DB_CLOUD;
 
+// database connection
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(db);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
+    }
+};
+
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -21,9 +32,9 @@ if (process.env.NODE_ENV === 'production') {
     app.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, 'client/dist/index.html')));
 }
 
-// database connection
-mongoose.connect(
-    db,
-    () => console.log('Connected to the database...'),
-    app.listen(port, console.log(`Server is running on port ${port}!`))
-);
+//Connect to the database before listening
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}!`);
+    });
+});
