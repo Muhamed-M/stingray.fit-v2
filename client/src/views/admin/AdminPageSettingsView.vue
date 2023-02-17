@@ -63,8 +63,8 @@ const transformationsHeaders = ref([
 async function updatePrice(id) {
     try {
         const res = await axios.patch(`/api/admin/workout-plans/update-price/${id}`, {
-            onlinePrice: this.onlinePrice,
-            personalPrice: this.personalPrice
+            onlinePrice: onlinePrice.value,
+            personalPrice: personalPrice.value
         });
         onlinePrice.value = null;
         personalPrice.value = null;
@@ -78,11 +78,11 @@ async function updatePrice(id) {
 
 async function createTestimonial() {
     try {
-        const res = await axios.post('/api/admin/testimonials', this.newTestimonial);
+        const res = await axios.post('/api/admin/testimonials', newTestimonial.value);
         newTestimonial.value.fullname = '';
         newTestimonial.value.profession = '';
         newTestimonial.value.comment = '';
-        await this.getTestimonials();
+        await store.getTestimonials();
         message.value = res.data.message;
         successModal.value = true;
     } catch (error) {
@@ -95,7 +95,7 @@ async function deleteTestimonial(id) {
         const res = await axios.delete(`/api/admin/testimonials/${id}`);
         message.value = res.data.message;
         successModal.value = true;
-        await this.getTestimonials();
+        await store.getTestimonials();
     } catch (error) {
         console.log(error);
     }

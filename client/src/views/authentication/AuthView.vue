@@ -12,9 +12,9 @@ const rememberMe = ref(true);
 
 async function authHandler() {
     await store.authenticate({
-        email: this.email,
-        password: this.password,
-        rememberMe: this.rememberMe
+        email: email.value,
+        password: password.value,
+        rememberMe: rememberMe.value
     });
 }
 </script>
