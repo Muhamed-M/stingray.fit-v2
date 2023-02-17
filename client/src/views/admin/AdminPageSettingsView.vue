@@ -1,3 +1,141 @@
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+import ModalComponent from '@/components/ModalComponent';
+import DataTable from '@/components/DataTable';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { workoutPlans, testimonials, transformations } = storeToRefs(store);
+
+store.getWorkoutPlansData();
+store.getTestimonials();
+store.getTransformations();
+
+const message = ref('');
+const successModal = ref(false);
+const onlinePrice = ref(null);
+const personalPrice = ref(null);
+const newTestimonial = ref({
+    fullname: '',
+    profession: '',
+    comment: ''
+});
+
+const testimonialsHeaders = ref([
+    {
+        text: 'Full Name',
+        value: 'fullname'
+    },
+    {
+        text: 'Profession',
+        value: 'profession'
+    },
+    {
+        text: 'Comment',
+        value: 'comment'
+    },
+    {
+        text: 'Actions',
+        value: 'action',
+        align: 'center'
+    }
+]);
+
+const transformationsHeaders = ref([
+    {
+        text: 'Image',
+        value: 'image'
+    },
+    {
+        text: 'Path',
+        value: 'imagePath'
+    },
+    {
+        text: 'Actions',
+        value: 'action',
+        align: 'center'
+    }
+]);
+
+async function updatePrice(id) {
+    try {
+        const res = await axios.patch(`/api/admin/workout-plans/update-price/${id}`, {
+            onlinePrice: this.onlinePrice,
+            personalPrice: this.personalPrice
+        });
+        onlinePrice.value = null;
+        personalPrice.value = null;
+        await store.getWorkoutPlansData();
+        message.value = res.data.message;
+        successModal.value = true;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function createTestimonial() {
+    try {
+        const res = await axios.post('/api/admin/testimonials', this.newTestimonial);
+        newTestimonial.value.fullname = '';
+        newTestimonial.value.profession = '';
+        newTestimonial.value.comment = '';
+        await this.getTestimonials();
+        message.value = res.data.message;
+        successModal.value = true;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function deleteTestimonial(id) {
+    try {
+        const res = await axios.delete(`/api/admin/testimonials/${id}`);
+        message.value = res.data.message;
+        successModal.value = true;
+        await this.getTestimonials();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function uploadTransformation() {
+    let data = new FormData();
+    data.append('image', this.$refs.imageUpload.files[0]);
+
+    let config = {
+        header: {
+            'Content-Type': 'image/png'
+        }
+    };
+
+    try {
+        const res = await axios.post('/api/admin/transformations', data, config);
+        message.value = res.data.message;
+        successModal.value = true;
+        await store.getTransformations();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function deleteTransformation(id, imagePath, thumbnailPath) {
+    try {
+        const res = await axios.delete(`/api/admin/transformations/${id}`, {
+            data: {
+                imagePath,
+                thumbnailPath
+            }
+        });
+        message.value = res.data.message;
+        successModal.value = true;
+        await store.getTransformations();
+    } catch (error) {
+        console.log(error);
+    }
+}
+</script>
+
 <template>
     <div class="p-8">
         <section class="mb-8">
@@ -180,152 +318,6 @@
         />
     </div>
 </template>
-
-<script>
-import { mapActions, mapState } from 'vuex';
-import axios from 'axios';
-import ModalComponent from '@/components/ModalComponent';
-import DataTable from '@/components/DataTable';
-
-export default {
-    components: {
-        ModalComponent,
-        DataTable
-    },
-
-    data: () => ({
-        message: '',
-        successModal: false,
-        onlinePrice: null,
-        personalPrice: null,
-        newTestimonial: {
-            fullname: '',
-            profession: '',
-            comment: ''
-        },
-        testimonialsHeaders: [
-            {
-                text: 'Full Name',
-                value: 'fullname'
-            },
-            {
-                text: 'Profession',
-                value: 'profession'
-            },
-            {
-                text: 'Comment',
-                value: 'comment'
-            },
-            {
-                text: 'Actions',
-                value: 'action',
-                align: 'center'
-            }
-        ],
-        transformationsHeaders: [
-            {
-                text: 'Image',
-                value: 'image'
-            },
-            {
-                text: 'Path',
-                value: 'imagePath'
-            },
-            {
-                text: 'Actions',
-                value: 'action',
-                align: 'center'
-            }
-        ]
-    }),
-
-    computed: {
-        ...mapState(['workoutPlans', 'testimonials', 'transformations'])
-    },
-
-    async created() {
-        await this.getWorkoutPlansData();
-        await this.getTestimonials();
-        await this.getTransformations();
-    },
-
-    methods: {
-        ...mapActions(['getWorkoutPlansData', 'getTestimonials', 'getTransformations']),
-        async updatePrice(id) {
-            try {
-                const res = await axios.patch(`/api/admin/workout-plans/update-price/${id}`, {
-                    onlinePrice: this.onlinePrice,
-                    personalPrice: this.personalPrice
-                });
-                this.onlinePrice = null;
-                this.personalPrice = null;
-                await this.getWorkoutPlansData();
-                this.message = res.data.message;
-                this.successModal = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-        async createTestimonial() {
-            try {
-                const res = await axios.post('/api/admin/testimonials', this.newTestimonial);
-                this.newTestimonial.fullname = '';
-                this.newTestimonial.profession = '';
-                this.newTestimonial.comment = '';
-                await this.getTestimonials();
-                this.message = res.data.message;
-                this.successModal = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-        async deleteTestimonial(id) {
-            try {
-                const res = await axios.delete(`/api/admin/testimonials/${id}`);
-                this.message = res.data.message;
-                this.successModal = true;
-                await this.getTestimonials();
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-        async uploadTransformation() {
-            let data = new FormData();
-            data.append('image', this.$refs.imageUpload.files[0]);
-
-            let config = {
-                header: {
-                    'Content-Type': 'image/png'
-                }
-            };
-
-            const res = await axios.post('/api/admin/transformations', data, config);
-            this.message = res.data.message;
-            this.successModal = true;
-            await this.getTransformations();
-        },
-
-        async deleteTransformation(id, imagePath, thumbnailPath) {
-            try {
-                const res = await axios.delete(`/api/admin/transformations/${id}`, {
-                    data: {
-                        imagePath,
-                        thumbnailPath
-                    }
-                });
-                this.message = res.data.message;
-                this.successModal = true;
-                await this.getTransformations();
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }
-};
-</script>
 
 <style scoped>
 .input-icon {

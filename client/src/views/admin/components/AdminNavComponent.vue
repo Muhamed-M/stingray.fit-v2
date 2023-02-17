@@ -1,3 +1,20 @@
+<script setup>
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { admin } = storeToRefs(store);
+
+// refs
+const drawer = ref(false);
+
+function logout() {
+    admin.value = null;
+    this.$router.push('/admin/auth');
+    localStorage.removeItem('admin');
+}
+</script>
+
 <template>
     <div>
         <nav
@@ -54,30 +71,6 @@
         </main>
     </div>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-
-export default {
-    name: 'AdminNav',
-
-    data: () => ({
-        drawer: false
-    }),
-
-    computed: {
-        ...mapState(['admin'])
-    },
-
-    methods: {
-        logout() {
-            this.$store.commit('setAdmin', null);
-            this.$router.push('/admin/auth');
-            localStorage.removeItem('admin');
-        }
-    }
-};
-</script>
 
 <style scoped>
 .main {

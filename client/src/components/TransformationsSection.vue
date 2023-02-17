@@ -1,3 +1,12 @@
+<script setup>
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { transformations } = storeToRefs(store);
+
+store.getTransformations();
+</script>
+
 <template>
     <section class="text-gray-600 body-font" id="transformacije">
         <div class="container px-5 py-6 mx-auto">
@@ -13,24 +22,3 @@
         </div>
     </section>
 </template>
-
-<script>
-import { mapActions, mapState } from 'vuex';
-export default {
-    name: 'TransformationsSection',
-
-    computed: {
-        ...mapState(['transformations'])
-    },
-
-    async created() {
-        await this.getTransformations();
-    },
-
-    methods: {
-        ...mapActions(['getTransformations'])
-    }
-};
-</script>
-
-<style scoped></style>

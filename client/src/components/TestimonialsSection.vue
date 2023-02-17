@@ -1,3 +1,13 @@
+<script setup>
+import TestimonialComponent from '@/components/TestimonialComponent';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { testimonials } = storeToRefs(store);
+
+store.getTestimonials();
+</script>
+
 <template>
     <section class="text-gray-600 body-font" id="testimonials">
         <div class="container px-5 py-6 mx-auto">
@@ -16,28 +26,3 @@
         </div>
     </section>
 </template>
-
-<script>
-import TestimonialComponent from '@/components/TestimonialComponent';
-import { mapActions, mapState } from 'vuex';
-
-export default {
-    name: 'TestimonialsSection',
-
-    components: {
-        TestimonialComponent
-    },
-
-    computed: {
-        ...mapState(['testimonials'])
-    },
-
-    async created() {
-        await this.getTestimonials();
-    },
-
-    methods: {
-        ...mapActions(['getTestimonials'])
-    }
-};
-</script>
