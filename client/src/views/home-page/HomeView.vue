@@ -13,15 +13,15 @@
 </template>
 
 <script>
-import NavComponent from '@/components/NavComponent';
-import HeroSection from '@/components/HeroSection';
-import CardsSection from '@/components/CardsSection';
-import AboutSection from '@/components/AboutSection';
-import VideosSection from '@/components/VideosSection';
-import PlansSection from '@/components/PlansSection';
-import TransformationsSection from '@/components/TransformationsSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
-import FooterSection from '@/components/FooterSection';
+import NavComponent from '@/components/NavComponent.vue';
+import HeroSection from '@/components/HeroSection.vue';
+import CardsSection from '@/components/CardsSection.vue';
+import AboutSection from '@/components/AboutSection.vue';
+import VideosSection from '@/components/VideosSection.vue';
+import PlansSection from '@/components/PlansSection.vue';
+import TransformationsSection from '@/components/TransformationsSection.vue';
+import TestimonialsSection from '@/components/TestimonialsSection.vue';
+import FooterSection from '@/components/FooterSection.vue';
 
 export default {
     name: 'HomeView',
@@ -34,7 +34,7 @@ export default {
         PlansSection,
         TestimonialsSection,
         TransformationsSection,
-        FooterSection,
-    },
+        FooterSection
+    }
 };
 </script>

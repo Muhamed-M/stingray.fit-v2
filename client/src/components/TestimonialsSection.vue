@@ -1,5 +1,5 @@
 <script setup>
-import TestimonialComponent from '@/components/TestimonialComponent';
+import TestimonialComponent from '@/components/TestimonialComponent.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
 const store = useStore();

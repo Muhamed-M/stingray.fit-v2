@@ -1,3 +1,7 @@
+<script setup>
+import StingrayButton from '@/components/ButtonComponent.vue';
+</script>
+
 <template>
     <div>
         <section class="hero">
@@ -18,18 +22,6 @@
         </section>
     </div>
 </template>
-
-<script>
-import StingrayButton from '@/components/ButtonComponent';
-
-export default {
-    name: 'HeroSection',
-
-    components: {
-        StingrayButton
-    }
-};
-</script>
 
 <style scoped>
 .hero {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { router } from '@/router';
 import { useStore } from '@/store/index';
 const store = useStore();
 const { admin } = storeToRefs(store);
@@ -10,7 +11,7 @@ const drawer = ref(false);
 
 function logout() {
     admin.value = null;
-    this.$router.push('/admin/auth');
+    router.push('/admin/auth');
     localStorage.removeItem('admin');
 }
 </script>
@@ -54,7 +55,7 @@ function logout() {
                         person_filled
                     </span>
                     <div class="dropdown">
-                        <h5>{{ admin.name }}</h5>
+                        <h5>{{ admin?.name }}</h5>
                         <button
                             @click="logout()"
                             class="flex items-center text-white bg-gray-700 border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded mt-2"

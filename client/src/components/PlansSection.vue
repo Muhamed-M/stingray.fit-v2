@@ -1,5 +1,5 @@
 <script setup>
-import StingrayButton from '@/components/ButtonComponent';
+import StingrayButton from '@/components/ButtonComponent.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
 const store = useStore();

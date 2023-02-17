@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import router from '@/router';
+import { router } from '@/router';
 
 // get admin if existing
 const admin = JSON.parse(localStorage.getItem('admin'));

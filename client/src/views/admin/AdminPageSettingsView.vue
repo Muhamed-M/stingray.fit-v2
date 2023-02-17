@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import ModalComponent from '@/components/ModalComponent';
-import DataTable from '@/components/DataTable';
+import ModalComponent from '@/components/ModalComponent.vue';
+import DataTable from '@/components/DataTable.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
 const store = useStore();
@@ -12,6 +12,7 @@ store.getWorkoutPlansData();
 store.getTestimonials();
 store.getTransformations();
 
+// refs
 const message = ref('');
 const successModal = ref(false);
 const onlinePrice = ref(null);
@@ -21,6 +22,7 @@ const newTestimonial = ref({
     profession: '',
     comment: ''
 });
+const imageUpload = ref();
 
 const testimonialsHeaders = ref([
     {
@@ -101,7 +103,7 @@ async function deleteTestimonial(id) {
 
 async function uploadTransformation() {
     let data = new FormData();
-    data.append('image', this.$refs.imageUpload.files[0]);
+    data.append('image', imageUpload.value.files[0]);
 
     let config = {
         header: {
