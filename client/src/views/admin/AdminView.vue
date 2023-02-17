@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import AdminNav from '@/components/AdminNavComponent.vue';
+import AdminNav from '@/views/admin/components/AdminNavComponent.vue';
 
 export default {
     components: {
-        AdminNav,
-    },
+        AdminNav
+    }
 };
 </script>
 

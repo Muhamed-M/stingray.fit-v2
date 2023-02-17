@@ -1,3 +1,13 @@
+<script setup>
+import StingrayButton from '@/components/ButtonComponent.vue';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { workoutPlans } = storeToRefs(store);
+
+store.getWorkoutPlansData();
+</script>
+
 <template>
     <section class="price" id="planovi">
         <h1 class="heading text-3xl font-medium title-font text-gray-900 mb-10 text-center">
@@ -44,31 +54,6 @@
         </div>
     </section>
 </template>
-
-<script>
-import StingrayButton from '@/components/ButtonComponent';
-import { mapActions, mapState } from 'vuex';
-
-export default {
-    name: 'PlansSection',
-
-    components: {
-        StingrayButton
-    },
-
-    computed: {
-        ...mapState(['workoutPlans'])
-    },
-
-    async created() {
-        await this.getWorkoutPlansData();
-    },
-
-    methods: {
-        ...mapActions(['getWorkoutPlansData'])
-    }
-};
-</script>
 
 <style scoped>
 .container-price {

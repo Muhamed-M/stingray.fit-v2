@@ -1,30 +1,24 @@
-import { createStore } from 'vuex';
+import { defineStore } from 'pinia';
 import axios from 'axios';
-import router from '@/router';
+import { router } from '@/router';
 
 // get admin if existing
 const admin = JSON.parse(localStorage.getItem('admin'));
 
-export default createStore({
-    state: {
+export const useStore = defineStore({
+    id: 'store',
+    state: () => ({
         isLoading: false,
         errorMessage: null,
         admin: admin ? admin : null,
         workoutPlans: [],
         testimonials: [],
         transformations: []
-    },
+    }),
     getters: {},
-    mutations: {
-        setErrorMessage: (state, payload) => (state.errorMessage = payload),
-        setAdmin: (state, payload) => (state.admin = payload),
-        setWorkoutPlans: (state, payload) => (state.workoutPlans = payload),
-        setTestimonials: (state, payload) => (state.testimonials = payload),
-        setTransformations: (state, payload) => (state.transformations = payload)
-    },
     actions: {
         // Log in
-        async authenticate({ commit }, data) {
+        async authenticate(data) {
             try {
                 // destructure
                 const { email, password, rememberMe } = data;
@@ -39,18 +33,18 @@ export default createStore({
                     localStorage.setItem('admin', JSON.stringify(response.data));
                 }
 
-                commit('setAdmin', response.data);
-                commit('setErrorMessage', null);
+                this.admin = response.data;
+                this.errorMessage = null;
                 router.push('/admin');
             } catch (error) {
-                commit('setErrorMessage', error.response.data.message);
+                this.errorMessage = error.response.data.message;
             }
         },
         // Get workout plans related data
         async getWorkoutPlansData() {
             try {
-                const res = await axios.get('/api/admin/workout-plans');
-                this.commit('setWorkoutPlans', res.data);
+                const response = await axios.get('/api/admin/workout-plans');
+                this.workoutPlans = response.data;
             } catch (error) {
                 console.log(error);
             }
@@ -58,8 +52,8 @@ export default createStore({
         // Get testimonials
         async getTestimonials() {
             try {
-                const res = await axios.get('/api/admin/testimonials');
-                this.commit('setTestimonials', res.data);
+                const response = await axios.get('/api/admin/testimonials');
+                this.testimonials = response.data;
             } catch (error) {
                 console.log(error);
             }
@@ -67,12 +61,11 @@ export default createStore({
         // Get transformations images paths
         async getTransformations() {
             try {
-                const res = await axios.get('/api/admin/transformations');
-                this.commit('setTransformations', res.data);
+                const response = await axios.get('/api/admin/transformations');
+                this.transformations = response.data;
             } catch (error) {
                 console.log(error);
             }
         }
-    },
-    modules: {}
+    }
 });

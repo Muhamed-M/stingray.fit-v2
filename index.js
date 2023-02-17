@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
+const serveStatic = require('serve-static');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,5 +17,11 @@ app.use('/public', express.static('public'));
 
 // routes
 app.use('/api/admin', require('./routes/admin'));
+
+// Serve FE
+if (process.env.NODE_ENV === 'production') {
+    app.use(serveStatic(path.join(__dirname, 'client/dist')));
+    app.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, 'client/dist/index.html')));
+}
 
 app.listen(port, console.log(`Server is running on port ${port}!`));

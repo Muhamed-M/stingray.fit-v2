@@ -1,3 +1,24 @@
+<script setup>
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { errorMessage } = storeToRefs(store);
+
+// refs
+const email = ref('');
+const password = ref('');
+const rememberMe = ref(true);
+
+async function authHandler() {
+    await store.authenticate({
+        email: email.value,
+        password: password.value,
+        rememberMe: rememberMe.value
+    });
+}
+</script>
+
 <template>
     <div class="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="w-full max-w-md space-y-8 glassmorphism">
@@ -89,34 +110,6 @@
         </div>
     </div>
 </template>
-
-<script>
-import { mapActions, mapState } from 'vuex';
-
-export default {
-    data: () => ({
-        email: '',
-        password: '',
-        rememberMe: false,
-    }),
-
-    computed: {
-        ...mapState(['admin', 'errorMessage']),
-    },
-
-    methods: {
-        ...mapActions(['authenticate']),
-
-        async authHandler() {
-            await this.authenticate({
-                email: this.email,
-                password: this.password,
-                rememberMe: this.rememberMe,
-            });
-        },
-    },
-};
-</script>
 
 <style scoped>
 .glassmorphism {

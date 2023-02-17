@@ -1,3 +1,7 @@
+<script setup>
+import StingrayButton from '@/components/ButtonComponent.vue';
+</script>
+
 <template>
     <section class="text-gray-600 body-font" id="about">
         <div class="container mx-auto flex px-5 py-12 lg:flex-row flex-col items-center">
@@ -22,14 +26,15 @@
                     zdravom, balansiranom načinu života.
                 </p>
 
-                <stingray-button class="px-0 mb-8 bg-cyan-600 hover:bg-cyan-700 text-white"
-                    ><a
+                <StingrayButton class="px-0 mb-8 bg-cyan-600 hover:bg-cyan-700 text-white">
+                    <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
                         target="_blank"
                         class="px-9 py-4"
-                        >Prijavi se</a
-                    ></stingray-button
-                >
+                    >
+                        Prijavi se
+                    </a>
+                </StingrayButton>
 
                 <!-- Social links -->
                 <div class="flex justify-center items-center gap-3">
@@ -91,18 +96,6 @@
         </div>
     </section> -->
 </template>
-
-<script>
-import StingrayButton from '@/components/ButtonComponent';
-
-export default {
-    name: 'AboutSection',
-
-    components: {
-        StingrayButton
-    }
-};
-</script>
 
 <style scoped>
 .about {
