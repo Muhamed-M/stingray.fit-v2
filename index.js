@@ -10,6 +10,7 @@ const db = process.env.DB_CLOUD;
 // database connection
 const connectDB = async () => {
     try {
+        mongoose.set('strictQuery', true);
         const conn = await mongoose.connect(db);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
