@@ -3,18 +3,22 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "vite --port 3030",
+        "dev": "vite --port 3030 --host",
         "build": "vite build",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
     },
     "dependencies": {
+        "@headlessui/vue": "^1.7.12",
+        "@heroicons/vue": "^2.0.16",
         "axios": "^1.1.2",
         "pinia": "^2.0.30",
         "server": "file:..",
         "vue": "^3.2.13",
+        "vue-i18n": "^9.3.0-beta.16",
         "vue-router": "^4.0.3"
     },
     "devDependencies": {
+        "@mdi/font": "^7.1.96",
         "@vitejs/plugin-vue": "^4.0.0",
         "autoprefixer": "^10.4.12",
         "eslint": "^7.32.0",

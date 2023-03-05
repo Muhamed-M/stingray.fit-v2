@@ -1,36 +1,36 @@
+<script setup>
+import { useI18n } from 'vue-i18n';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { lang } = storeToRefs(store);
+
+const { t, locale } = useI18n();
+</script>
+
 <template>
     <section class="improve bg-cyan-600" id="cards">
         <div class="box">
             <img src="@/assets/images/dumbbell.svg" />
-            <h3>Unaprijedi zdravlje</h3>
+            <h3>{{ t('card_1_title', {}, { locale: lang.value }) }}</h3>
             <p>
-                Mentor će ti pomoći da lakše otkriješ kakva ishrana i trening odgovaraju tvome
-                tijelu, da izgradiš zdrave navika i podigneš zdravlje i kondiciju na viši nivo.
+                {{ t('card_1_text', {}, { locale: lang.value }) }}
             </p>
         </div>
         <div class="box">
             <img src="@/assets/images/woman.svg" />
-            <h3>Popravi posturu</h3>
+            <h3>{{ t('card_2_title', {}, { locale: lang.value }) }}</h3>
             <p>
-                Zbog previše sjedenja i nedostatka aktivnosti naše tijelo gubi funkcije i to
-                kompenzuje krivljenjem posture što dugoročno dovodi do problema i bolova. Stingray
-                specijalizacija se odnosi upravo na vraćanje posture i opsega pokreta kroz trening
-                snage.
+                {{ t('card_2_text', {}, { locale: lang.value }) }}
             </p>
         </div>
         <div class="box">
             <img src="@/assets/images/muscle.svg" />
-            <h3>Izgledaj kako oduvijek želiš</h3>
-            <p>Gubljenjem masnih naslaga i dobivanjem mišične mase na ciljanim područijima.</p>
+            <h3>{{ t('card_3_title', {}, { locale: lang.value }) }}</h3>
+            <p>{{ t('card_3_text', {}, { locale: lang.value }) }}</p>
         </div>
     </section>
 </template>
-
-<script>
-export default {
-    name: 'CardsSection',
-};
-</script>
 
 <style scoped>
 .improve {

@@ -1,7 +1,65 @@
+<script setup>
+import { ref } from 'vue';
+import Logo from './Logo.vue';
+import Select from './shared/Select.vue';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { lang } = storeToRefs(store);
+
+const navToggle = ref(false);
+const isSticky = ref(false);
+const links = ref([
+    {
+        text: 'About',
+        href: '#about'
+    },
+    {
+        text: 'Shop',
+        href: '#shop'
+    },
+    {
+        text: 'Testimonials',
+        href: '#testimonials'
+    },
+    {
+        text: 'Transformations',
+        href: '#transformations'
+    }
+]);
+const locales = [
+    {
+        id: 1,
+        lang: 'English',
+        value: 'en'
+    },
+    {
+        id: 2,
+        lang: 'Bosnian',
+        value: 'bs'
+    }
+];
+lang.value = locales[0];
+
+function stickyNav() {
+    window.addEventListener('scroll', () => {
+        if (scrollY > 200) isSticky.value = true;
+        else isSticky.value = false;
+    });
+}
+stickyNav();
+
+function closeMenu() {
+    if (window.innerWidth <= 768) {
+        navToggle.value = false;
+    }
+}
+</script>
+
 <template>
     <nav :class="isSticky ? 'nav-container sticky bg-gray-800' : 'nav-container'">
         <div class="container px-5 py-4 mx-auto flex justify-between items-center">
-            <span class="w-14"><img src="@/assets/images/logo.png" /></span>
+            <Logo />
             <span @click="navToggle = true" class="material-symbols-outlined hamburger-btn">
                 menu
             </span>
@@ -17,60 +75,14 @@
                     :key="i"
                     class="nav-link"
                     :href="link.href"
-                    >{{ link.text }}</a
                 >
+                    {{ link.text }}
+                </a>
+                <Select v-model="lang" :selected="lang" :locales="locales" class="w-44" />
             </div>
         </div>
     </nav>
 </template>
-
-<script>
-export default {
-    name: 'NavComponent',
-
-    data: () => ({
-        navToggle: false,
-        isSticky: false,
-        links: [
-            {
-                text: 'O Meni',
-                href: '#about'
-            },
-            {
-                text: 'Planovi Treninga',
-                href: '#planovi'
-            },
-            {
-                text: 'Testimonials',
-                href: '#testimonials'
-            },
-            {
-                text: 'Transformacije',
-                href: '#transformacije'
-            }
-        ]
-    }),
-
-    mounted() {
-        this.stickyNav();
-    },
-
-    methods: {
-        stickyNav() {
-            window.addEventListener('scroll', () => {
-                if (scrollY > 200) this.isSticky = true;
-                else this.isSticky = false;
-            });
-        },
-
-        closeMenu() {
-            if (window.innerWidth <= 768) {
-                this.navToggle = false;
-            }
-        }
-    }
-};
-</script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -156,9 +168,10 @@ export default {
         position: static;
         height: auto;
         width: auto;
-        display: inline-block;
         background-color: transparent;
         transition: none;
+        flex-direction: row;
+        overflow: visible;
     }
 
     .nav.active {

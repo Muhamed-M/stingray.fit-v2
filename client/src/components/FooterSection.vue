@@ -1,10 +1,14 @@
+<script setup>
+import Logo from './Logo.vue';
+</script>
+
 <template>
     <footer class="body-font bg-cyan-600">
         <div class="container px-5 py-4 mx-auto flex items-center sm:flex-row flex-col">
             <a
                 class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900"
             >
-                <img class="w-14" src="@/assets/images/logo.png" alt="logo" />
+                <Logo />
                 <span class="ml-3 text-xl">Stingray.fit</span>
             </a>
             <p
@@ -29,12 +33,6 @@
         </div>
     </footer>
 </template>
-
-<script>
-export default {
-    name: 'FooterSection'
-};
-</script>
 
 <style scoped>
 .footer {

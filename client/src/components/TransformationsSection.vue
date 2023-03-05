@@ -8,7 +8,7 @@ store.getTransformations();
 </script>
 
 <template>
-    <section class="text-gray-600 body-font" id="transformacije">
+    <section class="text-gray-600 body-font" id="transformations">
         <div class="container px-5 py-6 mx-auto">
             <h1 class="heading text-3xl font-medium title-font text-gray-900 mb-10 text-center">
                 Transformacije

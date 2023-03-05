@@ -1,8 +1,9 @@
 <template>
     <button class="border-0 rounded text-lg px-5 py-4 cursor-pointer focus:outline-none">
-        <slot>
+        <span>
             {{ this.text }}
-        </slot>
+        </span>
+        <slot></slot>
     </button>
 </template>
 
