@@ -1,5 +1,12 @@
 <script setup>
 import StingrayButton from '@/components/ButtonComponent.vue';
+import { useI18n } from 'vue-i18n';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { lang } = storeToRefs(store);
+
+const { t, locale } = useI18n();
 </script>
 
 <template>
@@ -11,9 +18,10 @@ import StingrayButton from '@/components/ButtonComponent.vue';
                     href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
                     target="_blank"
                     class="px-5 py-4"
-                    >Prijavi se</a
-                ></stingray-button
-            >
+                >
+                    {{ t('button_text_1', {}, { locale: lang.value }) }}
+                </a>
+            </stingray-button>
             <a href="#cards" class="down-btn"
                 ><span class="material-symbols-outlined text-7xl font-semibold">
                     keyboard_double_arrow_down

@@ -1,5 +1,12 @@
 <script setup>
 import StingrayButton from '@/components/ButtonComponent.vue';
+import { useI18n } from 'vue-i18n';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { lang } = storeToRefs(store);
+
+const { t, locale } = useI18n();
 </script>
 
 <template>
@@ -9,21 +16,13 @@ import StingrayButton from '@/components/ButtonComponent.vue';
                 class="lg:flex-grow lg:w-1/2 lg:pr-24 mb-8 md:pr-16 flex flex-col md:items-start md:text-left items-center text-center"
             >
                 <h1 class="title-font sm:text-4xl text-3xl mb-6 font-medium text-gray-900">
-                    Ko je Stingray
+                    {{ t('about_title', {}, { locale: lang.value }) }}
                 </h1>
                 <p class="mb-8 leading-relaxed text-lg">
-                    Trener, sportista, nutricionista, bivši pripadnik specijalne jedinice sa 10+
-                    godina iskustva u treningu snage i mnogim sportovima poput atletike, gimnastike
-                    i borilačkih vještina. Nakon stečene diplome mašinskog inžinjera i 5 godina rada
-                    u specijalnoj jedinici policije počinje svoj put kao mentor/trener. Najveći
-                    uspjeh u ovom poslu je iskustvo u radu sa stotinama ljudi i mnogo transformacija
-                    tijela, uma i životnog stila.
+                    {{ t('about_p_1', {}, { locale: lang.value }) }}
                 </p>
                 <p class="mb-8 leading-relaxed text-lg">
-                    Ideja Stingray pristupa polazi od rada na vještinama iza kojih se krije pravo
-                    samopouzdanje, a izgled dolazi kao nusprodukt. Kvalitet rada i usluge se
-                    unaprijeđuje svakodnevno. Promjena navika, edukacija o treningu, ishrani i
-                    zdravom, balansiranom načinu života.
+                    {{ t('about_p_2', {}, { locale: lang.value }) }}
                 </p>
 
                 <StingrayButton class="px-0 mb-8 bg-cyan-600 hover:bg-cyan-700 text-white">
@@ -32,7 +31,7 @@ import StingrayButton from '@/components/ButtonComponent.vue';
                         target="_blank"
                         class="px-9 py-4"
                     >
-                        Prijavi se
+                        {{ t('button_text_1', {}, { locale: lang.value }) }}
                     </a>
                 </StingrayButton>
 

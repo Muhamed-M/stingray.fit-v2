@@ -8,6 +8,7 @@ const admin = JSON.parse(localStorage.getItem('admin'));
 export const useStore = defineStore({
     id: 'store',
     state: () => ({
+        lang: null,
         isLoading: false,
         errorMessage: null,
         admin: admin ? admin : null,

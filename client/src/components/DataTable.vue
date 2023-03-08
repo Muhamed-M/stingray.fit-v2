@@ -22,6 +22,7 @@
                         :key="i"
                         class="py-4 px-6"
                         :class="classObj(header.align)"
+                        :style="`width:${header.width}px`"
                     >
                         <slot :item="item" :name="header.value">{{ item[header.value] }}</slot>
                     </td>

@@ -1,3 +1,48 @@
+<script setup>
+import { useI18n } from 'vue-i18n';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/store/index';
+const store = useStore();
+const { lang } = storeToRefs(store);
+
+const { t, locale } = useI18n();
+
+/* data: () => ({
+        slideValue: 100,
+    }),
+
+    mounted() {
+        this.transitionCheck();
+    },
+
+    methods: {
+        next() {
+            if (this.slideValue > (this.$refs.slideshow.childNodes.length - 2) * 100) return;
+            this.slideValue += 100;
+            this.$refs.slideshow.style.transition = 'transform 400ms ease-in-out';
+        },
+
+        prev() {
+            if (this.slideValue < 100) return;
+            this.slideValue -= 100;
+            this.$refs.slideshow.style.transition = 'transform 400ms ease-in-out';
+        },
+
+        transitionCheck() {
+            this.$refs.slideshow.addEventListener('transitionend', () => {
+                if (this.$refs.slideshow.childNodes[this.slideValue / 100].id === 'first-clone') {
+                    this.$refs.slideshow.style.transition = 'none';
+                    this.slideValue = 100;
+                }
+                if (this.$refs.slideshow.childNodes[this.slideValue / 100].id === 'last-clone') {
+                    this.$refs.slideshow.style.transition = 'none';
+                    this.slideValue = (this.$refs.slideshow.childNodes.length - 2) * 100;
+                }
+            });
+        },
+    }, */
+</script>
+
 <template>
     <section class="video-section bg-gray-800 text-slate-200">
         <div
@@ -19,19 +64,13 @@
                 class="lg:w-1/2 flex flex-col md:items-start md:text-left items-center text-center"
             >
                 <h1 class="title-font sm:text-4xl text-3xl mb-6 font-medium text-slate-300">
-                    Stingray Filozofija
+                    {{ t('videos_title', {}, { locale: lang.value }) }}
                 </h1>
                 <p class="mb-8 leading-relaxed text-lg">
-                    Naš program je namijenjen ljudima koji žele da unaprijede svoju kretnju, snagu,
-                    mobilnost ali i izgled. Također ljudima koji sa došli na plato u svome treningu
-                    i trebaju pomoć oko postizanja naprednijih ciljeva.
+                    {{ t('videos_p_1', {}, { locale: lang.value }) }}
                 </p>
                 <p class="mb-8 leading-relaxed text-lg">
-                    U naš program treninga su uvrštene powerlifting vježbe snage, kretnje (animal
-                    flow) i mobilnosti. Sa ljudima radimo na nešto drugačiji način, da bi postigli
-                    optimalno zdravlje, izgled ali i vještine iza kojih se krije pravo
-                    samopouzdanje. Generalni cilj nije samo izgledati dobro, nego taj izgled
-                    zaraditi vještinom.
+                    {{ t('videos_p_2', {}, { locale: lang.value }) }}
                 </p>
             </div>
         </div>
@@ -71,47 +110,6 @@
         /> -->
     </section>
 </template>
-
-<script>
-export default {
-    name: 'VideosSection'
-
-    /* data: () => ({
-        slideValue: 100,
-    }),
-
-    mounted() {
-        this.transitionCheck();
-    },
-
-    methods: {
-        next() {
-            if (this.slideValue > (this.$refs.slideshow.childNodes.length - 2) * 100) return;
-            this.slideValue += 100;
-            this.$refs.slideshow.style.transition = 'transform 400ms ease-in-out';
-        },
-
-        prev() {
-            if (this.slideValue < 100) return;
-            this.slideValue -= 100;
-            this.$refs.slideshow.style.transition = 'transform 400ms ease-in-out';
-        },
-
-        transitionCheck() {
-            this.$refs.slideshow.addEventListener('transitionend', () => {
-                if (this.$refs.slideshow.childNodes[this.slideValue / 100].id === 'first-clone') {
-                    this.$refs.slideshow.style.transition = 'none';
-                    this.slideValue = 100;
-                }
-                if (this.$refs.slideshow.childNodes[this.slideValue / 100].id === 'last-clone') {
-                    this.$refs.slideshow.style.transition = 'none';
-                    this.slideValue = (this.$refs.slideshow.childNodes.length - 2) * 100;
-                }
-            });
-        },
-    }, */
-};
-</script>
 
 <style scoped>
 .video-section {

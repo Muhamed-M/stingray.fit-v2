@@ -1,3 +1,7 @@
+<script setup>
+defineProps({ message: String });
+</script>
+
 <template>
     <div
         class="fixed inset-0 z-10 overflow-y-hidden"
@@ -38,15 +42,3 @@
         </div>
     </div>
 </template>
-
-<script>
-export default {
-    name: 'ModalComponent',
-
-    props: {
-        message: String,
-    },
-};
-</script>
-
-<style scoped></style>
