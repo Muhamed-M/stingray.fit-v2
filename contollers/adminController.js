@@ -80,13 +80,13 @@ const updateWorkoutPlansPrice = async (req, res) => {
 // @method post
 const createTestimonial = async (req, res) => {
     try {
-        const { fullname, profession, comment } = req.body;
+        const { fullname, profession, text } = req.body;
 
         // Create testimonial
         await Testimonial.create({
             fullname,
             profession,
-            comment
+            text
         });
 
         res.status(200).json({ message: 'Testimonial created successfully!' });

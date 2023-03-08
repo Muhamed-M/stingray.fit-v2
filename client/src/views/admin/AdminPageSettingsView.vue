@@ -20,22 +20,30 @@ const personalPrice = ref(null);
 const newTestimonial = ref({
     fullname: '',
     profession: '',
-    comment: ''
+    text: {
+        en: '',
+        bs: ''
+    }
 });
 const imageUpload = ref();
 
 const testimonialsHeaders = ref([
     {
         text: 'Full Name',
-        value: 'fullname'
+        value: 'fullname',
+        width: 150
     },
     {
         text: 'Profession',
         value: 'profession'
     },
     {
-        text: 'Comment',
-        value: 'comment'
+        text: 'Text (bs)',
+        value: 'bs'
+    },
+    {
+        text: 'Text (en)',
+        value: 'en'
     },
     {
         text: 'Actions',
@@ -81,7 +89,8 @@ async function createTestimonial() {
         const res = await axios.post('/api/admin/testimonials', newTestimonial.value);
         newTestimonial.value.fullname = '';
         newTestimonial.value.profession = '';
-        newTestimonial.value.comment = '';
+        newTestimonial.value.text.bs = '';
+        newTestimonial.value.text.en = '';
         await store.getTestimonials();
         message.value = res.data.message;
         successModal.value = true;
@@ -239,11 +248,21 @@ async function deleteTransformation(id, imagePath, thumbnailPath) {
                         </div>
                         <div class="p-2 w-full">
                             <div class="relative">
-                                <label for="message" class="leading-7 text-sm text-gray-600"
-                                    >Comment</label
-                                >
+                                <label for="txtBs" class="leading-7 text-sm text-gray-600">
+                                    Text (bs)
+                                </label>
                                 <textarea
-                                    v-model="newTestimonial.comment"
+                                    v-model="newTestimonial.text.bs"
+                                    name="txtBs"
+                                    class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                                ></textarea>
+
+                                <label for="txtEn" class="leading-7 text-sm text-gray-600">
+                                    Text (en)
+                                </label>
+                                <textarea
+                                    v-model="newTestimonial.text.en"
+                                    name="txtEn"
                                     class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
                                 ></textarea>
                             </div>
@@ -260,6 +279,14 @@ async function deleteTransformation(id, imagePath, thumbnailPath) {
                 </div>
 
                 <data-table :headers="testimonialsHeaders" :data="testimonials" counter full-width>
+                    <template #[`bs`]="{ item }">
+                        <p>{{ item.text.bs }}</p>
+                    </template>
+
+                    <template #[`en`]="{ item }">
+                        <p>{{ item.text.en }}</p>
+                    </template>
+
                     <template #[`action`]="{ item }">
                         <button
                             @click="deleteTestimonial(item._id)"

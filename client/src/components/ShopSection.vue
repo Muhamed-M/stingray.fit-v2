@@ -6,8 +6,10 @@ import DataTable from './DataTable.vue';
 import Logo from './Logo.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
+import { useI18n } from 'vue-i18n';
 const store = useStore();
-const { workoutPlans } = storeToRefs(store);
+const { workoutPlans, lang } = storeToRefs(store);
+const { t, locale } = useI18n();
 
 store.getWorkoutPlansData();
 
@@ -121,64 +123,49 @@ const disanjeData = ref([
 <template>
     <section class="price" id="shop">
         <h1 class="heading text-3xl font-medium title-font text-gray-900 mb-10 text-center">
-            Odaberi Saradnju
+            Shop
         </h1>
         <div class="container-price">
             <div class="box-price">
                 <h1 class="text-6xl font-semibold">{{ workoutPlans[0]?.price }}€</h1>
-                <h6>online mentorstvo</h6>
+                <h6>{{ t('product_1_title', {}, { locale: lang.value }) }}</h6>
                 <ul>
-                    <li>&#10003; 3 mjeseca</li>
-                    <li>&#10003; Plan ishrane</li>
-                    <li>&#10003; Plan treninga</li>
-                    <li>&#10003; Video konsultacije 1h</li>
-                    <li>&#10003; Komunikacija putem whatsapp/viber</li>
-                    <li>&#10003; Video objašnjenja vježbi</li>
-                    <li>&#10003; Dodatna video objašnjena</li>
+                    <li>&#10003; {{ t('product_line_1', {}, { locale: lang.value }) }}</li>
+                    <li>&#10003; {{ t('product_line_2', {}, { locale: lang.value }) }}</li>
+                    <li>&#10003; {{ t('product_line_3', {}, { locale: lang.value }) }}</li>
+                    <li>&#10003; {{ t('product_line_4', {}, { locale: lang.value }) }}</li>
+                    <li>&#10003; {{ t('product_line_5', {}, { locale: lang.value }) }}</li>
+                    <li>&#10003; {{ t('product_line_6', {}, { locale: lang.value }) }}</li>
+                    <li>&#10003; {{ t('product_line_7', {}, { locale: lang.value }) }}</li>
                 </ul>
                 <StingrayButton
-                    text="Više informacija"
+                    :text="t('button_text_2', {}, { locale: lang.value })"
                     class="bg-cyan-600 hover:bg-cyan-700 text-white"
                     @click="open1 = true"
                 />
 
                 <DialogComponent :show="open1" @close="open1 = false">
                     <template v-slot:title>
-                        <h1 class="text-lg">Kako funkcioniše i šta je online mentorstvo?</h1>
+                        <h1 class="text-lg">
+                            {{ t('product_1_h_1', {}, { locale: lang.value }) }}
+                        </h1>
                     </template>
 
                     <template v-slot:body>
                         <p class="mb-4">
-                            Mentorstvo je najbrži i najefikasniji način učenja, izgradnje tijela ili
-                            biznisa. Činjenica da vas neko vodi i da se uvijek možete obratiti za
-                            pomoć i savjet je neprocijenjiva. Sa mentorom možete uštediti godine
-                            vremena, sačuvati se mnogobrojnih grešaka, frustracija i lutanja za
-                            relevantnim izvorima informacija.
+                            {{ t('product_1_p_1', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Plan treninga ili ishrane je nešto što vam niko ne može prodati na
-                            slijepo i ovi planovi se interaktivno mijenjaju iz sedmice u sedmicu.
-                            Ishrana se zasniva samo na stvarima koje vi konzumirate i volite.
-                            Korekcija tehnike na svim vježbama se radi putem videozapisa koje mentor
-                            analizira i tako vas dovodi do idealne forme (ovo je vrlo važna stavka).
+                            {{ t('product_1_p_2', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Usudim se reči da je ovaj način saradnje efikasniji od individualnih
-                            treninga.
+                            {{ t('product_1_p_3', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Sta još uključuje saradnja: <br />
-                            Testiranje putem videopoziva na zoom-u, viber-u ili WhatsApp-u, izrada
-                            planova, kratki videopoziv uvoda i pojašnjena planova, video objašnjenja
-                            vježbi, svakodnevna dostupnost na whatsapp ili viber za pomoć ili savjet
-                            oko spremanja obroka, odabira namirnica, trening rutine, edukacija,
-                            izgradnja mindset-a. Ukoliko klijent radi rehabilitaciji i ispravljanje
-                            posture onda se po potrebi dogovaraju kontrolni videopozivi koji ne
-                            ulaze u cijenu.
+                            {{ t('product_1_p_4', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Detaljnije video pojašnjenje možete pronaći u story highlights na mom
-                            instagram
+                            {{ t('product_1_p_5', {}, { locale: lang.value }) }}
                             <a
                                 href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTIwMTc1MzU2NTc4ODQ3?story_media_id=2537337773271444940_2214195949&utm_medium=share_sheet"
                                 target="_blank"
@@ -195,7 +182,8 @@ const disanjeData = ref([
                                 href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
                                 target="_blank"
                                 class="px-5 py-4"
-                                >Prijavi se
+                            >
+                                {{ t('button_text_1', {}, { locale: lang.value }) }}
                             </a>
                         </stingray-button>
                     </template>
@@ -212,7 +200,7 @@ const disanjeData = ref([
                         <span class="text-cyan-500 text-4xl">BASICS</span>
                     </div>
                     <StingrayButton
-                        text="Više informacija"
+                        :text="t('button_text_2', {}, { locale: lang.value })"
                         class="bg-white hover:bg-slate-200 text-gray-700 self-center mt-8"
                         @click="open2 = true"
                     />
@@ -220,45 +208,26 @@ const disanjeData = ref([
 
                 <DialogComponent :show="open2" @close="open2 = false">
                     <template v-slot:title>
-                        <h1 class="text-lg">Woman in Motion</h1>
+                        <h1 class="text-lg">
+                            {{ t('product_2_h_1', {}, { locale: lang.value }) }}
+                        </h1>
                     </template>
 
                     <template v-slot:body>
                         <p class="mb-4">
-                            Woman in Motion je ultimativni vodič koji će vam pomoći da izgradite
-                            jako i zgodno žensko tijelo kroz vježbe koje će istovremeno popraviti
-                            vašu kretnju, mobilnost i zdravlje kukova. Dakle primarni cilj je da
-                            imate zdravo tijelo te vježbe snage koje budete radili neće ugrožavati
-                            vaše zdravlje i gubitak mobilnosti kao kod „tradicionalnih“ treninga u
-                            teretani. Ovo je osnovni program od kojeg može krenuti svaki početnik i
-                            tako opustiti kukove i grudni koš, a istovremeno graditi mišiće i snagu
-                            koji te pripremaju za sljedeće zahtijevnije faze programa.
+                            {{ t('product_2_p_1', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Program je nastao na osnovu godina iskustva rada sa ženama sa različitim
-                            tipovima tijela i skeletnim ograničenjima, vježbe koje sam odabrao su
-                            najuniverzalnije i sigurno će pomoći svima da se bolje osjećaju.
-                            Također, vježbe su osnovni pokreti svedeni na najjednostavnije obrasce
-                            koje dajem svojim online klijentima kako bi imali što manju mogućnost da
-                            naprave grešku jer ja nisam tu pored njih.
+                            {{ t('product_2_p_2', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Ukoliko mi ukažeš povjerenje kupovinom ovog vodiča, siguran sam da ćeš
-                            biti zadovoljna i ostvariti rezultate. Kako bi potakao tvoju motivaciju
-                            i pomogao u slučaju da naiđeš na bilo kakve probleme napravio sam grupu
-                            u koju možeš da postaviš bilo koje pitanje, a također ćeš moći da vidiš
-                            mnogo odgovora na pitanja drugih djevojaka i te informacije ti mogu biti
-                            od velike pomoći. Naš glavni cilj da naučimo uživati u procesu, jer samo
-                            tako zauvijek možeš ostati u treningu i doći do mjesta na koja nisi ni
-                            zamišljala da možeš doći.
+                            {{ t('product_2_p_3', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4">
-                            Trenutno je dostupna prva faza programa (basics) koja je ujedno i
-                            najvažnija kada je u pitanju postura i mobilnost, te razvijanje
-                            kompetencije za složenije faze programa.
+                            {{ t('product_2_p_4', {}, { locale: lang.value }) }}
                         </p>
                         <p class="mb-4 font-semibold">
-                            Cijena za prvu fazu je 50€ (popust na kupovinu ima prvih 100 kupaca)
+                            {{ t('product_2_p_5', {}, { locale: lang.value }) }}
                         </p>
                         <stingray-button
                             class="px-0 block mx-auto bg-cyan-600 hover:bg-cyan-700 text-white"
@@ -267,11 +236,14 @@ const disanjeData = ref([
                                 href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
                                 target="_blank"
                                 class="px-5 py-4"
-                                >Kupi
+                            >
+                                {{ t('button_text_3', {}, { locale: lang.value }) }}
                             </a>
                         </stingray-button>
 
-                        <p class="mb-4 font-semibold">Kako izgleda program, pogledaj ispod.</p>
+                        <p class="mb-4 font-semibold">
+                            {{ t('product_2_p_6', {}, { locale: lang.value }) }}
+                        </p>
 
                         <div class="my-8 md:w-3/4 md:mx-auto w-100">
                             <iframe
@@ -296,43 +268,40 @@ const disanjeData = ref([
                             ></iframe>
                         </div>
 
-                        <h2 class="text-cyan-500 text-2xl mb-3">Ciljevi BASICS plana:</h2>
+                        <h2 class="text-cyan-500 text-2xl mb-3">
+                            {{ t('product_2_h_2', {}, { locale: lang.value }) }}
+                        </h2>
                         <p class="mb-3 text-left">
-                            Basics je prvi od 3 dijela kompletnog program treninga za žene, a ovdje
-                            se fokusiramo na nekoliko glavnih ciljeva:
+                            {{ t('product_2_p_7', {}, { locale: lang.value }) }}
                         </p>
                         <ul class="list-disc text-left">
                             <li class="ml-6">
-                                Vratiti centar mase kako bi se mogli kretati efektivno i prebacivat
-                                težinu s jedne strane na drugu pri hodanju.
+                                {{ t('product_2_l_1', {}, { locale: lang.value }) }}
                             </li>
                             <li class="ml-6">
-                                Naučiti kako da proizvedemo silu od stopala i dlana, kako bi se
-                                kukovi, donja leđa i grudni koš mogli opustiti od tenzije.
+                                {{ t('product_2_l_2', {}, { locale: lang.value }) }}
                             </li>
                             <li class="ml-6">
-                                Vratiti sposobnost grudnog koša i kukova da se kreću u optimalnom
-                                maniru.
+                                {{ t('product_2_l_3', {}, { locale: lang.value }) }}
                             </li>
                             <li class="ml-6">
-                                Izgraditi snagu, mišiće, otpornost i inter-muskularnu koordinaciju
-                                bez žrtvovanja mobilnosti i sposobnosti kretanja kao kod
-                                tradicionalnih treninga.
+                                {{ t('product_2_l_4', {}, { locale: lang.value }) }}
                             </li>
                         </ul>
 
-                        <h2 class="text-cyan-500 text-2xl mb-3 mt-8">Šta trebaš?</h2>
-                        <p class="text-left">Za praćenje plana postoje dvije opcije:</p>
+                        <h2 class="text-cyan-500 text-2xl mb-3 mt-8">
+                            {{ t('product_2_h_3', {}, { locale: lang.value }) }}
+                        </h2>
                         <ol class="list-decimal text-left">
-                            <li class="ml-6">Članarina za teretanu.</li>
                             <li class="ml-6">
-                                Set bučica i elastičnih traka, deblja knjiga ili steper i još par
-                                stvari koje ima svako domačinstvo.
+                                {{ t('product_2_l_5', {}, { locale: lang.value }) }}
+                            </li>
+                            <li class="ml-6">
+                                {{ t('product_2_l_6', {}, { locale: lang.value }) }}
                             </li>
                         </ol>
                         <p class="mt-3">
-                            Sva pitanja koja budeš imala možeš da pišeš u DM grupe i dobit ćeš
-                            detaljne odgovore.
+                            {{ t('product_2_p_8', {}, { locale: lang.value }) }}
                         </p>
 
                         <h2 class="text-cyan-500 text-2xl mb-3 mt-8">Trening 1 preview</h2>
