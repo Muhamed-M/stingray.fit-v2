@@ -10,6 +10,25 @@ export const router = createRouter({
             component: () => import('@/views/home-page/HomeView.vue')
         },
         {
+            path: '/policies',
+            name: 'policies',
+            component: () => import('@/views/policies/index.vue'),
+            children: [
+                {
+                    path: 'terms',
+                    component: () => import('@/views/policies/components/Terms.vue')
+                },
+                {
+                    path: 'privacy',
+                    component: () => import('@/views/policies/components/Privacy.vue')
+                },
+                {
+                    path: 'security-capabilities',
+                    component: () => import('@/views/policies/components/Security.vue')
+                }
+            ]
+        },
+        {
             path: '/admin/auth',
             name: 'admin-auth',
             component: () => import('@/views/authentication/AuthView.vue'),
