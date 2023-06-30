@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;800&family=Oswald:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@600;700&display=swap');
 
 /* import tailwind css */
 @tailwind base;
@@ -8,17 +9,17 @@
 
 /* Unique reusable */
 .heading {
-    position: relative;
+  position: relative;
 }
 
 .heading::before {
-    content: '';
-    width: 80px;
-    height: 7px;
-    background-color: #0891b2;
-    border-radius: 5px;
-    position: absolute;
-    bottom: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
+  content: '';
+  width: 80px;
+  height: 7px;
+  background-color: #0891b2;
+  border-radius: 5px;
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
 }
