@@ -1,5 +1,5 @@
 <script setup>
-import StingrayButton from '@/components/ButtonComponent.vue';
+import ButtonComponent from '@/components/shared/ButtonComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
@@ -12,7 +12,7 @@ const { t, locale } = useI18n();
 <template>
   <section class="text-gray-600 body-font" id="about">
     <div
-      class="container mx-auto flex px-5 py-12 lg:flex-row flex-col items-center"
+      class="container mx-auto flex px-5 py-8 lg:flex-row flex-col items-center"
     >
       <div
         class="lg:flex-grow lg:w-1/2 lg:pr-24 mb-8 md:pr-16 flex flex-col md:items-start md:text-left items-center text-center"
@@ -23,8 +23,19 @@ const { t, locale } = useI18n();
           Za koga je program?
           <!-- {{ t('about_title', {}, { locale: lang.value }) }} -->
         </h1>
+        <p class="mb-4 text-base">
+          Naš online coaching program je namijenjen svima koji žele dublje
+          razumijevanje svog tijela, rješavanje kompenzacija koje uzrokuju
+          ukočenost i bolove, te izgradnju trening rutine koja istovremeno
+          razvija snagu, vještinu i kvalitetu kretanja, bez zapostavljanja
+          zdravlja. Bez obzira da li ste početnik ili iskusni vježbač, naš
+          program je dizajniran da pruži podršku i smjernice za sve koji teže da
+          ostvare ravnotežu između postizanja rezultata i očuvanja zdravlja.
+          Pridružite nam se i započnite putovanje ka razumijevanju, izgradnji i
+          optimizaciji svog tijela i kretanja.
+        </p>
         <!-- list -->
-        <ul class="list-disc mb-4">
+        <ul class="ml-6 list-disc mb-4">
           <li>
             Program je namijenjen svima koji žele razumjeti svoje tijelo i
             riješiti kompenzacije koje uzrokuju ukočenost i bolove.
@@ -47,11 +58,11 @@ const { t, locale } = useI18n();
           </li>
         </ul>
 
-        <p class="mb-6 leading-relaxed text-lg">
+        <p class="mb-4 text-base">
           Naš program je idealan za sve koji su zainteresirani za:
         </p>
 
-        <ul class="list-disc mb-4">
+        <ul class="ml-6 list-disc mb-4">
           <li>Zdravlje kukova, kičme i zglobova.</li>
           <li>
             Izgradnju trening rutine koja se fokusira na snagu i vještine,
@@ -61,7 +72,7 @@ const { t, locale } = useI18n();
           <li>Dugovječnost i zdravlje kao prioritet.</li>
         </ul>
 
-        <p class="mb-6 leading-relaxed text-lg">
+        <p class="mb-4 text-base">
           Naš program može biti prilagođen isključivo fokusu na zdravlje, ali
           ukoliko se želi nastaviti s programom, možemo preći na druge aspekte i
           ciljeve. Naš cilj je osigurati da se vaša tjelesna dobrobit i zdravlje
@@ -75,28 +86,26 @@ const { t, locale } = useI18n();
           {{ t('about_p_2', {}, { locale: lang.value }) }}
         </p> -->
 
-        <StingrayButton
-          class="px-0 mb-8 bg-cyan-600 hover:bg-cyan-700 text-white"
-        >
+        <ButtonComponent class="mb-4 bg-cyan-600 hover:bg-cyan-700 text-white">
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
             target="_blank"
-            class="px-9 py-4"
           >
             {{ t('button_text_1', {}, { locale: lang.value }) }}
           </a>
-        </StingrayButton>
+        </ButtonComponent>
 
         <!-- Social links -->
         <div class="flex justify-center items-center gap-3">
-          <a href="https://www.instagram.com/stingray.fit/" target="_blank"
-            ><i class="fa-brands fa-instagram text-gray-700 text-4xl"></i
-          ></a>
+          <a href="https://www.instagram.com/stingray.fit/" target="_blank">
+            <span class="mdi mdi-instagram text-4xl"></span>
+          </a>
           <a
             href="https://www.youtube.com/channel/UCigBlsVRyJfVHMI25AVmj4Q"
             target="_blank"
-            ><i class="fa-brands fa-youtube text-gray-700 text-4xl"></i
-          ></a>
+          >
+            <span class="mdi mdi-youtube text-5xl"></span>
+          </a>
         </div>
       </div>
       <div class="lg:max-w-md lg:w-1/2 w-5/6">
@@ -108,76 +117,4 @@ const { t, locale } = useI18n();
       </div>
     </div>
   </section>
-
-  <!-- <section class="about" id="about">
-        <div class="container-about">
-            <div class="text-content">
-                <h1 class="naslov">Ko je Stingray</h1>
-                <p class="m-b-md">
-                    Trener, sportista, nutricionista, bivši pripadnik specijalne jedinice sa 10+
-                    godina iskustva u treningu snage i mnogim sportovima poput atletike, gimnastike
-                    i borilačkih vještina. Nakon stečene diplome mašinskog inžinjera i 5 godina rada
-                    u specijalnoj jedinici policije počinje svoj put kao mentor/trener. Najveći
-                    uspjeh u ovom poslu je iskustvo u radu sa stotinama ljudi i mnogo transformacija
-                    tijela, uma i životnog stila.
-                </p>
-                <p class="m-b-md">
-                    Ideja Stingray pristupa polazi od rada na vještinama iza kojih se krije pravo
-                    samopouzdanje, a izgled dolazi kao nusprodukt. Kvalitet rada i usluge se
-                    unaprijeđuje svakodnevno.
-                </p>
-                <p class="m-b-md">
-                    Promjena navika, edukacija o treningu, ishrani i zdravom, balansiranom načinu
-                    života.
-                </p>
-                <p class="m-b-md">
-                    Naš program je namijenjen ljudima koji žele da unaprijede svoju kretnju, snagu,
-                    mobilnost ali i izgled. Također ljudima koji sa došli na plato u svome treningu
-                    i trebaju pomoć oko postizanja naprednijih ciljeva.
-                </p>
-                <p class="m-b-md">
-                    U naš program treninga su uvrštene powerlifting vježbe snage, kretnje (animal
-                    flow) i mobilnosti. Sa ljudima radimo na nešto drugačiji način, da bi postigli
-                    optimalno zdravlje, izgled ali i vještine iza kojih se krije pravo
-                    samopouzdanje. Generalni cilj nije samo izgledati dobro, nego taj izgled
-                    zaraditi vještinom.
-                </p>
-            </div>
-            <img src="@/assets/images/about-img.jpg" />
-        </div>
-    </section> -->
 </template>
-
-<style scoped>
-.about {
-  padding: 4rem 3rem;
-}
-
-.container-about {
-  text-align: center;
-  font-size: 1rem;
-  color: #303838;
-}
-
-.container-about img {
-  max-width: 400px;
-  width: 90%;
-  margin-top: 2rem;
-}
-
-@media screen and (min-width: 1200px) {
-  .container-about {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  .text-content {
-    max-width: 700px;
-  }
-
-  .container-about img {
-    margin: 0 0 0 2rem;
-  }
-}
-</style>

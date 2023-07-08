@@ -58,7 +58,7 @@ function closeMenu() {
 
 <template>
   <nav :class="isSticky ? 'nav-container sticky bg-gray-800' : 'nav-container'">
-    <div class="container px-5 py-4 mx-auto flex justify-between items-center">
+    <div class="container px-5 py-3 mx-auto flex justify-between items-center">
       <Logo />
       <span
         @click="navToggle = true"

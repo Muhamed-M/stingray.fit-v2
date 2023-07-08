@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
+import ButtonComponent from './shared/ButtonComponent.vue';
 const store = useStore();
 const { lang } = storeToRefs(store);
 
@@ -26,24 +27,20 @@ const { t, locale } = useI18n();
           kretnje.
         </p>
         <div class="flex justify-center">
-          <button
-            class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg"
-          >
+          <ButtonComponent class="text-gray-700 bg-gray-100 hover:bg-gray-200">
             <a
               href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
               target="_blank"
             >
               {{ t('button_text_1', {}, { locale: lang.value }) }}
             </a>
-          </button>
+          </ButtonComponent>
         </div>
       </div>
     </div>
 
     <a href="#cards" class="down-btn">
-      <span class="material-symbols-outlined text-7xl font-semibold">
-        keyboard_double_arrow_down
-      </span>
+      <span class="mdi mdi=chevron-double-down"> </span>
     </a>
   </section>
 </template>
