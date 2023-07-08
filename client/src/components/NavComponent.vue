@@ -60,19 +60,10 @@ function closeMenu() {
   <nav :class="isSticky ? 'nav-container sticky bg-gray-800' : 'nav-container'">
     <div class="container px-5 py-3 mx-auto flex justify-between items-center">
       <Logo />
-      <span
-        @click="navToggle = true"
-        class="material-symbols-outlined hamburger-btn"
-      >
-        menu
+      <span @click="navToggle = true" class="mdi mdi-menu hamburger-btn">
       </span>
       <div :class="navToggle ? 'nav active' : 'nav'">
-        <span
-          @click="navToggle = false"
-          class="material-symbols-outlined close-btn"
-        >
-          close
-        </span>
+        <span @click="navToggle = false" class="mdi mdi-close close-btn"></span>
 
         <!-- loop through links and display them -->
         <a

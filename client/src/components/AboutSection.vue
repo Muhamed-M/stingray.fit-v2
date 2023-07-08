@@ -15,7 +15,7 @@ const { t, locale } = useI18n();
       class="container mx-auto flex px-5 py-8 lg:flex-row flex-col items-center"
     >
       <div
-        class="lg:flex-grow lg:w-1/2 lg:pr-24 mb-8 md:pr-16 flex flex-col md:items-start md:text-left items-center text-center"
+        class="lg:flex-grow lg:w-1/2 lg:pr-24 mb-8 md:pr-16 flex flex-col md:items-start items-center text-left"
       >
         <h1
           class="title-font sm:text-4xl text-3xl mb-6 font-medium text-gray-900"
