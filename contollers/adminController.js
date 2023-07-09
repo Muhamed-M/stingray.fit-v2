@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const sharp = require('sharp');
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
+const { S3Client } = require('@aws-sdk/client-s3');
+// Set up the client
+const s3 = new S3Client();
 require('dotenv').config();
 
 // aws s3 bucket from cyclic.sh
