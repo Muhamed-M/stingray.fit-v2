@@ -139,20 +139,11 @@ const uploadTransformation = async (req, res) => {
   const { buffer, originalname } = req.file;
   const filename = Date.now() + path.extname(originalname);
   // store image and thumbnail paths
-  // const imagePath = `./public/images/${filename}`;
-  // const thumbnailPath = `./public/thumbnails/${filename}`;
+  // store image and thumbnail paths
+  const imagePath = `${filename}`;
+  const thumbnailPath = `thumbnails/${filename}`;
 
-  // let transformation;
   try {
-    // optimize image
-    //   sharp(buffer).jpeg({ mozjpeg: true, quality: 30 }).toFile(imagePath);
-
-    // optimize image for thumbnails
-    //   sharp(buffer)
-    //     .resize(280, 200)
-    //     .jpeg({ mozjpeg: true, quality: 30 })
-    //     .toFile(thumbnailPath);
-
     // optimize image
     const optimizedImage = await sharp(buffer)
       .jpeg({ mozjpeg: true, quality: 30 })
@@ -165,30 +156,32 @@ const uploadTransformation = async (req, res) => {
       .toBuffer();
 
     const params1 = {
-      Bucket: BUCKET,
-      Key: `images/${filename}`,
+      Bucket: BUCKET, // Replace with your bucket name
+      Key: imagePath,
       Body: optimizedImage,
+      ContentType: 'image/jpeg',
+      ACL: 'public-read', // If you want the image to be publicly accessible
     };
 
     const params2 = {
-      Bucket: BUCKET,
-      Key: `thumbnails/${filename}`,
+      Bucket: BUCKET, // Replace with your bucket name
+      Key: thumbnailPath,
       Body: thumbnailImage,
+      ContentType: 'image/jpeg',
+      ACL: 'public-read', // If you want the image to be publicly accessible
     };
 
     // Call S3 to retrieve upload file to specified bucket
-    const uploadCommand = new PutObjectCommand(params1);
-    s3.send(uploadCommand).then(
-      (data) => console.log(data),
-      (error) => console.log(error)
-    );
-    const uploadPromise1 = s3.upload(params1).promise();
-    const uploadPromise2 = s3.upload(params2).promise();
+    await s3.send(new PutObjectCommand(params1));
+    await s3.send(new PutObjectCommand(params2));
+    const imageUrl = `https://${params1.Bucket}.s3.${s3.config.region}.amazonaws.com/${params1.Key}`;
+    const thumbnailUrl = `https://${params2.Bucket}.s3.${s3.config.region}.amazonaws.com/${params2.Key}`;
 
-    const [upload1, upload2] = await Promise.all([
-      uploadPromise1,
-      uploadPromise2,
-    ]);
+    // Store file path to db
+    await Tranformation.create({
+      imagePath: imageUrl,
+      thumbnailPath: thumbnailUrl,
+    });
 
     // store image and thumbnail paths
     const imagePath = upload1.Location;
