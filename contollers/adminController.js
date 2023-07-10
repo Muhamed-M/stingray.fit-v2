@@ -183,16 +183,6 @@ const uploadTransformation = async (req, res) => {
       thumbnailPath: thumbnailUrl,
     });
 
-    // store image and thumbnail paths
-    const imagePath = upload1.Location;
-    const thumbnailPath = upload2.Location;
-
-    // Store file path to db
-    await Tranformation.create({
-      imagePath,
-      thumbnailPath,
-    });
-
     res.status(200).json({ message: 'Transformation uploaded successfully!' });
   } catch (error) {
     // fs.unlink(transformation.imagePath, (error) => {
