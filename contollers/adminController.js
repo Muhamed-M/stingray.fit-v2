@@ -2,7 +2,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const sharp = require('sharp');
-const { S3Client } = require('@aws-sdk/client-s3');
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require('@aws-sdk/client-s3');
 // Set up the client
 const s3 = new S3Client();
 require('dotenv').config();
@@ -173,6 +177,11 @@ const uploadTransformation = async (req, res) => {
     };
 
     // Call S3 to retrieve upload file to specified bucket
+    const uploadCommand = new PutObjectCommand(params1);
+    s3.send(uploadCommand).then(
+      (data) => console.log(data),
+      (error) => console.log(error)
+    );
     const uploadPromise1 = s3.upload(params1).promise();
     const uploadPromise2 = s3.upload(params2).promise();
 
