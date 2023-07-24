@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import ModalComponent from '@/components/ModalComponent.vue';
 import DataTable from '@/components/DataTable.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
+import { toast } from 'vue3-toastify';
 const store = useStore();
 const { workoutPlans, testimonials, transformations } = storeToRefs(store);
 
@@ -13,8 +13,6 @@ store.getTestimonials();
 store.getTransformations();
 
 // refs
-const message = ref('');
-const successModal = ref(false);
 const onlinePrice = ref(null);
 const personalPrice = ref(null);
 const newTestimonial = ref({
@@ -70,7 +68,7 @@ const transformationsHeaders = ref([
 
 async function updatePrice(id) {
   try {
-    const res = await axios.patch(
+    const { data } = await axios.patch(
       `/api/admin/workout-plans/update-price/${id}`,
       {
         onlinePrice: onlinePrice.value,
@@ -80,16 +78,16 @@ async function updatePrice(id) {
     onlinePrice.value = null;
     personalPrice.value = null;
     await store.getWorkoutPlansData();
-    message.value = res.data.message;
-    successModal.value = true;
+    toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
     console.log(error);
   }
 }
 
 async function createTestimonial() {
   try {
-    const res = await axios.post(
+    const { data } = await axios.post(
       '/api/admin/testimonials',
       newTestimonial.value
     );
@@ -98,20 +96,20 @@ async function createTestimonial() {
     newTestimonial.value.text.bs = '';
     newTestimonial.value.text.en = '';
     await store.getTestimonials();
-    message.value = res.data.message;
-    successModal.value = true;
+    toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
     console.log(error);
   }
 }
 
 async function deleteTestimonial(id) {
   try {
-    const res = await axios.delete(`/api/admin/testimonials/${id}`);
-    message.value = res.data.message;
-    successModal.value = true;
+    const { data } = await axios.delete(`/api/admin/testimonials/${id}`);
     await store.getTestimonials();
+    toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
     console.log(error);
   }
 }
@@ -128,26 +126,26 @@ async function uploadTransformation() {
 
   try {
     const res = await axios.post('/api/admin/transformations', data, config);
-    message.value = res.data.message;
-    successModal.value = true;
     await store.getTransformations();
+    toast.success(res.data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
     console.log(error);
   }
 }
 
 async function deleteTransformation(id, imagePath, thumbnailPath) {
   try {
-    const res = await axios.delete(`/api/admin/transformations/${id}`, {
+    const { data } = await axios.delete(`/api/admin/transformations/${id}`, {
       data: {
         imagePath,
         thumbnailPath,
       },
     });
-    message.value = res.data.message;
-    successModal.value = true;
     await store.getTransformations();
+    toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
     console.log(error);
   }
 }
@@ -362,12 +360,6 @@ async function deleteTransformation(id, imagePath, thumbnailPath) {
         </div>
       </div>
     </section>
-
-    <ModalComponent
-      v-if="successModal"
-      @close-modal="() => (successModal = false)"
-      :message="message"
-    />
   </div>
 </template>
 

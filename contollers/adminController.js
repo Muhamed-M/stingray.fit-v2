@@ -8,11 +8,14 @@ const {
   DeleteObjectCommand,
 } = require('@aws-sdk/client-s3');
 // Set up the client
-const s3 = new S3Client();
 require('dotenv').config();
 
 // aws s3 bucket from cyclic.sh
 const BUCKET = process.env.BUCKET;
+const AWS_REGION = process.env.AWS_REGION;
+
+// s3 service client object
+const s3 = new S3Client({ region: AWS_REGION });
 
 // models
 const Admin = require('../models/admin');
@@ -48,6 +51,7 @@ const authenticateAdmin = async (req, res) => {
       });
     }
   } catch (error) {
+    res.status(500).json({ message: error.message });
     console.log(error);
   }
 };
@@ -62,6 +66,7 @@ const getWorkoutPlans = async (req, res) => {
     const workoutPlans = await WorkoutPlans.find();
     res.json(workoutPlans);
   } catch (error) {
+    res.status(500).json({ message: error.message });
     console.log(error);
   }
 };
@@ -80,6 +85,7 @@ const updateWorkoutPlansPrice = async (req, res) => {
     await WorkoutPlans.findByIdAndUpdate(id, { price: price });
     res.status(200).json({ message: 'Price updated successfully!' });
   } catch (error) {
+    res.status(500).json({ message: error.message });
     console.log(error);
   }
 };
@@ -102,7 +108,7 @@ const createTestimonial = async (req, res) => {
     res.status(200).json({ message: 'Testimonial created successfully!' });
   } catch (error) {
     console.log(error);
-    res.json({ message: 'Testimonial creation failed!' });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -114,6 +120,7 @@ const getTestimonials = async (req, res) => {
     const testimonials = await Testimonial.find();
     res.json(testimonials);
   } catch (error) {
+    res.status(500).json({ message: error.message });
     console.log(error);
   }
 };
@@ -127,6 +134,7 @@ const deleteTestimonial = async (req, res) => {
     await Testimonial.deleteOne({ _id: id });
     res.status(200).json({ message: 'Testimonial deleted successfully!' });
   } catch (error) {
+    res.status(500).json({ message: error.message });
     console.log(error);
   }
 };
@@ -138,7 +146,6 @@ const deleteTestimonial = async (req, res) => {
 const uploadTransformation = async (req, res) => {
   const { buffer, originalname } = req.file;
   const filename = Date.now() + path.extname(originalname);
-  // store image and thumbnail paths
   // store image and thumbnail paths
   const imagePath = `${filename}`;
   const thumbnailPath = `thumbnails/${filename}`;
@@ -174,8 +181,8 @@ const uploadTransformation = async (req, res) => {
     // Call S3 to retrieve upload file to specified bucket
     await s3.send(new PutObjectCommand(params1));
     await s3.send(new PutObjectCommand(params2));
-    const imageUrl = `https://${params1.Bucket}.s3.${s3.config.region}.amazonaws.com/${params1.Key}`;
-    const thumbnailUrl = `https://${params2.Bucket}.s3.${s3.config.region}.amazonaws.com/${params2.Key}`;
+    const imageUrl = `https://${params1.Bucket}.s3.${AWS_REGION}.amazonaws.com/${params1.Key}`;
+    const thumbnailUrl = `https://${params2.Bucket}.s3.${AWS_REGION}.amazonaws.com/${params2.Key}`;
 
     // Store file path to db
     await Tranformation.create({
@@ -185,9 +192,6 @@ const uploadTransformation = async (req, res) => {
 
     res.status(200).json({ message: 'Transformation uploaded successfully!' });
   } catch (error) {
-    // fs.unlink(transformation.imagePath, (error) => {
-    //   if (error) console.error(error);
-    // });
     res.status(500).json({ message: error.message });
     console.log(error);
   }
@@ -201,6 +205,7 @@ const getTransformations = async (req, res) => {
     const transformations = await Tranformation.find();
     res.json(transformations);
   } catch (error) {
+    res.status(500).json({ message: error.message });
     console.log(error);
   }
 };
