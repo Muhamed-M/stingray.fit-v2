@@ -11,7 +11,7 @@ const {
 require('dotenv').config();
 
 // aws s3 bucket from cyclic.sh
-const BUCKET = process.env.BUCKET;
+const BUCKET = process.env.CYCLIC_BUCKET_NAME;
 const AWS_REGION = process.env.AWS_REGION;
 
 // s3 service client object
