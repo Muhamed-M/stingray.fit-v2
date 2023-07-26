@@ -3,15 +3,17 @@ const router = express.Router();
 
 // controllers
 const {
-    authenticateAdmin,
-    getWorkoutPlans,
-    updateWorkoutPlansPrice,
-    createTestimonial,
-    getTestimonials,
-    deleteTestimonial,
-    uploadTransformation,
-    getTransformations,
-    deleteTransformation
+  authenticateAdmin,
+  getWorkoutPlans,
+  updateWorkoutPlansPrice,
+  createTestimonial,
+  getTestimonials,
+  getTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+  uploadTransformation,
+  getTransformations,
+  deleteTransformation,
 } = require('../contollers/adminController');
 
 // middlewares
@@ -25,9 +27,12 @@ router.post('/auth', authenticateAdmin);
 router.get('/workout-plans', getWorkoutPlans);
 router.patch('/workout-plans/update-price/:id', updateWorkoutPlansPrice);
 // testimonials routes
-router.post('/testimonials', createTestimonial);
-router.get('/testimonials', getTestimonials);
-router.delete('/testimonials/:id', deleteTestimonial);
+router.route('/testimonials').post(createTestimonial).get(getTestimonials);
+router
+  .route('/testimonials/:id')
+  .get(getTestimonial)
+  .put(updateTestimonial)
+  .delete(deleteTestimonial);
 // transformations routes
 router.post('/transformations', upload.single('image'), uploadTransformation);
 router.get('/transformations', getTransformations);

@@ -99,13 +99,15 @@ const createTestimonial = async (req, res) => {
     const { fullname, profession, text } = req.body;
 
     // Create testimonial
-    await Testimonial.create({
+    const testimonial = await Testimonial.create({
       fullname,
       profession,
       text,
     });
 
-    res.status(200).json({ message: 'Testimonial created successfully!' });
+    res
+      .status(200)
+      .json({ testimonial, message: 'Testimonial created successfully!' });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -122,6 +124,55 @@ const getTestimonials = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.log(error);
+  }
+};
+
+// @desc   Get single testimonial by id
+// @route  /api/admin/testimonials/:id
+// @method get
+const getTestimonial = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const testimonial = await Testimonial.findById(id);
+    res.json(testimonial);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
+// @desc   Update testimonial
+// @route  /api/admin/testimonials/:id
+// @method put
+const updateTestimonial = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullname, profession, text } = req.body;
+
+    // Create testimonial
+    const updatedTestimonial = await Testimonial.findByIdAndUpdate(
+      id,
+      {
+        fullname,
+        profession,
+        text,
+      },
+      { new: true }
+    );
+
+    if (!updatedTestimonial) {
+      return res
+        .status(404)
+        .send('Testimonial with the given id was not found.');
+    }
+
+    res.status(200).json({
+      updatedTestimonial,
+      message: 'Testimonial updated successfully!',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -252,6 +303,8 @@ module.exports = {
   updateWorkoutPlansPrice,
   createTestimonial,
   getTestimonials,
+  getTestimonial,
+  updateTestimonial,
   deleteTestimonial,
   uploadTransformation,
   getTransformations,

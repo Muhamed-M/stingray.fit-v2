@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import ButtonComponent from '@/components/shared/ButtonComponent.vue';
 import DialogComponent from './DialogComponent.vue';
-import DataTable from './DataTable.vue';
+import DataTable from './shared/DataTable.vue';
 import Logo from './Logo.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
