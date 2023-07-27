@@ -334,7 +334,11 @@ const disanjeData = ref([
               (ovim drilom ćeš izvježbati ispravnu tehniku za Kickstand hinge
               vježbu)
             </p>
-            <data-table :headers="trening1Headers" :data="trening1Data">
+            <data-table
+              :headers="trening1Headers"
+              :data="trening1Data"
+              hide-footer
+            >
               <template #[`exercise`]="{ item }">
                 <a
                   v-if="item.exLink"
@@ -351,6 +355,7 @@ const disanjeData = ref([
             <data-table
               :headers="disanjeHeaders"
               :data="disanjeData"
+              hide-footer
               class="mt-4"
             >
               <template #[`exercise`]="{ item }">
