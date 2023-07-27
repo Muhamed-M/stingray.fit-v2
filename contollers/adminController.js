@@ -2,26 +2,20 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const sharp = require('sharp');
-const {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} = require('@aws-sdk/client-s3');
 // Set up the client
 require('dotenv').config();
 
 // aws s3 bucket from cyclic.sh
 const BUCKET = process.env.CYCLIC_BUCKET_NAME;
 const AWS_REGION = process.env.AWS_REGION;
-
-// s3 service client object
-const s3 = new S3Client({ region: AWS_REGION });
+// cyclic fs
+const fs = require('@cyclic.sh/s3fs')(BUCKET);
 
 // models
 const Admin = require('../models/admin');
 const WorkoutPlans = require('../models/workoutPlans');
 const Testimonial = require('../models/testimonials');
-const Tranformation = require('../models/transformations');
+const Transformation = require('../models/transformations');
 
 // JWT Generator
 const generateToken = (id) => {
@@ -198,8 +192,8 @@ const uploadTransformation = async (req, res) => {
   const { buffer, originalname } = req.file;
   const filename = Date.now() + path.extname(originalname);
   // store image and thumbnail paths
-  const imagePath = `${filename}`;
-  const thumbnailPath = `thumbnails/${filename}`;
+  const imagePath = `images-${filename}`;
+  const thumbnailPath = `thumbnails-${filename}`;
 
   try {
     // optimize image
@@ -210,35 +204,22 @@ const uploadTransformation = async (req, res) => {
     // optimize image for thumbnails
     const thumbnailImage = await sharp(buffer)
       .resize(280, 200)
-      .jpeg({ mozjpeg: true, quality: 30 })
+      .jpeg({ mozjpeg: true, quality: 30 }) // https://cyclic-muddy-hoodie-ox-sa-east-1.s3.sa-east-1.amazonaws.com/images/1690447140955.jpg
       .toBuffer();
 
-    const params1 = {
-      Bucket: BUCKET, // Replace with your bucket name
-      Key: imagePath,
-      Body: optimizedImage,
-      ContentType: 'image/jpeg',
-      ACL: 'public-read', // If you want the image to be publicly accessible
-    };
-
-    const params2 = {
-      Bucket: BUCKET, // Replace with your bucket name
-      Key: thumbnailPath,
-      Body: thumbnailImage,
-      ContentType: 'image/jpeg',
-      ACL: 'public-read', // If you want the image to be publicly accessible
-    };
-
-    // Call S3 to retrieve upload file to specified bucket
-    await s3.send(new PutObjectCommand(params1));
-    await s3.send(new PutObjectCommand(params2));
-    const imageUrl = `https://${params1.Bucket}.s3.${AWS_REGION}.amazonaws.com/${params1.Key}`;
-    const thumbnailUrl = `https://${params2.Bucket}.s3.${AWS_REGION}.amazonaws.com/${params2.Key}`;
+    fs.writeFile(imagePath, optimizedImage, (err) => {
+      if (err) throw err;
+      console.log('Image uploaded successfully!');
+    });
+    fs.writeFile(thumbnailPath, thumbnailImage, (err) => {
+      if (err) throw err;
+      console.log('Thumbnail uploaded successfully!');
+    });
 
     // Store file path to db
-    await Tranformation.create({
-      imagePath: imageUrl,
-      thumbnailPath: thumbnailUrl,
+    await Transformation.create({
+      imagePath,
+      thumbnailPath,
     });
 
     res.status(200).json({ message: 'Transformation uploaded successfully!' });
@@ -253,7 +234,7 @@ const uploadTransformation = async (req, res) => {
 // @method get
 const getTransformations = async (req, res) => {
   try {
-    const transformations = await Tranformation.find();
+    const transformations = await Transformation.find();
     res.json(transformations);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -267,28 +248,16 @@ const getTransformations = async (req, res) => {
 const deleteTransformation = async (req, res) => {
   const { id } = req.params;
   const { imagePath, thumbnailPath } = req.body;
-  console.log(imagePath);
 
   try {
     // delete transformation from db
-    await Tranformation.deleteOne({ _id: id });
+    await Transformation.deleteOne({ _id: id });
 
-    // create parameters for delete call
-    const params1 = {
-      Bucket: BUCKET,
-      Key: imagePath.replace(`https://${BUCKET}.s3.amazonaws.com/`, ''),
-    };
-
-    const params2 = {
-      Bucket: BUCKET,
-      Key: thumbnailPath.replace(`https://${BUCKET}.s3.amazonaws.com/`, ''),
-    };
-
-    // delete images from s3 bucket
-    const deletePromise1 = s3.deleteObject(params1).promise();
-    const deletePromise2 = s3.deleteObject(params2).promise();
-
-    await Promise.all([deletePromise1, deletePromise2]);
+    // delete image from fs
+    const files = [imagePath, thumbnailPath];
+    files.forEach((file) => {
+      fs.unlinkSync(file);
+    });
 
     res.status(200).json({ message: 'Transformation deleted successfully!' });
   } catch (error) {

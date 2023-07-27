@@ -76,7 +76,7 @@ async function deleteTransformation(id, imagePath, thumbnailPath) {
         counter
       >
         <template #[`image`]="{ item }">
-          <img class="w-24" :src="item.thumbnailPath" />
+          <img class="w-24" :src="'/images/' + item.thumbnailPath" />
         </template>
 
         <template #[`action`]="{ item }">
