@@ -2,8 +2,9 @@
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
 import { useI18n } from 'vue-i18n';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 const store = useStore();
-const { transformations, lang } = storeToRefs(store);
+const { loading, transformations, lang } = storeToRefs(store);
 const { t, locale } = useI18n();
 
 store.getTransformations();
@@ -18,7 +19,12 @@ store.getTransformations();
         {{ t('transformations_title', {}, { locale: lang.value }) }}
       </h1>
 
-      <div class="flex flex-wrap">
+      <LoadingSpinner
+        v-if="loading"
+        class="flex justify-center align-center py-6"
+      />
+
+      <div v-else class="flex flex-wrap">
         <div
           class="lg:w-1/4 sm:w-1/2 p-4"
           v-for="(image, i) in transformations"
