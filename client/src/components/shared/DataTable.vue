@@ -13,7 +13,7 @@ const props = defineProps({
     default() {
       return {
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 5,
       };
     },
   },
@@ -37,6 +37,11 @@ function classObj(value) {
 }
 
 function nextPage() {
+  if (
+    localOptions.value.page >= props.dataLength ||
+    localOptions.value.page >= props.data.length
+  )
+    return;
   localOptions.value.page++;
   emit('update:options', localOptions.value);
 }
@@ -114,6 +119,12 @@ function prevPage() {
         </button>
         <button
           @click="nextPage"
+          :class="
+            localOptions.itemsPerPage <= dataLength ||
+            localOptions.page * localOptions.itemsPerPage >= data.length
+              ? 'cursor-not-allowed focus:outline-none opacity-25'
+              : ''
+          "
           class="inline-grid place-items-center text-2xl text-black bg-white rounded-r-lg border border-black"
         >
           <span class="mdi mdi-chevron-right"></span>
