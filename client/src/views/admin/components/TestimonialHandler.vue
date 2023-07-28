@@ -49,10 +49,12 @@ const testimonialId = ref(null);
 // methods
 async function createTestimonial() {
   try {
+    // request
     const { data } = await axios.post(
       '/api/admin/testimonials',
       newTestimonial.value
     );
+    // reset state
     newTestimonial.value.fullname = '';
     newTestimonial.value.profession = '';
     newTestimonial.value.text.bs = '';
