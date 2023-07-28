@@ -35,7 +35,10 @@ connectDB().then(() => {
 });
 
 // Serve FE
-if (process.env.NODE_ENV === 'production') {
+if (
+  process.env.NODE_ENV === 'production' ||
+  process.env.NODE_ENV === 'staging'
+) {
   app.use(serveStatic(path.join(__dirname, 'client/dist')));
   app.get(/.*/, (req, res) =>
     res.sendFile(path.resolve(__dirname, 'client/dist/index.html'))

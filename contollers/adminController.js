@@ -7,7 +7,6 @@ require('dotenv').config();
 
 // aws s3 bucket from cyclic.sh
 const BUCKET = process.env.CYCLIC_BUCKET_NAME;
-const AWS_REGION = process.env.AWS_REGION;
 // cyclic fs
 const fs = require('@cyclic.sh/s3fs')(BUCKET);
 
@@ -194,8 +193,11 @@ const updateTestimonial = async (req, res) => {
 // @route  /api/admin/testimonials/:id
 // @method delete
 const deleteTestimonial = async (req, res) => {
+  const { id } = req.params;
+  const { avatar } = req.body;
+
   try {
-    const { id } = req.params;
+    await fs.unlinkSync(avatar);
     await Testimonial.deleteOne({ _id: id });
     res.status(200).json({ message: 'Testimonial deleted successfully!' });
   } catch (error) {

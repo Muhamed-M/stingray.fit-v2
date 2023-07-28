@@ -135,9 +135,13 @@ async function updateTestimonial() {
   }
 }
 
-async function deleteTestimonial(id) {
+async function deleteTestimonial(id, avatar) {
   try {
-    const { data } = await axios.delete(`/api/admin/testimonials/${id}`);
+    const { data } = await axios.delete(`/api/admin/testimonials/${id}`, {
+      data: {
+        avatar,
+      },
+    });
     // remove from state
     const index = testimonials.value.findIndex((t) => t.id === id);
     testimonials.value.splice(index, 1);
@@ -272,7 +276,7 @@ function parseToHTML(delta) {
             </button>
 
             <button
-              @click="deleteTestimonial(item._id)"
+              @click="deleteTestimonial(item._id, item.avatar)"
               class="rounded-md bg-red-600 text-white py-1 px-2"
             >
               <span class="mdi mdi-delete text-2xl"></span>
