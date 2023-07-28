@@ -89,14 +89,34 @@ const updateWorkoutPlansPrice = async (req, res) => {
 // @route  /api/admin/testimonials
 // @method post
 const createTestimonial = async (req, res) => {
+  const { fullname, profession, textBs, textEn } = req.body;
+  const { buffer, originalname } = req.file;
+  const filename = Date.now() + path.extname(originalname);
+  // store avatar img
+  const avatarPath = `images-${filename}`;
+
   try {
-    const { fullname, profession, text } = req.body;
+    // optimize image for avatar
+    const avatarImage = await sharp(buffer)
+      .resize(100, 100)
+      .jpeg({ mozjpeg: true, quality: 30 }) // https://cyclic-muddy-hoodie-ox-sa-east-1.s3.sa-east-1.amazonaws.com/images/1690447140955.jpg
+      .toBuffer();
+
+    // upload avatar
+    fs.writeFile(avatarPath, avatarImage, (err) => {
+      if (err) throw err;
+      console.log('Image uploaded successfully!');
+    });
 
     // Create testimonial
     const testimonial = await Testimonial.create({
       fullname,
       profession,
-      text,
+      avatar: avatarPath,
+      text: {
+        bs: textBs,
+        en: textEn,
+      },
     });
 
     res

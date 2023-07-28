@@ -27,7 +27,10 @@ router.post('/auth', authenticateAdmin);
 router.get('/workout-plans', getWorkoutPlans);
 router.patch('/workout-plans/update-price/:id', updateWorkoutPlansPrice);
 // testimonials routes
-router.route('/testimonials').post(createTestimonial).get(getTestimonials);
+router
+  .route('/testimonials')
+  .post(upload.single('image'), createTestimonial)
+  .get(getTestimonials);
 router
   .route('/testimonials/:id')
   .get(getTestimonial)
