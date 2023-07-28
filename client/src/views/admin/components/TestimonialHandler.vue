@@ -1,10 +1,12 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
 import DataTable from '@/components/shared/DataTable.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
 import { toast } from 'vue3-toastify';
 import axios from 'axios';
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 const store = useStore();
 // dispatch get method
 store.getTestimonials();
@@ -12,6 +14,10 @@ store.getTestimonials();
 // refs
 const { testimonials } = storeToRefs(store);
 const testimonialsHeaders = ref([
+  {
+    text: 'Avatar',
+    value: 'avatar',
+  },
   {
     text: 'Full Name',
     value: 'fullname',
@@ -35,7 +41,7 @@ const testimonialsHeaders = ref([
     align: 'center',
   },
 ]);
-const newTestimonial = ref({
+const newTestimonial = reactive({
   fullname: '',
   profession: '',
   text: {
@@ -43,28 +49,39 @@ const newTestimonial = ref({
     bs: '',
   },
 });
+const imageUpload = ref();
 const testimonialsContainer = ref();
 const testimonialId = ref(null);
+const bsEditor = ref();
+const enEditor = ref();
 
 // methods
 async function createTestimonial() {
+  let formData = new FormData();
+  formData.append('image', imageUpload.value.files[0]);
+  formData.append('fullname', newTestimonial.fullname);
+  formData.append('profession', newTestimonial.profession);
+  formData.append('textBs', newTestimonial.text.bs);
+  formData.append('textEn', newTestimonial.text.en);
+
   try {
-    // request
-    const { data } = await axios.post(
-      '/api/admin/testimonials',
-      newTestimonial.value
-    );
-    // reset state
-    newTestimonial.value.fullname = '';
-    newTestimonial.value.profession = '';
-    newTestimonial.value.text.bs = '';
-    newTestimonial.value.text.en = '';
+    const { data } = await axios.post('/api/admin/testimonials', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    newTestimonial.fullname = '';
+    newTestimonial.profession = '';
+    imageUpload.value.value = '';
+    // reset quill editors
+    bsEditor.value.setHTML('');
+    enEditor.value.setHTML('');
     // update state
     testimonials.value.push(data.testimonial);
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -73,63 +90,81 @@ async function getTestimonial(id) {
     // request
     const { data } = await axios.get(
       `/api/admin/testimonials/${id}`,
-      newTestimonial.value
+      newTestimonial
     );
     // set data
     testimonialId.value = id;
-    newTestimonial.value.fullname = data.fullname;
-    newTestimonial.value.profession = data.profession;
-    newTestimonial.value.text.bs = data.text.bs;
-    newTestimonial.value.text.en = data.text.en;
+    newTestimonial.fullname = data.fullname;
+    newTestimonial.profession = data.profession;
+    // set quill editor
+    bsEditor.value.setHTML(data.text.bs);
+    enEditor.value.setHTML(data.text.en);
     // scroll to editor
     await nextTick();
     if (testimonialsContainer.value)
-      testimonialsContainer.value.scrollIntoView({ behavior: 'smooth' });
+      testimonialsContainer.value.scrollIntoView();
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 
 async function updateTestimonial() {
+  let formData = new FormData();
+  formData.append('image', imageUpload.value.files[0]);
+  formData.append('fullname', newTestimonial.fullname);
+  formData.append('profession', newTestimonial.profession);
+  formData.append('textBs', newTestimonial.text.bs);
+  formData.append('textEn', newTestimonial.text.en);
+
   try {
     // request
     const { data } = await axios.put(
       `/api/admin/testimonials/${testimonialId.value}`,
-      newTestimonial.value
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
     // reset state
     testimonialId.value = null;
-    newTestimonial.value.fullname = '';
-    newTestimonial.value.profession = '';
-    newTestimonial.value.text.bs = '';
-    newTestimonial.value.text.en = '';
+    newTestimonial.fullname = '';
+    newTestimonial.profession = '';
+    imageUpload.value.value = '';
+    // reset quill editors
+    bsEditor.value.setHTML('');
+    enEditor.value.setHTML('');
     // update state
     const index = testimonials.value.findIndex(
       (t) => t._id == data.updatedTestimonial._id
     );
     if (index !== -1) {
-      console.log(data.updatedTestimonial);
       testimonials.value[index] = data.updatedTestimonial;
     }
     // success toast message
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 
-async function deleteTestimonial(id) {
+async function deleteTestimonial(id, avatar) {
   try {
-    const { data } = await axios.delete(`/api/admin/testimonials/${id}`);
+    const { data } = await axios.delete(`/api/admin/testimonials/${id}`, {
+      data: {
+        avatar,
+      },
+    });
     // remove from state
     const index = testimonials.value.findIndex((t) => t.id === id);
     testimonials.value.splice(index, 1);
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 </script>
@@ -169,25 +204,54 @@ async function deleteTestimonial(id) {
               />
             </div>
           </div>
+
+          <!-- File input -->
+          <div class="p-2 w-full">
+            <label for="formFile" class="leading-7 text-sm text-gray-600"
+              >Upload avatar</label
+            >
+            <input
+              ref="imageUpload"
+              class="form-control cursor-pointer block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              type="file"
+            />
+          </div>
+
           <div class="p-2 w-full">
             <div class="relative">
               <label for="txtBs" class="leading-7 text-sm text-gray-600">
                 Text (bs)
               </label>
-              <textarea
-                v-model="newTestimonial.text.bs"
-                name="txtBs"
-                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-              ></textarea>
+              <div class="h-36 mb-12">
+                <QuillEditor
+                  ref="bsEditor"
+                  v-model:content="newTestimonial.text.bs"
+                  theme="snow"
+                  :toolbar="[
+                    ['bold', 'italic', 'underline', 'strike', 'link'],
+                    [{ color: ['#0991B1', 'black'] }],
+                  ]"
+                  contentType="html"
+                  name="txtBs"
+                />
+              </div>
 
               <label for="txtEn" class="leading-7 text-sm text-gray-600">
                 Text (en)
               </label>
-              <textarea
-                v-model="newTestimonial.text.en"
-                name="txtEn"
-                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-              ></textarea>
+              <div class="h-36 mb-12">
+                <QuillEditor
+                  ref="enEditor"
+                  v-model:content="newTestimonial.text.en"
+                  theme="snow"
+                  :toolbar="[
+                    ['bold', 'italic', 'underline', 'strike', 'link'],
+                    [{ color: ['#0991B1', 'black'] }],
+                  ]"
+                  contentType="html"
+                  name="txtEn"
+                />
+              </div>
             </div>
           </div>
           <div class="p-2 w-full">
@@ -207,12 +271,21 @@ async function deleteTestimonial(id) {
         counter
         full-width
       >
+        <template #[`avatar`]="{ item }">
+          <img
+            v-if="item.avatar"
+            :src="'/images/' + item.avatar"
+            alt="Person image"
+            class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center"
+          />
+        </template>
+
         <template #[`bs`]="{ item }">
-          <p>{{ item.text.bs }}</p>
+          <div v-html="item.text.bs"></div>
         </template>
 
         <template #[`en`]="{ item }">
-          <p>{{ item.text.en }}</p>
+          <div v-html="item.text.en"></div>
         </template>
 
         <template #[`action`]="{ item }">
@@ -225,7 +298,7 @@ async function deleteTestimonial(id) {
             </button>
 
             <button
-              @click="deleteTestimonial(item._id)"
+              @click="deleteTestimonial(item._id, item.avatar)"
               class="rounded-md bg-red-600 text-white py-1 px-2"
             >
               <span class="mdi mdi-delete text-2xl"></span>

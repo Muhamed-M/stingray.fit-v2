@@ -52,11 +52,14 @@ export const useStore = defineStore({
     },
     // Get testimonials
     async getTestimonials() {
+      this.loading = true;
       try {
         const response = await axios.get('/api/admin/testimonials');
         this.testimonials = response.data;
       } catch (error) {
         console.log(error);
+      } finally {
+        this.loading = false;
       }
     },
     // Get transformations images paths

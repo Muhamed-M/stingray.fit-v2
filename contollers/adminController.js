@@ -2,12 +2,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const sharp = require('sharp');
+const sanitizeHtml = require('sanitize-html');
 // Set up the client
 require('dotenv').config();
 
 // aws s3 bucket from cyclic.sh
 const BUCKET = process.env.CYCLIC_BUCKET_NAME;
-const AWS_REGION = process.env.AWS_REGION;
 // cyclic fs
 const fs = require('@cyclic.sh/s3fs')(BUCKET);
 
@@ -89,14 +89,66 @@ const updateWorkoutPlansPrice = async (req, res) => {
 // @route  /api/admin/testimonials
 // @method post
 const createTestimonial = async (req, res) => {
-  try {
-    const { fullname, profession, text } = req.body;
+  const { fullname, profession, textBs, textEn } = req.body;
+  let avatarPath = '';
 
+  // sanitize HTML input
+  const config = {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'a',
+      'span',
+      'div',
+      'p',
+    ]), // Allow default tags plus "a", "span", "div", "p"
+    allowedAttributes: {
+      '*': ['style'], // Allow "style" for all tags
+      a: ['href'], // Allow "href" for "a" tags
+    },
+    allowedStyles: {
+      '*': {
+        // For all tags
+        color: [/.*/], // Allow the "color" style, accept any value
+        'font-size': [/.*/], // Allow "font-size" style, accept any value
+      },
+    },
+  };
+  const bs = sanitizeHtml(textBs, config);
+  const en = sanitizeHtml(textEn, config);
+
+  if (req.file) {
+    const { buffer, originalname } = req.file;
+    const filename = Date.now() + path.extname(originalname);
+    // store avatar img
+    avatarPath = `images-${filename}`;
+
+    try {
+      // optimize image for avatar
+      const avatarImage = await sharp(buffer)
+        .resize(100, 100)
+        .jpeg({ mozjpeg: true, quality: 30 })
+        .toBuffer();
+
+      // upload avatar
+      fs.writeFile(avatarPath, avatarImage, (err) => {
+        if (err) throw err;
+        console.log('Image uploaded successfully!');
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+  }
+
+  try {
     // Create testimonial
     const testimonial = await Testimonial.create({
       fullname,
       profession,
-      text,
+      avatar: avatarPath,
+      text: {
+        bs,
+        en,
+      },
     });
 
     res
@@ -139,16 +191,41 @@ const getTestimonial = async (req, res) => {
 // @route  /api/admin/testimonials/:id
 // @method put
 const updateTestimonial = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { fullname, profession, text } = req.body;
+  const { id } = req.params;
+  const { fullname, profession, text } = req.body;
+  let avatarPath = '';
 
+  if (req.file) {
+    const { buffer, originalname } = req.file;
+    const filename = Date.now() + path.extname(originalname);
+    // store avatar img
+    avatarPath = `images-${filename}`;
+
+    try {
+      // optimize image for avatar
+      const avatarImage = await sharp(buffer)
+        .resize(100, 100)
+        .jpeg({ mozjpeg: true, quality: 30 })
+        .toBuffer();
+
+      // upload avatar
+      fs.writeFile(avatarPath, avatarImage, (err) => {
+        if (err) throw err;
+        console.log('Image uploaded successfully!');
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+  }
+  try {
     // Create testimonial
     const updatedTestimonial = await Testimonial.findByIdAndUpdate(
       id,
       {
         fullname,
         profession,
+        avatar: avatarPath,
         text,
       },
       { new: true }
@@ -174,8 +251,11 @@ const updateTestimonial = async (req, res) => {
 // @route  /api/admin/testimonials/:id
 // @method delete
 const deleteTestimonial = async (req, res) => {
+  const { id } = req.params;
+  const { avatar } = req.body;
+
   try {
-    const { id } = req.params;
+    if (avatar) await fs.unlinkSync(avatar);
     await Testimonial.deleteOne({ _id: id });
     res.status(200).json({ message: 'Testimonial deleted successfully!' });
   } catch (error) {

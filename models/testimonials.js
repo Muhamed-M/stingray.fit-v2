@@ -10,15 +10,16 @@ const Testimonial = mongoose.Schema({
     type: String,
     maxLength: 30,
   },
+  avatar: {
+    type: String,
+  },
   text: {
     en: {
       type: String,
-      maxLength: 300,
       required: true,
     },
     bs: {
       type: String,
-      maxLength: 300,
       required: true,
     },
   },
