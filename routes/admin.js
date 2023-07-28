@@ -34,7 +34,7 @@ router
 router
   .route('/testimonials/:id')
   .get(getTestimonial)
-  .put(updateTestimonial)
+  .put(upload.single('image'), updateTestimonial)
   .delete(deleteTestimonial);
 // transformations routes
 router.post('/transformations', upload.single('image'), uploadTransformation);

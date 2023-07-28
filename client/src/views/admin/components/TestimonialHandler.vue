@@ -7,7 +7,6 @@ import { toast } from 'vue3-toastify';
 import axios from 'axios';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 const store = useStore();
 // dispatch get method
 store.getTestimonials();
@@ -53,6 +52,8 @@ const newTestimonial = reactive({
 const imageUpload = ref();
 const testimonialsContainer = ref();
 const testimonialId = ref(null);
+const bsEditor = ref();
+const enEditor = ref();
 
 // methods
 async function createTestimonial() {
@@ -60,8 +61,8 @@ async function createTestimonial() {
   formData.append('image', imageUpload.value.files[0]);
   formData.append('fullname', newTestimonial.fullname);
   formData.append('profession', newTestimonial.profession);
-  formData.append('textBs', JSON.stringify(newTestimonial.text.bs));
-  formData.append('textEn', JSON.stringify(newTestimonial.text.en));
+  formData.append('textBs', newTestimonial.text.bs);
+  formData.append('textEn', newTestimonial.text.en);
 
   try {
     const { data } = await axios.post('/api/admin/testimonials', formData, {
@@ -71,15 +72,16 @@ async function createTestimonial() {
     });
     newTestimonial.fullname = '';
     newTestimonial.profession = '';
-    newTestimonial.text.bs = '';
-    newTestimonial.text.en = '';
-    imageUpload.value.files = null;
+    imageUpload.value.value = '';
+    // reset quill editors
+    bsEditor.value.setHTML('');
+    enEditor.value.setHTML('');
     // update state
     testimonials.value.push(data.testimonial);
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -94,44 +96,58 @@ async function getTestimonial(id) {
     testimonialId.value = id;
     newTestimonial.fullname = data.fullname;
     newTestimonial.profession = data.profession;
-    newTestimonial.text.bs = JSON.parse(data.text.bs);
-    newTestimonial.text.en = JSON.parse(data.text.en);
+    // set quill editor
+    bsEditor.value.setHTML(data.text.bs);
+    enEditor.value.setHTML(data.text.en);
     // scroll to editor
     await nextTick();
     if (testimonialsContainer.value)
-      testimonialsContainer.value.scrollIntoView({ behavior: 'smooth' });
+      testimonialsContainer.value.scrollIntoView();
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 
 async function updateTestimonial() {
+  let formData = new FormData();
+  formData.append('image', imageUpload.value.files[0]);
+  formData.append('fullname', newTestimonial.fullname);
+  formData.append('profession', newTestimonial.profession);
+  formData.append('textBs', newTestimonial.text.bs);
+  formData.append('textEn', newTestimonial.text.en);
+
   try {
     // request
     const { data } = await axios.put(
       `/api/admin/testimonials/${testimonialId.value}`,
-      newTestimonial
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
     // reset state
     testimonialId.value = null;
     newTestimonial.fullname = '';
     newTestimonial.profession = '';
-    newTestimonial.text.bs = '';
-    newTestimonial.text.en = '';
+    imageUpload.value.value = '';
+    // reset quill editors
+    bsEditor.value.setHTML('');
+    enEditor.value.setHTML('');
     // update state
     const index = testimonials.value.findIndex(
       (t) => t._id == data.updatedTestimonial._id
     );
     if (index !== -1) {
-      console.log(data.updatedTestimonial);
       testimonials.value[index] = data.updatedTestimonial;
     }
     // success toast message
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -148,14 +164,8 @@ async function deleteTestimonial(id, avatar) {
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
-    console.log(error);
+    console.error(error);
   }
-}
-
-function parseToHTML(delta) {
-  let converter = new QuillDeltaToHtmlConverter(JSON.parse(delta).ops, {});
-  let html = converter.convert();
-  return html;
 }
 </script>
 
@@ -214,9 +224,15 @@ function parseToHTML(delta) {
               </label>
               <div class="h-36 mb-12">
                 <QuillEditor
+                  ref="bsEditor"
                   v-model:content="newTestimonial.text.bs"
-                  name="txtBs"
                   theme="snow"
+                  :toolbar="[
+                    ['bold', 'italic', 'underline', 'strike', 'link'],
+                    [{ color: ['#0991B1', 'black'] }],
+                  ]"
+                  contentType="html"
+                  name="txtBs"
                 />
               </div>
 
@@ -225,9 +241,15 @@ function parseToHTML(delta) {
               </label>
               <div class="h-36 mb-12">
                 <QuillEditor
+                  ref="enEditor"
                   v-model:content="newTestimonial.text.en"
-                  name="txtEn"
                   theme="snow"
+                  :toolbar="[
+                    ['bold', 'italic', 'underline', 'strike', 'link'],
+                    [{ color: ['#0991B1', 'black'] }],
+                  ]"
+                  contentType="html"
+                  name="txtEn"
                 />
               </div>
             </div>
@@ -259,11 +281,11 @@ function parseToHTML(delta) {
         </template>
 
         <template #[`bs`]="{ item }">
-          <div v-html="parseToHTML(item.text.bs)"></div>
+          <div v-html="item.text.bs"></div>
         </template>
 
         <template #[`en`]="{ item }">
-          <div v-html="parseToHTML(item.text.en)"></div>
+          <div v-html="item.text.en"></div>
         </template>
 
         <template #[`action`]="{ item }">
