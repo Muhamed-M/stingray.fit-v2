@@ -1,12 +1,18 @@
 <script setup>
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
 import ButtonComponent from './shared/ButtonComponent.vue';
+import DialogComponent from './shared/DialogComponent.vue';
+import EnrollmentForm from './forms/EnrollmentForm.vue';
 const store = useStore();
 const { lang } = storeToRefs(store);
 
 const { t, locale } = useI18n();
+
+// refs
+const dialog = ref(false);
 </script>
 
 <template>
@@ -18,22 +24,22 @@ const { t, locale } = useI18n();
         <h1
           class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-200"
         >
-          Oslobodite se boli i naučite se kretati bez ograničenja uz naš online
-          coaching program.
+          {{ t('hero_title', {}, { locale: lang.value }) }}
         </h1>
         <p class="mb-8 leading-relaxed text-white">
-          Naš program rješava potencijalo opasne asimetrije, ukočenosti skeleta
-          i bolove, a zatim radi na izgradnji snage, vještine i graciozne
-          kretnje.
+          {{ t('hero_subtitle', {}, { locale: lang.value }) }}
         </p>
         <div class="flex justify-center">
-          <ButtonComponent class="text-gray-700 bg-gray-100 hover:bg-gray-200">
-            <a
+          <ButtonComponent
+            class="text-gray-700 bg-gray-100 hover:bg-gray-200"
+            @click="dialog = true"
+          >
+            <!-- <a
               href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
               target="_blank"
-            >
-              {{ t('button_text_1', {}, { locale: lang.value }) }}
-            </a>
+            > -->
+            {{ t('button_text_1', {}, { locale: lang.value }) }}
+            <!-- </a> -->
           </ButtonComponent>
         </div>
       </div>
@@ -43,6 +49,16 @@ const { t, locale } = useI18n();
       <span class="mdi mdi=chevron-double-down"> </span>
     </a>
   </section>
+
+  <DialogComponent :show="dialog" @close="dialog = false">
+    <template v-slot:title>
+      <h1 class="text-lg">Prijava za online mentorstvo</h1>
+    </template>
+
+    <template v-slot:body>
+      <EnrollmentForm @cancel="dialog = false" />
+    </template>
+  </DialogComponent>
 </template>
 
 <style scoped>

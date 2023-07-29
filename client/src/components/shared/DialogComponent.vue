@@ -52,31 +52,19 @@ function close() {
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <DialogTitle
                       as="h3"
-                      class="text-base font-semibold leading-6 text-gray-900 mb-5 flex justify-between cursor-pointer"
-                      @click="close()"
+                      class="text-base font-semibold leading-6 text-gray-900 mb-5 flex justify-between"
                     >
                       <slot name="title"></slot>
-                      <span class="text-2xl">
+                      <span class="text-2xl cursor-pointer" @click="close()">
                         <span class="mdi mdi-close"></span>
                       </span>
                     </DialogTitle>
-                    <div class="mt-2">
+                    <div>
                       <slot name="body"></slot>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div
-                                class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse justify-center sm:px-6"
-                            >
-                                <button
-                                    type="button"
-                                    class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                    @click="close()"
-                                >
-                                    Close
-                                </button>
-                            </div> -->
             </DialogPanel>
           </TransitionChild>
         </div>

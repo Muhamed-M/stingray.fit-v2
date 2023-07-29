@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // routes
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/enrollments', require('./routes/enrollments'));
 app.use('/images', require('./routes/images'));
 
 //Connect to the database before listening

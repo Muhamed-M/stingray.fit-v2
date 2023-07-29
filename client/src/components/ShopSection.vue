@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ButtonComponent from '@/components/shared/ButtonComponent.vue';
-import DialogComponent from './DialogComponent.vue';
+import DialogComponent from './shared/DialogComponent.vue';
 import DataTable from './shared/DataTable.vue';
 import Logo from './Logo.vue';
 import { storeToRefs } from 'pinia';
