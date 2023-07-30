@@ -1,46 +1,17 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { router } from '@/router';
-
-// get admin if existing
-const admin = JSON.parse(localStorage.getItem('admin'));
 
 export const useStore = defineStore({
   id: 'store',
   state: () => ({
     lang: null,
     loading: false,
-    errorMessage: null,
-    admin: admin ? admin : null,
     workoutPlans: [],
     testimonials: [],
     transformations: [],
   }),
   getters: {},
   actions: {
-    // Log in
-    async authenticate(data) {
-      try {
-        // destructure
-        const { email, password, rememberMe } = data;
-
-        const response = await axios.post('/api/admin/auth', {
-          email,
-          password,
-        });
-
-        // set admin to local storage
-        if (response.data && rememberMe) {
-          localStorage.setItem('admin', JSON.stringify(response.data));
-        }
-
-        this.admin = response.data;
-        this.errorMessage = null;
-        router.push('/admin');
-      } catch (error) {
-        this.errorMessage = error.response.data.message;
-      }
-    },
     // Get workout plans related data
     async getWorkoutPlansData() {
       try {

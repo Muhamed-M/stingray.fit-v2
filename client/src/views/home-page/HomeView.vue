@@ -1,7 +1,6 @@
 <script setup>
 import { defineAsyncComponent } from 'vue';
 
-import NavComponent from '@/components/NavComponent.vue';
 import HeroSection from '@/components/HeroSection.vue';
 const CardsSection = defineAsyncComponent(() =>
   import('@/components/CardsSection.vue')
@@ -31,7 +30,6 @@ const FooterSection = defineAsyncComponent(() =>
 
 <template>
   <div>
-    <NavComponent />
     <HeroSection />
     <CardsSection />
     <AboutSection />

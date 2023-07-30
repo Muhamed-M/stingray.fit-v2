@@ -45,19 +45,14 @@ async function submitEnrollment() {
     });
     // request
     const { data } = await axios.post('/api/enrollments', enrollment);
-    // reset state
-    enrollment.value = {
-      email: '',
-      fullName: '',
-      phoneNumber: '',
-      about: '',
-    };
     // close dialog
     emit('cancel');
     // success toast
     toast.success(data.message, { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
-    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
+    toast.error(error.response.data.message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
     console.log(error);
   }
 }

@@ -2,52 +2,36 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { router } from '@/router';
-import { useStore } from '@/store/index';
-const store = useStore();
-const { admin } = storeToRefs(store);
+import { useAuthStore } from '@/store/auth';
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 // refs
-const drawer = ref(false);
+const drawer = ref(true);
 
 function logout() {
-  admin.value = null;
-  router.push('/admin/auth');
-  localStorage.removeItem('admin');
+  user.value = null;
+  router.push('/auth/login');
+  localStorage.removeItem('user');
 }
 </script>
 
 <template>
   <div>
-    <nav
-      :class="
-        !drawer
-          ? 'sidenav bg-gray-800 flex flex-col'
-          : 'sidenav active bg-gray-800 flex flex-col'
-      "
-    >
-      <router-link to="/"
-        ><img src="@/assets/images/logo.png" alt="logo" class="logo"
-      /></router-link>
-      <router-link
-        to="/admin"
-        class="sidenav-link"
-        exact-active-class="bg-gray-700"
-      >
+    <nav :class="!drawer ? 'sidenav bg-cyan-600 flex flex-col' : 'sidenav active bg-cyan-600 flex flex-col'">
+      <router-link to="/"><img src="@/assets/images/logo.png" alt="logo" class="logo" /></router-link>
+      <router-link to="/admin" class="sidenav-link px-1 py-2" exact-active-class="bg-cyan-500 rounded-lg">
         <span class="mdi mdi-view-dashboard text-4xl"></span>
-        <span v-if="drawer" class="sidenav-text">Page Settings</span>
+        <span v-if="drawer" class="sidenav-text">Dashboard</span>
       </router-link>
-      <router-link
-        to="/admin/blogs"
-        class="sidenav-link"
-        exact-active-class="bg-gray-700"
-      >
-        <span class="mdi mdi-post text-4xl"></span>
-        <span v-if="drawer" class="sidenav-text">Blogs</span>
+      <router-link to="/admin/enrollments" class="sidenav-link px-1 py-2" exact-active-class="bg-cyan-500 rounded-lg">
+        <span class="mdi mdi-file-sign text-4xl"></span>
+        <span v-if="drawer" class="sidenav-text">Enrollments</span>
       </router-link>
-      <div class="sidenav-link">
+      <router-link to="/admin/settings" class="sidenav-link px-1 py-2" exact-active-class="bg-cyan-500 rounded-lg">
         <span class="mdi mdi-cog text-4xl"></span>
         <span v-if="drawer" class="sidenav-text">Settings</span>
-      </div>
+      </router-link>
     </nav>
     <main :class="!drawer ? 'main' : 'main active'">
       <header class="header flex justify-between align-center">
@@ -58,7 +42,7 @@ function logout() {
           <!-- <img src="@/assets/images/logo.png" alt="avatar" /> -->
           <span class="mdi mdi-account text-4xl mt-2"></span>
           <div class="dropdown">
-            <h5>{{ admin?.name }}</h5>
+            <h5>{{ user?.name }}</h5>
             <button
               @click="logout()"
               class="flex items-center text-white bg-gray-700 border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded mt-2"
@@ -69,7 +53,9 @@ function logout() {
           </div>
         </div>
       </header>
-      <router-view />
+      <div class="bg-slate-200">
+        <router-view />
+      </div>
     </main>
   </div>
 </template>
@@ -161,10 +147,5 @@ function logout() {
   background-color: #fff;
   border: 1px solid #000;
   padding: 1rem;
-}
-
-.material-symbols-outlined {
-  font-size: 48px;
-  font-variation-settings: 'OPSZ' 48;
 }
 </style>

@@ -3,6 +3,9 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router';
 import './global.css';
+// Table
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 //i18
 import { createI18n } from 'vue-i18n';
 import messages from '@/utils/locales/messages';
@@ -20,6 +23,7 @@ const i18n = createI18n({
 
 const app = createApp(App);
 app.use(createPinia());
+app.component('DataTable', Vue3EasyDataTable);
 app.use(i18n);
 app.use(Vue3Toastify, {
   autoClose: 3000,

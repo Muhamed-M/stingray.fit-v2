@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import Logo from './Logo.vue';
-import Select from './shared/Select.vue';
+import Logo from '@/components/Logo.vue';
+import Select from '@/components/shared/Select.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
+import { RouterView } from 'vue-router';
 const store = useStore();
 const { lang } = storeToRefs(store);
 
@@ -84,6 +85,7 @@ function closeMenu() {
       </div>
     </div>
   </nav>
+  <RouterView></RouterView>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

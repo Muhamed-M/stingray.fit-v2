@@ -1,71 +1,90 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useStore } from '@/store/index';
+import { useAuthStore } from '@/store/auth';
 
 export const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('@/layouts/stacked-layout/StackedLayout.vue'),
+      children: [
         {
-            path: '/',
-            name: 'home',
-            component: () => import('@/views/home-page/HomeView.vue')
+          path: '/',
+          component: () => import('@/views/home-page/HomeView.vue'),
+        },
+      ],
+    },
+    {
+      path: '/policies',
+      name: 'policies',
+      component: () => import('@/views/policies/index.vue'),
+      children: [
+        {
+          path: 'terms',
+          component: () => import('@/views/policies/components/Terms.vue'),
         },
         {
-            path: '/policies',
-            name: 'policies',
-            component: () => import('@/views/policies/index.vue'),
-            children: [
-                {
-                    path: 'terms',
-                    component: () => import('@/views/policies/components/Terms.vue')
-                },
-                {
-                    path: 'privacy',
-                    component: () => import('@/views/policies/components/Privacy.vue')
-                },
-                {
-                    path: 'security-capabilities',
-                    component: () => import('@/views/policies/components/Security.vue')
-                }
-            ]
+          path: 'privacy',
+          component: () => import('@/views/policies/components/Privacy.vue'),
         },
         {
-            path: '/admin/auth',
-            name: 'admin-auth',
-            component: () => import('@/views/authentication/AuthView.vue'),
-            // if user is authenticated prevent from reaching auth page
-            beforeEnter: (to, from, next) => {
-                const store = useStore();
-                if (store.admin) {
-                    next('/admin');
-                } else {
-                    next();
-                }
-            }
+          path: 'security-capabilities',
+          component: () => import('@/views/policies/components/Security.vue'),
         },
+      ],
+    },
+    {
+      path: '/auth',
+      name: 'auth',
+      component: () => import('@/layouts/blank/BlankLayout.vue'),
+      children: [
         {
-            path: '/admin',
-            name: 'admin',
-            component: () => import('@/views/admin/AdminView.vue'),
-            children: [
-                {
-                    path: '',
-                    name: 'page-settings',
-                    component: () => import('@/views/admin/AdminPageSettingsView.vue')
-                },
-                {
-                    path: 'blogs',
-                    component: () => import('@/views/admin/AdminBlogsView.vue')
-                }
-            ],
-            // if user is not authenticated redirect to auth page
-            beforeEnter: (to, from, next) => {
-                const store = useStore();
-                if (!store.admin || !store.admin.token) {
-                    next('/admin/auth');
-                } else {
-                    next();
-                }
-            }
+          path: 'login',
+          name: 'login',
+          component: () => import('@/views/authentication/Login.vue'),
+        },
+      ],
+      // if user is authenticated prevent from reaching auth page
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore();
+        if (authStore.user) {
+          next('/admin');
+        } else {
+          next();
         }
-    ]
+      },
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/layouts/sidebar-layout/SidebarLayout.vue'),
+      children: [
+        {
+          path: '/',
+          name: 'dashboard',
+          component: () => import('@/views/admin/Dashboard.vue'),
+        },
+        {
+          path: 'enrollments',
+          name: 'enrollments',
+          component: () => import('@/views/admin/Enrollments.vue'),
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/views/admin/AdminPageSettings.vue'),
+        },
+      ],
+      // if user is not authenticated redirect to auth page
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore();
+        if (!authStore.user || !authStore.user.token) {
+          next('/auth/login');
+        } else {
+          next();
+        }
+      },
+    },
+  ],
 });
