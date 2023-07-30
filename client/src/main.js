@@ -12,6 +12,8 @@ import messages from '@/utils/locales/messages';
 // toast
 import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+// charts
+import VueApexCharts from 'vue3-apexcharts';
 
 const i18n = createI18n({
   locale: 'en',
@@ -28,4 +30,5 @@ app.use(i18n);
 app.use(Vue3Toastify, {
   autoClose: 3000,
 });
+app.use(VueApexCharts);
 app.use(router).mount('#app');

@@ -1,5 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
+
+// state
+const loading = ref(false);
+const enrollments = ref([]);
 
 const headers = [
   { text: 'Email', value: 'email' },
@@ -9,10 +14,24 @@ const headers = [
   { text: 'Status', value: 'status' },
   { text: 'Created At', value: 'createdAt' },
 ];
+
+async function fetchEnrollments() {
+  loading.value = true;
+
+  try {
+    const { data } = await axios.get('/api/enrollments');
+    enrollments.value = data;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+}
+fetchEnrollments();
 </script>
 
 <template>
   <div class="p-6">
-    <DataTable :headers="headers" :items="[]" :rows-per-page="10"></DataTable>
+    <DataTable :headers="headers" :items="enrollments" :loading="loading" :rows-per-page="10"></DataTable>
   </div>
 </template>

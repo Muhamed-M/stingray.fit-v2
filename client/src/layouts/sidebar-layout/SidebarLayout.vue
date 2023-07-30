@@ -3,11 +3,17 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { router } from '@/router';
 import { useAuthStore } from '@/store/auth';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
 // refs
 const drawer = ref(true);
+const userNavigation = [
+  // { name: 'Your Profile', href: '#' },
+  // { name: 'Settings', href: '#' },
+  { name: 'Sign out', icon: 'mdi-logout', function: logout },
+];
 
 function logout() {
   user.value = null;
@@ -38,20 +44,42 @@ function logout() {
         <button class="btn" @click="drawer = !drawer">
           <span class="mdi mdi-menu btn-drawer text-gray-800"></span>
         </button>
-        <div class="avatar flex justify-center align-center">
-          <!-- <img src="@/assets/images/logo.png" alt="avatar" /> -->
-          <span class="mdi mdi-account text-4xl mt-2"></span>
-          <div class="dropdown">
-            <h5>{{ user?.name }}</h5>
-            <button
-              @click="logout()"
-              class="flex items-center text-white bg-gray-700 border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded mt-2"
+
+        <!-- Profile dropdown -->
+        <Menu as="div" class="relative ml-3">
+          <div>
+            <MenuButton
+              class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
-              <span class="mdi mdi-logout text-xl"></span>
-              Sign Out
-            </button>
+              <span class="absolute -inset-1.5" />
+              <span class="sr-only">Open user menu</span>
+              <img v-if="user?.image" class="h-8 w-8 rounded-full" :src="user.image" alt="" />
+              <span v-else class="mdi mdi-account text-white text-3xl px-2 py-1"></span>
+            </MenuButton>
           </div>
-        </div>
+          <transition
+            enter-active-class="transition ease-out duration-100"
+            enter-from-class="transform opacity-0 scale-95"
+            enter-to-class="transform opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="transform opacity-100 scale-100"
+            leave-to-class="transform opacity-0 scale-95"
+          >
+            <MenuItems
+              class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            >
+              <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+                <span
+                  :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 cursor-pointer']"
+                  @click="item.function"
+                >
+                  <span class="mdi" :class="item.icon"></span>
+                  {{ item.name }}
+                </span>
+              </MenuItem>
+            </MenuItems>
+          </transition>
+        </Menu>
       </header>
       <div class="bg-slate-200">
         <router-view />
@@ -124,28 +152,5 @@ function logout() {
 
 .btn-drawer:hover {
   transform: translateX(5px);
-}
-
-.avatar {
-  cursor: pointer;
-  position: relative;
-  width: 65px;
-  height: 65px;
-  border: 2px solid #000;
-  border-radius: 50%;
-}
-
-.avatar:hover .dropdown {
-  display: block;
-}
-
-.dropdown {
-  display: none;
-  position: absolute;
-  left: -140%;
-  bottom: -150%;
-  background-color: #fff;
-  border: 1px solid #000;
-  padding: 1rem;
 }
 </style>

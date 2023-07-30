@@ -12,32 +12,32 @@ const BUCKET = process.env.CYCLIC_BUCKET_NAME;
 const fs = require('@cyclic.sh/s3fs')(BUCKET);
 
 // models
-const Admin = require('../models/admin');
-const WorkoutPlans = require('../models/workoutPlans');
-const Testimonial = require('../models/testimonials');
-const Transformation = require('../models/transformations');
+const User = require('../models/user');
+const WorkoutPlan = require('../models/workoutPlan');
+const Testimonial = require('../models/testimonial');
+const Transformation = require('../models/transformation');
 
 // JWT Generator
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-// @desc   Authenticate admin
+// @desc   Authenticate user
 // @route  /api/admin
 // @method post
 const authenticateAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check for admin email
-    const admin = await Admin.findOne({ email });
+    // Check for user email
+    const user = await User.findOne({ email });
 
-    if (admin && (await bcrypt.compare(password, admin.password))) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
-        _id: admin.id,
-        name: admin.name,
-        email: admin.email,
-        token: generateToken(admin._id),
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
       });
     } else {
       res.status(400).json({
@@ -57,7 +57,7 @@ const authenticateAdmin = async (req, res) => {
 const getWorkoutPlans = async (req, res) => {
   try {
     // find workout plans related data
-    const workoutPlans = await WorkoutPlans.find();
+    const workoutPlans = await WorkoutPlan.find();
     res.json(workoutPlans);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -76,7 +76,7 @@ const updateWorkoutPlansPrice = async (req, res) => {
     const price = onlinePrice ? onlinePrice : personalPrice;
 
     // update price
-    await WorkoutPlans.findByIdAndUpdate(id, { price: price });
+    await WorkoutPlan.findByIdAndUpdate(id, { price: price });
     res.status(200).json({ message: 'Price updated successfully!' });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -94,12 +94,7 @@ const createTestimonial = async (req, res) => {
 
   // sanitize HTML input
   const config = {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-      'a',
-      'span',
-      'div',
-      'p',
-    ]), // Allow default tags plus "a", "span", "div", "p"
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['a', 'span', 'div', 'p']), // Allow default tags plus "a", "span", "div", "p"
     allowedAttributes: {
       '*': ['style'], // Allow "style" for all tags
       a: ['href'], // Allow "href" for "a" tags
@@ -123,10 +118,7 @@ const createTestimonial = async (req, res) => {
 
     try {
       // optimize image for avatar
-      const avatarImage = await sharp(buffer)
-        .resize(100, 100)
-        .jpeg({ mozjpeg: true, quality: 30 })
-        .toBuffer();
+      const avatarImage = await sharp(buffer).resize(100, 100).jpeg({ mozjpeg: true, quality: 30 }).toBuffer();
 
       // upload avatar
       fs.writeFile(avatarPath, avatarImage, (err) => {
@@ -151,9 +143,7 @@ const createTestimonial = async (req, res) => {
       },
     });
 
-    res
-      .status(200)
-      .json({ testimonial, message: 'Testimonial created successfully!' });
+    res.status(200).json({ testimonial, message: 'Testimonial created successfully!' });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -203,10 +193,7 @@ const updateTestimonial = async (req, res) => {
 
     try {
       // optimize image for avatar
-      const avatarImage = await sharp(buffer)
-        .resize(100, 100)
-        .jpeg({ mozjpeg: true, quality: 30 })
-        .toBuffer();
+      const avatarImage = await sharp(buffer).resize(100, 100).jpeg({ mozjpeg: true, quality: 30 }).toBuffer();
 
       // upload avatar
       fs.writeFile(avatarPath, avatarImage, (err) => {
@@ -232,9 +219,7 @@ const updateTestimonial = async (req, res) => {
     );
 
     if (!updatedTestimonial) {
-      return res
-        .status(404)
-        .send('Testimonial with the given id was not found.');
+      return res.status(404).send('Testimonial with the given id was not found.');
     }
 
     res.status(200).json({
@@ -277,9 +262,7 @@ const uploadTransformation = async (req, res) => {
 
   try {
     // optimize image
-    const optimizedImage = await sharp(buffer)
-      .jpeg({ mozjpeg: true, quality: 30 })
-      .toBuffer();
+    const optimizedImage = await sharp(buffer).jpeg({ mozjpeg: true, quality: 30 }).toBuffer();
 
     // optimize image for thumbnails
     const thumbnailImage = await sharp(buffer)

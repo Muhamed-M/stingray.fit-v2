@@ -5,6 +5,10 @@ export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/:pathMatch(.*)*',
+      component: () => import('@/views/maintenance/error/Error404.vue'),
+    },
+    {
       path: '/',
       name: 'home',
       component: () => import('@/layouts/stacked-layout/StackedLayout.vue'),
@@ -61,7 +65,7 @@ export const router = createRouter({
       component: () => import('@/layouts/sidebar-layout/SidebarLayout.vue'),
       children: [
         {
-          path: '/',
+          path: '',
           name: 'dashboard',
           component: () => import('@/views/admin/Dashboard.vue'),
         },
