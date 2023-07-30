@@ -41,18 +41,22 @@ const submitEnrollment = async (req, res) => {
 // @route  private /api/enrollments
 // @method get
 const getEnrollments = async (req, res) => {
+  const { options } = req.query;
+
   try {
     // get all enrollments
-    const enrollments = await CoachingEnrollment.find();
+    const enrollments = await CoachingEnrollment.find()
+      .skip((options.page - 1) * options.rowsPerPage)
+      .limit(options.rowsPerPage)
+      .sort({ createdAt: -1 }); // Sorting in descending order by createdAt
+
+    const enrollmentsCount = await CoachingEnrollment.countDocuments();
 
     // Send a success response
-    res.status(200).json(enrollments);
+    res.status(200).json({ enrollments, enrollmentsCount });
   } catch (error) {
     console.log(error);
-    // Handle any errors that occur during the save
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
