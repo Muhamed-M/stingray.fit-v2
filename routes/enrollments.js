@@ -6,7 +6,8 @@ const {
   submitEnrollment,
   getEnrollments,
   getEnrollmentStatistics,
-  acceptEnrollment,
+  updateEnrollment,
+  deleteEnrollment,
 } = require('../contollers/enrollmentsController');
 
 // middlewares
@@ -14,7 +15,7 @@ const { protect } = require('../middlewares/authMiddleware');
 
 /* <===== ROUTES =====> */
 router.route('/').post(submitEnrollment).get(protect, getEnrollments);
+router.route('/:id').put(protect, updateEnrollment).delete(protect, deleteEnrollment);
 router.get('/dashboard', getEnrollmentStatistics);
-router.put('/accept/:id', protect, acceptEnrollment);
 
 module.exports = router;

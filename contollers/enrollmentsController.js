@@ -36,11 +36,16 @@ const submitEnrollment = async (req, res) => {
 // @route  private /api/enrollments
 // @method get
 const getEnrollments = async (req, res) => {
-  const { options } = req.query;
+  const { options, filters } = req.query;
+  const whereObj = {};
+
+  if (filters.status) {
+    whereObj.status = filters.status;
+  }
 
   try {
     // get all enrollments
-    const enrollments = await CoachingEnrollment.find()
+    const enrollments = await CoachingEnrollment.find(whereObj)
       .skip((options.page - 1) * options.rowsPerPage)
       .limit(options.rowsPerPage)
       .sort({ createdAt: -1 }); // Sorting in descending order by createdAt
@@ -96,17 +101,18 @@ const getEnrollmentStatistics = async (req, res) => {
   }
 };
 
-// @desc   Accept enrollment
-// @route  private /api/enrollments
+// @desc   Accept/decline/close enrollment
+// @route  private /api/enrollments/:id
 // @method PUT
-const acceptEnrollment = async (req, res) => {
+const updateEnrollment = async (req, res) => {
   const { id } = req.params;
+  const { status } = req.body;
 
   try {
     // Update enrollment document
     const enrollment = await CoachingEnrollment.findByIdAndUpdate(id, {
       new: false,
-      status: 'active',
+      status,
     });
 
     // send email
@@ -121,13 +127,34 @@ const acceptEnrollment = async (req, res) => {
 
     // Send a success response
     res.status(200).json({
-      message: 'Enrollment accepted successfully',
+      message: 'Enrollment updated successfully!',
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: error.message,
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc   Delete enrollment
+// @route  private /api/enrollments/:id
+// @method DELETE
+const deleteEnrollment = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Update enrollment document
+    const enrollment = await CoachingEnrollment.findByIdAndUpdate(id, {
+      new: false,
+      status: 'deleted',
     });
+
+    // Send a success response
+    res.status(200).json({
+      message: 'Enrollment deleted successfully!',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -135,5 +162,6 @@ module.exports = {
   submitEnrollment,
   getEnrollments,
   getEnrollmentStatistics,
-  acceptEnrollment,
+  updateEnrollment,
+  deleteEnrollment,
 };

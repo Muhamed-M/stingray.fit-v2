@@ -4,18 +4,12 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 
 const now = Date.now();
+
 // get user if existing
 let savedUser = JSON.parse(localStorage.getItem('user')) || null;
 // If session expired remove user
 if (savedUser?.expiresOn && savedUser?.expiresOn < now) {
-  toast.warning('Your session has expired!', {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
-  setTimeout(() => {
-    localStorage.removeItem('user');
-    router.push('/auth/login');
-    location.reload();
-  }, 3000);
+  localStorage.removeItem('user');
 }
 // add bearer token if in local storage
 if (savedUser) {

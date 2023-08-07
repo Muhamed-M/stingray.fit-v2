@@ -61,27 +61,15 @@ function closeMenu() {
   <nav :class="isSticky ? 'nav-container sticky bg-gray-800' : 'nav-container'">
     <div class="container px-5 py-3 mx-auto flex justify-between items-center">
       <Logo />
-      <span @click="navToggle = true" class="mdi mdi-menu hamburger-btn">
-      </span>
+      <span @click="navToggle = true" class="mdi mdi-menu hamburger-btn"> </span>
       <div :class="navToggle ? 'nav active' : 'nav'">
         <span @click="navToggle = false" class="mdi mdi-close close-btn"></span>
 
         <!-- loop through links and display them -->
-        <a
-          @click="closeMenu()"
-          v-for="(link, i) in links"
-          :key="i"
-          class="nav-link"
-          :href="link.href"
-        >
+        <a @click="closeMenu()" v-for="(link, i) in links" :key="i" class="nav-link" :href="link.href">
           {{ link.text }}
         </a>
-        <Select
-          v-model="lang"
-          :selected="lang"
-          :locales="locales"
-          class="w-44"
-        />
+        <Select v-model="lang" :selected="lang" :items="locales" mdiIcon="mdi-translate" text="lang" class="w-44" />
       </div>
     </div>
   </nav>

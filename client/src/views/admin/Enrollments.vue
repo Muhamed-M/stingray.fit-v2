@@ -4,6 +4,7 @@ import axios from 'axios';
 import { DateTime } from 'luxon';
 import { toast } from 'vue3-toastify';
 import Card from '@/components/shared/Card.vue';
+import Select from '@/components/shared/Select.vue';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 
 // state
@@ -23,13 +24,31 @@ const headers = [
   { text: 'Created At', value: 'createdAt' },
   { text: 'Actions', value: 'actions' },
 ];
+// return css class to highlight the new/unread enrollments
+const bodyRowClassNameFunction = (item, rowNumber) => {
+  if (item.new) return 'highlight-row';
+};
+// filter items
+const statuses = [
+  { text: 'All', value: '' },
+  { text: 'Active', value: 'active' },
+  { text: 'Declined', value: 'declined' },
+  { text: 'Closed', value: 'closed' },
+  { text: 'Pending', value: 'pending' },
+];
+const statusFilter = ref(statuses[0]);
 
 async function fetchEnrollments(options) {
   loading.value = true;
 
   try {
     const { data } = await axios.get('/api/enrollments', {
-      params: { options },
+      params: {
+        options,
+        filters: {
+          status: statusFilter.value.value,
+        },
+      },
     });
     enrollments.value = data.enrollments;
     enrollmentsCount.value = data.enrollmentsCount;
@@ -40,17 +59,38 @@ async function fetchEnrollments(options) {
   }
 }
 
-async function acceptEnrollment(id) {
+async function updateEnrollment(id, status, message) {
   loading.value = true;
 
   try {
     // request
-    await axios.put(`/api/enrollments/accept/${id}`);
+    await axios.put(`/api/enrollments/accept/${id}`, { status });
+    // update state
     const index = enrollments.value.findIndex((e) => (e._id = id));
     if (index > -1) {
-      enrollments.value[index].pending = 'active';
+      enrollments.value[index].pending = status;
       enrollments.value[index].new = false;
     }
+    // message
+    toast.success(`Enrollment ${message} successfully!`, { position: toast.POSITION.BOTTOM_CENTER });
+  } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function deleteEnrollment(id) {
+  loading.value = true;
+
+  try {
+    // request
+    await axios.delete(`/api/enrollments/accept/${id}`);
+    // remove from state
+    enrollments.value = enrollments.value.filter((e) => e._id !== id);
+    // message
+    toast.success('Enrollment deleted successfully!', { position: toast.POSITION.BOTTOM_CENTER });
   } catch (error) {
     toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
     console.log(error);
@@ -67,12 +107,30 @@ watch(
   },
   { immediate: true }
 );
+
+// filtrs
+watch(statusFilter, () => {
+  fetchEnrollments(serverOptions.value);
+});
 </script>
 
 <template>
   <div class="p-6">
     <Card>
-      <template #card-title>All Enrollments</template>
+      <template #card-title>
+        <div class="flex justify-between items-center">
+          <h3 class="text-gray-900 text-base leading-6 font-semibold">All Enrollments</h3>
+
+          <Select
+            v-model="statusFilter"
+            :selected="statusFilter"
+            :items="statuses"
+            text="text"
+            mdiIcon="mdi-tune"
+            class="w-44"
+          />
+        </div>
+      </template>
       <template #card-body>
         <DataTable
           :headers="headers"
@@ -80,6 +138,7 @@ watch(
           v-model:server-options="serverOptions"
           :server-items-length="enrollmentsCount"
           :loading="loading"
+          :body-row-class-name="bodyRowClassNameFunction"
         >
           <template #item-createdAt="{ createdAt }">
             <span>
@@ -112,14 +171,38 @@ watch(
                     <MenuItem>
                       <span
                         class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
-                        @click="acceptEnrollment(item._id)"
-                        >Accept</span
+                        @click="updateEnrollment(item._id, 'active', 'accepted')"
                       >
+                        <span class="mdi mdi-check-decagram"></span>
+                        Accept
+                      </span>
                     </MenuItem>
                     <MenuItem>
-                      <span class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
-                        >Decline</span
+                      <span
+                        class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
+                        @click="updateEnrollment(item._id, 'declined', 'declined')"
                       >
+                        <span class="mdi mdi-close-circle-outline"></span>
+                        Decline
+                      </span>
+                    </MenuItem>
+                    <MenuItem v-if="item.status === 'active'">
+                      <span
+                        class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
+                        @click="updateEnrollment(item._id, 'closed', 'closed')"
+                      >
+                        <span class="mdi mdi-calendar-remove"></span>
+                        Close
+                      </span>
+                    </MenuItem>
+                    <MenuItem>
+                      <span
+                        class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
+                        @click="deleteEnrollment(item._id)"
+                      >
+                        <span class="mdi mdi-delete"></span>
+                        Delete
+                      </span>
                     </MenuItem>
                   </div>
                 </MenuItems>
@@ -131,3 +214,9 @@ watch(
     </Card>
   </div>
 </template>
+
+<style>
+.highlight-row {
+  --easy-table-body-row-background-color: #efeded;
+}
+</style>

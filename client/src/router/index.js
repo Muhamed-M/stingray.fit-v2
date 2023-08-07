@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/store/auth';
+import AuthRoutes from './authRoutes';
+import AdminRoutes from './adminRoutes';
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,57 +39,7 @@ export const router = createRouter({
         },
       ],
     },
-    {
-      path: '/auth',
-      name: 'auth',
-      component: () => import('@/layouts/blank/BlankLayout.vue'),
-      children: [
-        {
-          path: 'login',
-          name: 'login',
-          component: () => import('@/views/authentication/Login.vue'),
-        },
-      ],
-      // if user is authenticated prevent from reaching auth page
-      beforeEnter: (to, from, next) => {
-        const authStore = useAuthStore();
-        if (authStore.user) {
-          next('/admin');
-        } else {
-          next();
-        }
-      },
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: () => import('@/layouts/sidebar-layout/SidebarLayout.vue'),
-      children: [
-        {
-          path: '',
-          name: 'dashboard',
-          component: () => import('@/views/admin/Dashboard.vue'),
-        },
-        {
-          path: 'enrollments',
-          name: 'enrollments',
-          component: () => import('@/views/admin/Enrollments.vue'),
-        },
-        {
-          path: 'settings',
-          name: 'settings',
-          component: () => import('@/views/admin/AdminPageSettings.vue'),
-        },
-      ],
-      // if user is not authenticated redirect to auth page
-      beforeEnter: (to, from, next) => {
-        const authStore = useAuthStore();
-        if (!authStore.user || !authStore.user.token) {
-          next('/auth/login');
-        } else {
-          next();
-        }
-      },
-    },
+    AuthRoutes,
+    AdminRoutes,
   ],
 });

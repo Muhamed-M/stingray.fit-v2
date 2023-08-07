@@ -42,7 +42,7 @@ const coachingEnrollmentsSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'active', 'closed', 'deleted'],
+      enum: ['pending', 'active', 'declined', 'closed', 'deleted'],
       default: 'pending',
     },
   },
