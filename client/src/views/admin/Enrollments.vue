@@ -1,7 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { DateTime } from 'luxon';
+import { toast } from 'vue3-toastify';
 import Card from '@/components/shared/Card.vue';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 
@@ -39,6 +40,25 @@ async function fetchEnrollments(options) {
   }
 }
 
+async function acceptEnrollment(id) {
+  loading.value = true;
+
+  try {
+    // request
+    await axios.put(`/api/enrollments/accept/${id}`);
+    const index = enrollments.value.findIndex((e) => (e._id = id));
+    if (index > -1) {
+      enrollments.value[index].pending = 'active';
+      enrollments.value[index].new = false;
+    }
+  } catch (error) {
+    toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+}
+
 // pagination
 watch(
   serverOptions,
@@ -63,7 +83,7 @@ watch(
         >
           <template #item-createdAt="{ createdAt }">
             <span>
-              {{ format(new Date(createdAt), 'dd MMM y') }}
+              {{ DateTime.fromISO(createdAt).toFormat('dd LLL yyyy') }}
             </span>
           </template>
 
@@ -90,7 +110,16 @@ watch(
                 >
                   <div class="py-1">
                     <MenuItem>
-                      <span class="text-gray-700 block px-4 py-2 text-sm cursor-pointer">Accept</span>
+                      <span
+                        class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
+                        @click="acceptEnrollment(item._id)"
+                        >Accept</span
+                      >
+                    </MenuItem>
+                    <MenuItem>
+                      <span class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
+                        >Decline</span
+                      >
                     </MenuItem>
                   </div>
                 </MenuItems>

@@ -1,20 +1,15 @@
 // models
 const CoachingEnrollment = require('../models/coachingEnrollment');
+// services
+const { sendEmail } = require('../services/sendgrid');
 
 // @desc   Submit enrollment
 // @route  public /api/enrollments
 // @method post
 const submitEnrollment = async (req, res) => {
-  const { email, fullName, phoneNumber, about } = req.body;
-
   try {
     // Create a new enrollment document
-    const enrollment = await CoachingEnrollment.create({
-      email,
-      fullName,
-      phoneNumber,
-      about,
-    });
+    const enrollment = await CoachingEnrollment.create(req.body);
 
     // Send a success response
     res.status(201).json({
@@ -101,8 +96,44 @@ const getEnrollmentStatistics = async (req, res) => {
   }
 };
 
+// @desc   Accept enrollment
+// @route  private /api/enrollments
+// @method PUT
+const acceptEnrollment = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Update enrollment document
+    const enrollment = await CoachingEnrollment.findByIdAndUpdate(id, {
+      new: false,
+      status: 'active',
+    });
+
+    // send email
+    sendEmail({
+      from: {
+        email: 'ilhan@stingray.fit',
+        name: 'Stingray Performance',
+      }, // Change to your verified sender
+      to: enrollment.email, // Change to your recipient
+      template_id: 'd-999186d08e14417395981505e5dfe087',
+    });
+
+    // Send a success response
+    res.status(200).json({
+      message: 'Enrollment accepted successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   submitEnrollment,
   getEnrollments,
   getEnrollmentStatistics,
+  acceptEnrollment,
 };
