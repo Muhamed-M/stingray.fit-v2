@@ -123,6 +123,9 @@ const updateEnrollment = async (req, res) => {
       }, // Change to your verified sender
       to: enrollment.email, // Change to your recipient
       template_id: 'd-999186d08e14417395981505e5dfe087',
+      dynamic_template_data: {
+        fullName: enrollment.fullName.split(' ')[0],
+      },
     });
 
     // Send a success response
