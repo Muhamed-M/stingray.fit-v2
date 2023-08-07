@@ -64,7 +64,7 @@ async function updateEnrollment(id, status, message) {
 
   try {
     // request
-    await axios.put(`/api/enrollments/accept/${id}`, { status });
+    await axios.put(`/api/enrollments/${id}`, { status });
     // update state
     const index = enrollments.value.findIndex((e) => (e._id = id));
     if (index > -1) {
