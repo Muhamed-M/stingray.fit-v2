@@ -1,12 +1,18 @@
 <script setup>
+import {ref} from 'vue';
 import ButtonComponent from '@/components/shared/ButtonComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
+import DialogComponent from './shared/DialogComponent.vue';
+import EnrollmentForm from './forms/EnrollmentForm.vue';
 const store = useStore();
 const { lang } = storeToRefs(store);
 
 const { t, locale } = useI18n();
+
+// refs 
+const dialog = ref(false);
 </script>
 
 <template>
@@ -86,14 +92,12 @@ const { t, locale } = useI18n();
           {{ t('about_p_2', {}, { locale: lang.value }) }}
         </p> -->
 
-        <ButtonComponent class="mb-4 bg-cyan-600 hover:bg-cyan-700 text-white">
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
-            target="_blank"
+        <ButtonComponent
+            class="mb-4 bg-cyan-600 hover:bg-cyan-700 text-white"
+            @click="dialog = true"
           >
             {{ t('button_text_1', {}, { locale: lang.value }) }}
-          </a>
-        </ButtonComponent>
+          </ButtonComponent>
 
         <!-- Social links -->
         <div class="flex justify-center items-center gap-3">
@@ -117,4 +121,14 @@ const { t, locale } = useI18n();
       </div>
     </div>
   </section>
+
+  <DialogComponent :show="dialog" @close="dialog = false">
+    <template v-slot:title>
+      <h1 class="text-lg">Prijava za online mentorstvo</h1>
+    </template>
+
+    <template v-slot:body>
+      <EnrollmentForm @cancel="dialog = false" />
+    </template>
+  </DialogComponent>
 </template>

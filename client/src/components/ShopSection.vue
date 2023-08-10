@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import ButtonComponent from '@/components/shared/ButtonComponent.vue';
 import DialogComponent from './shared/DialogComponent.vue';
 import DataTable from './shared/DataTable.vue';
+import EnrollmentForm from './forms/EnrollmentForm.vue';
 import Logo from './Logo.vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/store/index';
@@ -16,6 +17,7 @@ store.getWorkoutPlansData();
 //refs
 const open1 = ref(false);
 const open2 = ref(false);
+const dialog = ref(false);
 const trening1Headers = ref([
   {
     text: 'Vježba',
@@ -192,15 +194,11 @@ const disanjeData = ref([
             </p>
 
             <ButtonComponent
-              class="block mx-auto bg-cyan-600 hover:bg-cyan-700 text-white"
-            >
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
-                target="_blank"
-              >
-                {{ t('button_text_1', {}, { locale: lang.value }) }}
-              </a>
-            </ButtonComponent>
+            class="block mx-auto bg-cyan-600 hover:bg-cyan-700 text-white"
+            @click="dialog = true"
+          >
+            {{ t('button_text_3', {}, { locale: lang.value }) }}
+          </ButtonComponent>
           </template>
         </DialogComponent>
       </div>
@@ -245,15 +243,11 @@ const disanjeData = ref([
               {{ t('product_2_p_5', {}, { locale: lang.value }) }}
             </p>
             <ButtonComponent
-              class="mb-4 block mx-auto bg-cyan-600 hover:bg-cyan-700 text-white"
-            >
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
-                target="_blank"
-              >
-                {{ t('button_text_3', {}, { locale: lang.value }) }}
-              </a>
-            </ButtonComponent>
+            class="mb-4 block mx-auto bg-cyan-600 hover:bg-cyan-700 text-white"
+            @click="dialog = true"
+          >
+            {{ t('button_text_3', {}, { locale: lang.value }) }}
+          </ButtonComponent>
 
             <p class="mb-4 font-semibold">
               {{ t('product_2_p_6', {}, { locale: lang.value }) }}
@@ -368,28 +362,18 @@ const disanjeData = ref([
           </template>
         </DialogComponent>
       </div>
-      <!-- <div class="box-price bg-cyan-600">
-                <h1 class="text-6xl font-semibold">{{ workoutPlans[1]?.price }}€</h1>
-                <h6>personalni trening</h6>
-                <ul>
-                    <li>&#10003; Testiranje</li>
-                    <li>&#10003; Plan treninga</li>
-                    <li>&#10003; Plan ishrane</li>
-                    <li>&#10003; 12 treninga uz nadzor trenera</li>
-                    <li>&#10003; Prijavi se na +387 61 872 308</li>
-                </ul>
-                <div class="box-icons">
-                    <a href="https://api.whatsapp.com/send?phone=38761872308" target="_blank">
-                        <i class="fa-brands fa-whatsapp text-white text-5xl"></i>
-                    </a>
-                </div>
-                <StingrayButton
-                    text="Više informacija"
-                    class="bg-white hover:bg-slate-200 text-gray-700"
-                />
-            </div> -->
     </div>
   </section>
+
+  <DialogComponent :show="dialog" @close="dialog = false">
+    <template v-slot:title>
+      <h1 class="text-lg">Prijava za online mentorstvo</h1>
+    </template>
+
+    <template v-slot:body>
+      <EnrollmentForm @cancel="dialog = false" />
+    </template>
+  </DialogComponent>
 </template>
 
 <style scoped>

@@ -34,12 +34,7 @@ const dialog = ref(false);
             class="text-gray-700 bg-gray-100 hover:bg-gray-200"
             @click="dialog = true"
           >
-            <!-- <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSePk6zDvxol-g2zLmnx95L1v3xlPhvon3y5Rl-eycjv9kv8Bw/viewform"
-              target="_blank"
-            > -->
             {{ t('button_text_1', {}, { locale: lang.value }) }}
-            <!-- </a> -->
           </ButtonComponent>
         </div>
       </div>
