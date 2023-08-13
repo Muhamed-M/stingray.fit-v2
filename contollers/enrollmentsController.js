@@ -45,7 +45,7 @@ const getEnrollments = async (req, res) => {
 
   try {
     // get all enrollments
-    const enrollments = await CoachingEnrollment.find({ $and: [{ status: { $ne: 'deleted' } }, { ...whereObj }] })
+    const enrollments = await CoachingEnrollment.find(whereObj)
       .skip((options.page - 1) * options.rowsPerPage)
       .limit(options.rowsPerPage)
       .sort({ createdAt: -1 }); // Sorting in descending order by createdAt

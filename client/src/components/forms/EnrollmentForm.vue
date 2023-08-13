@@ -22,7 +22,9 @@ const enrollment = reactive({
 });
 
 const schema = Yup.object().shape({
-  email: Yup.string().email('Please fill a valid email address').required('Email is required field'),
+  email: Yup.string()
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Please fill a valid email address')
+    .required('Email is required field'),
   fullName: Yup.string().max(100, 'Full name must be 100 characters or less').required('Full name is required field'),
   phoneNumber: Yup.string()
     .matches(/^\d{4,15}$/, 'Please fill a valid phone number')
