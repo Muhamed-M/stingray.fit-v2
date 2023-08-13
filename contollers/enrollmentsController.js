@@ -45,7 +45,7 @@ const getEnrollments = async (req, res) => {
 
   try {
     // get all enrollments
-    const enrollments = await CoachingEnrollment.find(whereObj)
+    const enrollments = await CoachingEnrollment.find({ $and: [{ status: { $ne: 'deleted' } }, { ...whereObj }] })
       .skip((options.page - 1) * options.rowsPerPage)
       .limit(options.rowsPerPage)
       .sort({ createdAt: -1 }); // Sorting in descending order by createdAt
@@ -115,18 +115,20 @@ const updateEnrollment = async (req, res) => {
       status,
     });
 
-    // send email
-    sendEmail({
-      from: {
-        email: 'ilhan@stingray.fit',
-        name: 'Stingray Performance',
-      }, // Change to your verified sender
-      to: enrollment.email, // Change to your recipient
-      template_id: 'd-999186d08e14417395981505e5dfe087',
-      dynamic_template_data: {
-        fullName: enrollment.fullName.split(' ')[0],
-      },
-    });
+    if (status === 'active') {
+      // send email
+      sendEmail({
+        from: {
+          email: 'ilhan@stingray.fit',
+          name: 'Stingray Performance',
+        }, // Change to your verified sender
+        to: enrollment.email, // Change to your recipient
+        template_id: 'd-999186d08e14417395981505e5dfe087',
+        dynamic_template_data: {
+          fullName: enrollment.fullName.split(' ')[0],
+        },
+      });
+    }
 
     // Send a success response
     res.status(200).json({
@@ -146,13 +148,11 @@ const deleteEnrollment = async (req, res) => {
 
   try {
     // Update enrollment document
-    const enrollment = await CoachingEnrollment.findByIdAndUpdate(id, {
-      new: false,
-      status: 'deleted',
-    });
+    const enrollment = await CoachingEnrollment.findByIdAndDelete(id);
 
     // Send a success response
     res.status(200).json({
+      enrollment,
       message: 'Enrollment deleted successfully!',
     });
   } catch (error) {

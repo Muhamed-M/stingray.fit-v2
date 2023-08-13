@@ -66,9 +66,9 @@ async function updateEnrollment(id, status, message) {
     // request
     await axios.put(`/api/enrollments/${id}`, { status });
     // update state
-    const index = enrollments.value.findIndex((e) => (e._id = id));
+    const index = enrollments.value.findIndex((e) => e._id === id);
     if (index > -1) {
-      enrollments.value[index].pending = status;
+      enrollments.value[index].status = status;
       enrollments.value[index].new = false;
     }
     // message
@@ -86,7 +86,7 @@ async function deleteEnrollment(id) {
 
   try {
     // request
-    await axios.delete(`/api/enrollments/accept/${id}`);
+    await axios.delete(`/api/enrollments/${id}`);
     // remove from state
     enrollments.value = enrollments.value.filter((e) => e._id !== id);
     // message
@@ -168,7 +168,7 @@ watch(statusFilter, () => {
                   class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                   <div class="py-1">
-                    <MenuItem>
+                    <MenuItem v-if="item.status === 'pending'">
                       <span
                         class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
                         @click="updateEnrollment(item._id, 'active', 'accepted')"
@@ -177,7 +177,7 @@ watch(statusFilter, () => {
                         Accept
                       </span>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem v-if="item.status === 'pending'">
                       <span
                         class="text-gray-700 hover:bg-gray-100 block px-4 py-2 text-sm cursor-pointer"
                         @click="updateEnrollment(item._id, 'declined', 'declined')"
