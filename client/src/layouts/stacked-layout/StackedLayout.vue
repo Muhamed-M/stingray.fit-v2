@@ -15,10 +15,10 @@ const links = ref([
     text: 'About',
     href: '#about',
   },
-  {
-    text: 'Shop',
-    href: '#shop',
-  },
+  // {
+  //   text: 'Shop',
+  //   href: '#shop',
+  // },
   {
     text: 'Testimonials',
     href: '#testimonials',
