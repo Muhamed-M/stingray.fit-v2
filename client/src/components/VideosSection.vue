@@ -44,38 +44,34 @@ const { t, locale } = useI18n();
 </script>
 
 <template>
-    <section class="video-section bg-gray-800 text-slate-200">
-        <div
-            class="container mx-auto flex justify-between px-5 py-24 lg:flex-row flex-col items-center"
-        >
-            <div class="lg:pr-24 mb-8 md:pr-16 lg:w-1/2 w-5/6">
-                <iframe
-                    width="100%"
-                    height="400px"
-                    src="https://www.youtube.com/embed/2atyL0ZsQIo"
-                    title="Calisthenics/movement motivation: be a warrior"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
-            </div>
+  <section class="video-section bg-gray-900 text-slate-200">
+    <div class="container mx-auto flex justify-between px-5 py-24 lg:flex-row flex-col items-center">
+      <div class="lg:pr-24 mb-8 md:pr-16 lg:w-1/2 w-5/6">
+        <iframe
+          width="100%"
+          height="400px"
+          src="https://www.youtube.com/embed/2atyL0ZsQIo"
+          title="Calisthenics/movement motivation: be a warrior"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
 
-            <div
-                class="lg:w-1/2 flex flex-col md:items-start md:text-left items-center text-center"
-            >
-                <h1 class="title-font sm:text-4xl text-3xl mb-6 font-medium text-slate-300">
-                    {{ t('videos_title', {}, { locale: lang.value }) }}
-                </h1>
-                <p class="mb-8 leading-relaxed text-lg">
-                    {{ t('videos_p_1', {}, { locale: lang.value }) }}
-                </p>
-                <p class="mb-8 leading-relaxed text-lg">
-                    {{ t('videos_p_2', {}, { locale: lang.value }) }}
-                </p>
-            </div>
-        </div>
-        <!-- SLIDER BUTTON -->
-        <!-- <v-icon
+      <div class="lg:w-1/2 flex flex-col md:items-start md:text-left items-center text-center">
+        <h1 class="title-font sm:text-4xl text-3xl mb-6 font-medium text-slate-300">
+          {{ t('videos_title', {}, { locale: lang.value }) }}
+        </h1>
+        <p class="mb-8 leading-relaxed text-lg">
+          {{ t('videos_p_1', {}, { locale: lang.value }) }}
+        </p>
+        <p class="mb-8 leading-relaxed text-lg">
+          {{ t('videos_p_2', {}, { locale: lang.value }) }}
+        </p>
+      </div>
+    </div>
+    <!-- SLIDER BUTTON -->
+    <!-- <v-icon
             @click="prev()"
             class="slider-btn"
             name="bi-arrow-left-circle-fill"
@@ -100,66 +96,66 @@ const { t, locale } = useI18n();
                 ></iframe>
             </div>
         </div> -->
-        <!-- SLIDER BUTTON -->
-        <!-- <v-icon
+    <!-- SLIDER BUTTON -->
+    <!-- <v-icon
             @click="next()"
             class="slider-btn"
             name="bi-arrow-right-circle-fill"
             scale="3"
             fill="#fff"
         /> -->
-    </section>
+  </section>
 </template>
 
 <style scoped>
 .video-section {
-    position: relative;
-    min-width: 100%;
-    min-height: 60vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  min-width: 100%;
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .video-section::before,
 .video-section::after {
-    content: '';
-    background-color: #fff;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 70px;
-    z-index: 3;
+  content: '';
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  z-index: 3;
 }
 
 .video-section::before {
-    top: -1px;
-    clip-path: polygon(100% 0, 0 0, 0 100%);
+  top: -1px;
+  clip-path: polygon(100% 0, 0 0, 0 100%);
 }
 
 .video-section::after {
-    bottom: -1px;
-    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+  bottom: -1px;
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
 }
 
 .slideshow-container {
-    position: relative;
-    width: 720px;
-    height: 480px;
-    overflow: hidden;
-    z-index: 5;
+  position: relative;
+  width: 720px;
+  height: 480px;
+  overflow: hidden;
+  z-index: 5;
 }
 
 .slideshow {
-    width: 100%;
-    display: flex;
+  width: 100%;
+  display: flex;
 }
 
 .slideshow iframe {
-    min-width: 100%;
+  min-width: 100%;
 }
 
 .slider-btn {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>

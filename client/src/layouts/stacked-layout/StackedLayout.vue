@@ -58,7 +58,7 @@ function closeMenu() {
 </script>
 
 <template>
-  <nav :class="isSticky ? 'nav-container sticky bg-gray-800' : 'nav-container'">
+  <nav :class="isSticky ? 'nav-container sticky bg-gray-900' : 'nav-container'">
     <div class="container px-5 py-3 mx-auto flex justify-between items-center">
       <Logo />
       <span @click="navToggle = true" class="mdi mdi-menu hamburger-btn"> </span>
@@ -103,7 +103,7 @@ function closeMenu() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #1f2937;
+  background-color: #111827;
   overflow: hidden;
   white-space: nowrap;
   transition: 300ms ease-in-out;
