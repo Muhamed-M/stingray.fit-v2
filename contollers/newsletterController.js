@@ -27,7 +27,7 @@ const addContact = async (req, res) => {
     // response
     res.status(200).json({ message: 'Newsletter subscription successfull!' });
   } catch (error) {
-    console.log(error.response.body);
+    console.log(error);
     res.status(400).json({
       message: 'Error! Sign up for newsletter failed!',
       error: error.message,
@@ -35,6 +35,30 @@ const addContact = async (req, res) => {
   }
 };
 
+// @desc   Get number of newsletter subscriptions
+// @route  Private /api/newsletter/count
+// @method get
+const getContactCount = async (req, res) => {
+  try {
+    const request = {
+      url: `/v3/marketing/contacts/count`,
+      method: 'GET',
+    };
+
+    const [response, body] = await client.request(request);
+
+    // response
+    res.status(200).json({ count: body.contact_count });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addContact,
+  getContactCount,
 };
