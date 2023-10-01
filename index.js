@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/enrollments', require('./routes/enrollments'));
 app.use('/images', require('./routes/images'));
+app.use('/api/newsletter', require('./routes/newsletter'));
 
 //Connect to the database before listening
 connectDB().then(() => {
@@ -36,12 +37,7 @@ connectDB().then(() => {
 });
 
 // Serve FE
-if (
-  process.env.NODE_ENV === 'production' ||
-  process.env.NODE_ENV === 'staging'
-) {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
   app.use(serveStatic(path.join(__dirname, 'client/dist')));
-  app.get(/.*/, (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'client/dist/index.html'))
-  );
+  app.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, 'client/dist/index.html')));
 }
