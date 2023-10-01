@@ -9,8 +9,9 @@ const VideosSection = defineAsyncComponent(() => import('@/components/VideosSect
 // const ShopSection = defineAsyncComponent(() =>
 //   import('@/components/ShopSection.vue')
 // );
-const TransformationsSection = defineAsyncComponent(() => import('@/components/TransformationsSection.vue'));
 const TestimonialsSection = defineAsyncComponent(() => import('@/components/TestimonialsSection.vue'));
+const TransformationsSection = defineAsyncComponent(() => import('@/components/TransformationsSection.vue'));
+const NewsletterSection = defineAsyncComponent(() => import('@/components/NewsletterSection.vue'));
 const FooterSection = defineAsyncComponent(() => import('@/components/FooterSection.vue'));
 </script>
 
@@ -24,6 +25,7 @@ const FooterSection = defineAsyncComponent(() => import('@/components/FooterSect
     <!-- <ShopSection /> -->
     <TestimonialsSection />
     <TransformationsSection />
+    <NewsletterSection />
     <FooterSection />
   </div>
 </template>
