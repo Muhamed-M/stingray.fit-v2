@@ -23,15 +23,15 @@ const enrollment = reactive({
 
 const schema = Yup.object().shape({
   email: Yup.string()
-    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Please fill a valid email address')
-    .required('Email is required field'),
-  fullName: Yup.string().max(100, 'Full name must be 100 characters or less').required('Full name is required field'),
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Molimo vas da ispunite validan email!')
+    .required('Email je obavezno polje!'),
+  fullName: Yup.string().max(100, 'Full name must be 100 characters or less'),
   phoneNumber: Yup.string()
-    .matches(/^\d{4,15}$/, 'Please fill a valid phone number')
-    .required('Phone number is required field'),
-  about: Yup.string().max(1000, 'About must be 1000 characters or less').required('About is required field'),
-  sex: Yup.string().required('Sex is required field'),
-  age: Yup.number().required('Age is required field'),
+    .matches(/^[+]?[\d]{4,15}$/, 'Molimo vas da unesete ispravan broj telefona!')
+    .required('Broj telefona je obavezan'),
+  about: Yup.string().max(1000, 'About must be 1000 characters or less'),
+  sex: Yup.string(),
+  age: Yup.number(),
 });
 
 // methods
