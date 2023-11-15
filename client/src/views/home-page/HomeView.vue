@@ -6,9 +6,7 @@ const CardsSection = defineAsyncComponent(() => import('@/components/CardsSectio
 const AboutSection = defineAsyncComponent(() => import('@/components/AboutSection.vue'));
 const WhatsIncluded = defineAsyncComponent(() => import('@/components/WhatsIncluded.vue'));
 const VideosSection = defineAsyncComponent(() => import('@/components/VideosSection.vue'));
-// const ShopSection = defineAsyncComponent(() =>
-//   import('@/components/ShopSection.vue')
-// );
+// const ShopSection = defineAsyncComponent(() => import('@/components/ShopSection.vue'));
 const TestimonialsSection = defineAsyncComponent(() => import('@/components/TestimonialsSection.vue'));
 const TransformationsSection = defineAsyncComponent(() => import('@/components/TransformationsSection.vue'));
 const NewsletterSection = defineAsyncComponent(() => import('@/components/NewsletterSection.vue'));

@@ -49,11 +49,11 @@ const { t, locale } = useI18n();
       <div class="lg:pr-24 mb-8 md:pr-16 lg:w-1/2 w-5/6">
         <iframe
           width="100%"
-          height="400px"
-          src="https://www.youtube.com/embed/2atyL0ZsQIo"
-          title="Calisthenics/movement motivation: be a warrior"
+          height="400"
+          src="https://www.youtube.com/embed/xn6WCMRClUo"
+          title="Ena testimonial"
           frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
         ></iframe>
       </div>
@@ -64,9 +64,6 @@ const { t, locale } = useI18n();
         </h1>
         <p class="mb-8 leading-relaxed text-lg">
           {{ t('videos_p_1', {}, { locale: lang.value }) }}
-        </p>
-        <p class="mb-8 leading-relaxed text-lg">
-          {{ t('videos_p_2', {}, { locale: lang.value }) }}
         </p>
       </div>
     </div>
