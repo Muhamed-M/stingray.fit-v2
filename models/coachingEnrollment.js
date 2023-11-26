@@ -18,10 +18,8 @@ const coachingEnrollmentsSchema = mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      unique: true,
       trim: true,
       required: true,
-      match: [/^\d{4,15}$/, 'Please fill a valid phone number'],
     },
     age: {
       type: Number,

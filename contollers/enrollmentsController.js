@@ -21,7 +21,6 @@ const submitEnrollment = async (req, res) => {
     if (error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       const message = `An enrollment with that ${field} already exists.`;
-      console.log(message);
       return res.status(400).json({ message });
     }
     // Handle any errors that occur during the save
