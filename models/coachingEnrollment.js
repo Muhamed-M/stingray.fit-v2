@@ -12,18 +12,15 @@ const coachingEnrollmentsSchema = mongoose.Schema(
     },
     fullName: {
       type: String,
-      required: true,
       trim: true,
       maxlength: 100,
     },
     phoneNumber: {
       type: String,
       trim: true,
-      required: true,
     },
     age: {
       type: Number,
-      required: true,
     },
     sex: {
       type: String,
@@ -31,7 +28,6 @@ const coachingEnrollmentsSchema = mongoose.Schema(
     },
     about: {
       type: String,
-      required: true,
       trim: true,
     },
     new: {
