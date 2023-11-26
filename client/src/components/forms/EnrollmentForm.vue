@@ -26,8 +26,6 @@ const schema = Yup.object().shape({
     .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Molimo vas da ispunite validan email!')
     .required('Email je obavezno polje!'),
   about: Yup.string().max(1000, 'About must be 1000 characters or less'),
-  sex: Yup.string(),
-  age: Yup.number(),
 });
 
 // methods

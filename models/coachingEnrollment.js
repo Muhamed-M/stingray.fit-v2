@@ -24,7 +24,6 @@ const coachingEnrollmentsSchema = mongoose.Schema(
     },
     sex: {
       type: String,
-      required: true,
     },
     about: {
       type: String,
